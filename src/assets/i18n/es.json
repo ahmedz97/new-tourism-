@@ -58,7 +58,18 @@
     "tripType": "Tipo de Viaje",
     "tourExperience": "Experiencia de Tour",
     "ourMostPopularTours": "Nuestros Tours Más Populares",
-    "ultimateTravelExperience": "Experiencia de Viaje Más Completa"
+    "ultimateTravelExperience": "Experiencia de Viaje Más Completa",
+    "makeYourTour": "Hacer Tu Tour",
+    "findYourTour": "Encontrar Tu Tour",
+    "haveAnExactTime": "Tener una Hora Exacta",
+    "haveAnApproximateTime": "Tener una Hora Aproximada",
+    "myDestination": "Mi Destino...",
+    "checkInDate": "Fecha de Check In",
+    "checkOutDate": "Fecha de Check Out",
+    "startDate": "Fecha de Inicio",
+    "endDate": "Fecha de Fin",
+    "chooseMonth": "Elegir Mes",
+    "selectMonth": "Seleccionar Mes"
   },
   "tour": {
     "tours": "Tours",

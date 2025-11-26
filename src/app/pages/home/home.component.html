@@ -24,7 +24,132 @@
         class="formBox bg-white rounded-5 p-4 pb-3 sideBar mb-md-0 text-capitalize"
       >
         <mat-tab-group>
-          <mat-tab [label]="'home.tour' | translate">
+          <mat-tab [label]="'home.makeYourTour' | translate">
+            <form
+              [formGroup]="makeTripForm"
+              (ngSubmit)="onMakeTripSubmit()"
+              class="row g-3 align-items-center justify-content-between"
+            >
+              <div class="col-12">
+                <mat-radio-group
+                  [value]="MarkTime"
+                  (change)="onChangeTime($event.value)"
+                  class="d-flex flex-wrap gap-1"
+                >
+                  <mat-radio-button value="exact">{{
+                    "home.haveAnExactTime" | translate
+                  }}</mat-radio-button>
+                  <mat-radio-button value="approximate">{{
+                    "home.haveAnApproximateTime" | translate
+                  }}</mat-radio-button>
+                </mat-radio-group>
+              </div>
+              <div class="col-md-3">
+                <div class="text-capitalize">
+                  <label class="textSecondColor"
+                    ><i class="fa fa-map-marker-alt me-2 mb-2"></i
+                    >{{ "home.destinations" | translate }}</label
+                  >
+                  <mat-form-field class="w-100">
+                    <mat-select formControlName="city">
+                      <mat-option value="" disabled selected>
+                        {{ "home.myDestination" | translate }}
+                      </mat-option>
+                      <mat-option
+                        *ngFor="let des of allDestinations"
+                        [value]="des.slug"
+                      >
+                        {{ des.title }}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <!-- if have exact time -->
+              @if (MarkTime==='exact') {
+              <div class="col-md-3">
+                <div class="text-capitalize">
+                  <label class="textSecondColor"
+                    ><i class="fa fa-calendar-days me-2 mb-2"></i>
+                    {{ "home.checkInDate" | translate }}
+                  </label>
+                  <mat-form-field class="w-100">
+                    <mat-label>{{ "home.startDate" | translate }}</mat-label>
+                    <input
+                      formControlName="start_date"
+                      matInput
+                      [matDatepicker]="StartDatepicker"
+                    />
+                    <mat-datepicker-toggle
+                      matIconSuffix
+                      [for]="StartDatepicker"
+                    ></mat-datepicker-toggle>
+                    <mat-datepicker touchUi #StartDatepicker></mat-datepicker>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="text-capitalize">
+                  <label class="textSecondColor"
+                    ><i class="fa fa-calendar-days me-2 mb-2"></i>
+                    {{ "home.checkOutDate" | translate }}
+                  </label>
+                  <mat-form-field class="w-100">
+                    <mat-label>{{ "home.endDate" | translate }}</mat-label>
+                    <input
+                      formControlName="end_date"
+                      matInput
+                      [matDatepicker]="EndDatepicker"
+                    />
+                    <mat-datepicker-toggle
+                      matIconSuffix
+                      [for]="EndDatepicker"
+                    ></mat-datepicker-toggle>
+                    <mat-datepicker touchUi #EndDatepicker></mat-datepicker>
+                  </mat-form-field>
+                </div>
+              </div>
+              }
+
+              <!-- if have aproximate time -->
+              @if (MarkTime==='approximate') {
+              <div class="col-md-6">
+                <div>
+                  <label class="textSecondColor"
+                    ><i class="fa fa-calendar-days me-2 mb-2"></i>
+                    {{ "home.checkOutDate" | translate }}
+                  </label>
+                  <mat-form-field class="w-100">
+                    <mat-label>{{ "home.selectMonth" | translate }}</mat-label>
+                    <mat-select formControlName="approximate_time">
+                      <mat-option
+                        *ngFor="let month of monthList; let i = index"
+                        [value]="i + 1"
+                        >{{ month }}</mat-option
+                      >
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </div>
+              }
+
+              <div class="col-md-3">
+                <div class="text-capitalize flexCenter">
+                  <button
+                    type="submit"
+                    class="mainBtn Btn flexBetween gap-2 w-100"
+                  >
+                    {{ "common.makeTrip" | translate
+                    }}<i
+                      class="fa fa-plane-circle-check bgPrimaryWhiteColor textMainColor rounded-circle"
+                    ></i>
+                  </button>
+                </div>
+              </div>
+            </form>
+          </mat-tab>
+          <mat-tab [label]="'home.findYourTour' | translate">
             <form
               [formGroup]="tourSearchForm"
               (ngSubmit)="onTourSubmit()"
@@ -120,130 +245,6 @@
                     {{ "common.search" | translate
                     }}<i
                       class="fa fa-magnifying-glass-plus bgPrimaryWhiteColor textMainColor rounded-circle"
-                    ></i>
-                  </button>
-                </div>
-              </div>
-            </form>
-          </mat-tab>
-          <mat-tab label="Make your trip">
-            <form
-              [formGroup]="makeTripForm"
-              (ngSubmit)="onMakeTripSubmit()"
-              class="row g-3 align-items-center justify-content-between"
-            >
-              <div class="col-12">
-                <mat-radio-group
-                  [value]="MarkTime"
-                  (change)="onChangeTime($event.value)"
-                  class="d-flex flex-wrap gap-1"
-                >
-                  <mat-radio-button value="exact"
-                    >have an exact time</mat-radio-button
-                  >
-                  <mat-radio-button value="approximate"
-                    >have an approximate time</mat-radio-button
-                  >
-                </mat-radio-group>
-              </div>
-              <div class="col-md-3">
-                <div class="text-capitalize">
-                  <label class="textSecondColor"
-                    ><i class="fa fa-map-marker-alt me-2 mb-2"></i
-                    >destinations</label
-                  >
-                  <mat-form-field class="w-100">
-                    <mat-select formControlName="city">
-                      <mat-option value="" disabled selected>
-                        My Destination...
-                      </mat-option>
-                      <mat-option
-                        *ngFor="let des of allDestinations"
-                        [value]="des.slug"
-                      >
-                        {{ des.title }}
-                      </mat-option>
-                    </mat-select>
-                  </mat-form-field>
-                </div>
-              </div>
-
-              <!-- if have exact time -->
-              @if (MarkTime==='exact') {
-              <div class="col-md-3">
-                <div class="text-capitalize">
-                  <label class="textSecondColor"
-                    ><i class="fa fa-calendar-days me-2 mb-2"></i>
-                    check in date
-                  </label>
-                  <mat-form-field class="w-100">
-                    <mat-label>Start date</mat-label>
-                    <input
-                      formControlName="start_date"
-                      matInput
-                      [matDatepicker]="StartDatepicker"
-                    />
-                    <mat-datepicker-toggle
-                      matIconSuffix
-                      [for]="StartDatepicker"
-                    ></mat-datepicker-toggle>
-                    <mat-datepicker touchUi #StartDatepicker></mat-datepicker>
-                  </mat-form-field>
-                </div>
-              </div>
-              <div class="col-md-3">
-                <div class="text-capitalize">
-                  <label class="textSecondColor"
-                    ><i class="fa fa-calendar-days me-2 mb-2"></i>
-                    check out date
-                  </label>
-                  <mat-form-field class="w-100">
-                    <mat-label>End date</mat-label>
-                    <input
-                      formControlName="end_date"
-                      matInput
-                      [matDatepicker]="EndDatepicker"
-                    />
-                    <mat-datepicker-toggle
-                      matIconSuffix
-                      [for]="EndDatepicker"
-                    ></mat-datepicker-toggle>
-                    <mat-datepicker touchUi #EndDatepicker></mat-datepicker>
-                  </mat-form-field>
-                </div>
-              </div>
-              }
-
-              <!-- if have aproximate time -->
-              @if (MarkTime==='approximate') {
-              <div class="col-md-6">
-                <div>
-                  <label class="textSecondColor"
-                    ><i class="fa fa-calendar-days me-2 mb-2"></i>
-                    check out date
-                  </label>
-                  <mat-form-field class="w-100">
-                    <mat-label>Select Month</mat-label>
-                    <mat-select formControlName="approximate_time">
-                      <mat-option
-                        *ngFor="let month of monthList; let i = index"
-                        [value]="i + 1"
-                        >{{ month }}</mat-option
-                      >
-                    </mat-select>
-                  </mat-form-field>
-                </div>
-              </div>
-              }
-
-              <div class="col-md-3">
-                <div class="text-capitalize flexCenter">
-                  <button
-                    type="submit"
-                    class="mainBtn Btn flexBetween gap-2 w-100"
-                  >
-                    make trip<i
-                      class="fa fa-plane-circle-check bgPrimaryWhiteColor textMainColor rounded-circle"
                     ></i>
                   </button>
                 </div>

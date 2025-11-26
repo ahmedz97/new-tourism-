@@ -10,17 +10,17 @@ import { Component } from '@angular/core';
 export class TeamCartComponent {
   teamData: any[] = [
     {
-      name: 'Hisham',
+      name: 'Maher',
       jobTitle: 'CEO',
       src: '../../../assets/image/man1.jpg',
     },
     {
-      name: 'Manar',
+      name: 'Marwa',
       jobTitle: 'Operation Manager',
       src: '../../../assets/image/woman.jpg',
     },
     {
-      name: 'ossama',
+      name: 'Maher',
       jobTitle: 'CEO',
       src: '../../../assets/image/man2.jpg',
     },

@@ -58,7 +58,16 @@
     "tripType": "Trip Type",
     "tourExperience": "Tour Experience",
     "ourMostPopularTours": "Our Most Popular Tours",
-    "ultimateTravelExperience": "Ultimate Travel Experience"
+    "ultimateTravelExperience": "Ultimate Travel Experience",
+    "makeYourTour": "Make Your Tour",
+    "findYourTour": "Find Your Tour",
+    "haveAnExactTime": "Have an Exact Time",
+    "haveAnApproximateTime": "Have an Approximate Time",
+    "myDestination": "My Destination...",
+    "checkInDate": "Check In Date",
+    "checkOutDate": "Check Out Date",
+    "startDate": "Start Date",
+    "endDate": "End Date"
   },
   "tour": {
     "tours": "Tours",
