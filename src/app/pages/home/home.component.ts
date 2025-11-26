@@ -98,6 +98,7 @@ export class HomeComponent implements OnInit {
   alltoursInDestination: any[] = [];
   categoriesWithTours: any[] = []; // Store categories with included tours
   allToursFromCategories: any[] = []; // Bound to UI: current (possibly filtered) list
+  allPopularToursFromCategories: any[] = []; // Bound to UI: current (possibly filtered) list
   allToursMaster: any[] = []; // Immutable master list to filter from
   destinationPrices: DestinationPriceMap = {};
   categoryPrices: DestinationPriceMap = {};
@@ -420,6 +421,7 @@ export class HomeComponent implements OnInit {
     this._DataService.getTours().subscribe({
       next: (res) => {
         this.allToursFromCategories = res.data.data;
+        this.allPopularToursFromCategories = res.data.data.reverse() || [];
         this.allToursMaster = [...this.allToursFromCategories];
         this.alltours = [...this.allToursFromCategories];
         // Initialize default lists for both category and destination views
@@ -530,6 +532,28 @@ export class HomeComponent implements OnInit {
   //   ],
   // };
   tourOptions: OwlOptions = {
+    loop: true,
+    mouseDrag: true,
+    touchDrag: true,
+    pullDrag: true,
+    autoplay: true,
+    dots: false,
+    smartSpeed: 2500,
+    margin: 5,
+    responsive: {
+      0: { items: 1 },
+      586: { items: 2.5 },
+      767: { items: 3 },
+      992: { items: 3.5 },
+      1200: { items: 4 },
+    },
+    nav: true,
+    navText: [
+      '<i class="fa fa-arrow-left"></i>',
+      '<i class="fa fa-arrow-right"></i>',
+    ],
+  };
+  popularToursOptions: OwlOptions = {
     loop: true,
     mouseDrag: true,
     touchDrag: true,

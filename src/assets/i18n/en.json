@@ -55,7 +55,10 @@
     "allDestinations": "All Destinations",
     "allCategories": "All Categories",
     "whereWouldYouLikeToGo": "Where would you like to go?",
-    "tripType": "Trip Type"
+    "tripType": "Trip Type",
+    "tourExperience": "Tour Experience",
+    "ourMostPopularTours": "Our Most Popular Tours",
+    "ultimateTravelExperience": "Ultimate Travel Experience"
   },
   "tour": {
     "tours": "Tours",
@@ -194,11 +197,11 @@
     "officeAddress": "Office Address",
     "callUs": "Call Us",
     "emailUs": "Email Us",
-    "description": " Our [website name] team of Travel Consultants are here to provide comprehensive accommodation, activity and transportation booking services. We can answer all your questions, from what not to miss during your visit, to current weather and snow conditions. Contact us by phone, email or live chat, or schedule a call."
+    "description": " Our Alfa Omega Tours team of Travel Consultants are here to provide comprehensive accommodation, activity and transportation booking services. We can answer all your questions, from what not to miss during your visit, to current weather and snow conditions. Contact us by phone, email or live chat, or schedule a call."
   },
   "login": {
     "login": "Login",
-    "loginByAccount": "Log in by your TourEgya account",
+    "loginByAccount": "Log in by your Alfa Omega Tours account",
     "emailAddress": "Email Address",
     "password": "Password",
     "forgotPassword": "Forgot Password?",
@@ -212,7 +215,7 @@
   },
   "signup": {
     "signUp": "Sign Up",
-    "createAccount": "Create your tourEgya account",
+    "createAccount": "Create your Alfa Omega Tours account",
     "fullName": "Full Name",
     "emailAddress": "Email Address",
     "password": "Password",
@@ -294,7 +297,7 @@
     "selectMonth": "Select Month"
   },
   "forgetPassword": {
-    "loginByAccount": "Log in by your tourEgya account",
+    "loginByAccount": "Log in by your Alfa Omega Tours account",
     "emailAddress": "Email Address",
     "otpCode": "OTP Code",
     "yourOtpCode": "Your OTP Code",

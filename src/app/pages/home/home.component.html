@@ -301,8 +301,12 @@
   <div class="container position-relative">
     <div class="title-box position-relative flexBetween flex-wrap mb-4">
       <div class="secTitle text-capitalize">
-        <span class="textSecondColor fw-bold fs-5">Tour Experience</span>
-        <h2 class="text-black fw-bold">Ultimate Travel Experience</h2>
+        <span class="textSecondColor fw-bold fs-5">{{
+          "home.tourExperience" | translate
+        }}</span>
+        <h2 class="text-black fw-bold">
+          {{ "home.ultimateTravelExperience" | translate }}
+        </h2>
       </div>
     </div>
 
@@ -328,16 +332,20 @@
   <div class="container position-relative pt-5">
     <div class="title-box position-relative flexBetween flex-wrap mb-4">
       <div class="secTitle text-capitalize">
-        <span class="textSecondColor fw-bold fs-5">Tour Experience</span>
-        <h2 class="text-black fw-bold">Our Most Popular Tours</h2>
+        <span class="textSecondColor fw-bold fs-5">{{
+          "home.tourExperience" | translate
+        }}</span>
+        <h2 class="text-black fw-bold">
+          {{ "home.ourMostPopularTours" | translate }}
+        </h2>
       </div>
     </div>
 
     <!--  on small screen from 0px to 767px  -->
     <div class="">
-      @if (allToursFromCategories.length > 0) {
-      <owl-carousel-o [options]="tourOptions">
-        @for (tour of allToursFromCategories.reverse(); track $index) {
+      @if (allPopularToursFromCategories.length > 0) {
+      <owl-carousel-o [options]="popularToursOptions">
+        @for (tour of allPopularToursFromCategories; track $index) {
         <ng-template carouselSlide>
           <app-tour-cart [tour]="tour"></app-tour-cart>
         </ng-template>
