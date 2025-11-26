@@ -10,7 +10,7 @@
       <owl-carousel-o [options]="bookingOptions">
         @for (item of bookingItems; track $index) {
         <ng-template carouselSlide>
-          <div class="item p-3 py-4 transition border rounded-4 mb-5">
+          <div class="item p-3 py-4 transition border rounded-3 mb-5">
             <i class="fa {{ item.icon }} fs-1 textMainColor transition"></i>
             <h3 class="text-capitalize fw-bold my-3 h4 transition">
               @if (item.titleIsTranslation) {

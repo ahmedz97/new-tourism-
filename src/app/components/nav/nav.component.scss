@@ -96,12 +96,11 @@
     font-weight: 600;
     font-size: 0.95rem;
     text-decoration: none;
-    border-radius: 50px;
+    border-radius: 3px;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
     white-space: nowrap;
-
-    i {
+    i{
       font-size: 0.7rem;
       transition: transform 0.3s ease;
     }
@@ -119,8 +118,12 @@
         background: $secondary-color;
         color: white;
         box-shadow: 0 4px 15px rgba(167, 193, 168, 0.4);
-        border-radius: 15px;
-    }
+        border-radius: 3px;
+        -webkit-border-radius: 3px;
+        -moz-border-radius: 3px;
+        -ms-border-radius: 3px;
+        -o-border-radius: 3px;
+}
 
   }
 
@@ -160,8 +163,7 @@
   z-index: 1000;
   padding: 1rem 0;
   overflow: hidden;
-
-  &::before {
+  &::before{
     content: '';
     position: absolute;
     top: -10px;
@@ -212,22 +214,24 @@
   }
 
   &:hover {
-    background: rgba(129, 154, 145, 0.1);
+    color: white;
     padding-left: 2rem;
-    color: $primary-color;
-
+    border-radius: 3px;
+    background-color: $primary-color;
+    i{
+      color: white;
+    }
     &::before {
       transform: scaleY(1);
     }
   }
 
   &.active {
-    background: rgba(167, 193, 168, 0.2);
-    color: $secondary-color;
+    background: $primary-color;
+    color: white;
     font-weight: 600;
-    border-radius: 15px;
+    border-radius: 3px;
     padding: 0.25rem .5rem;
-
     &::before {
       transform: scaleY(1);
       background: $secondary-color;
@@ -278,7 +282,7 @@
   top: 0;
   left: calc(100% + 10px);
   background: white;
-  border-radius: 15px;
+  border-radius: 3px;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
   min-width: 220px;
   opacity: 0;
@@ -288,8 +292,7 @@
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   z-index: 1001;
   padding: 0.75rem 0;
-
-  &::before {
+  &::before{
     content: '';
     position: absolute;
     top: 20px;
@@ -367,7 +370,7 @@
 .settings-btn {
   width: 45px;
   height: 45px;
-  border-radius: 50%;
+  border-radius: 3px;
   border: 2px solid $primary-color;
   background: transparent;
   color: $primary-color;
@@ -377,8 +380,7 @@
   cursor: pointer;
   transition: all 0.3s ease;
   font-size: 1.1rem;
-
-  &:hover {
+  &:hover{
     background: $primary-color;
     color: white;
     transform: rotate(90deg);
@@ -437,15 +439,19 @@
     text-align: center;
   }
 
-  &:hover {
-    background: rgba(129, 154, 145, 0.1);
-    color: $primary-color;
+  &:hover , &.active {
+    background: $primary-color;
+    border-left-color: $secondary-color;
+    color: white;
+    padding-left: 2rem;
+    i{
+      color: white;
+    }
     transform: translateX(5px);
   }
 
   &.active {
-    background: rgba(167, 193, 168, 0.2);
-    color: $secondary-color;
+
     font-weight: 600;
   }
 }
@@ -480,15 +486,14 @@
   width: 100%;
   padding: 0.75rem 1rem;
   border: 2px solid #e0e0e0;
-  border-radius: 12px;
+  border-radius: 3px;
   background: white;
   color: #2c3e50;
   font-size: 0.95rem;
   cursor: pointer;
   transition: all 0.2s ease;
   margin-top: 0.5rem;
-
-  &:hover {
+  &:hover{
     border-color: $primary-color;
   }
 
@@ -508,15 +513,14 @@
   background: linear-gradient(135deg, $primary-color 0%, $secondary-color 100%);
   color: white;
   text-decoration: none;
-  border-radius: 50px;
+  border-radius: 3px;
   font-weight: 600;
   font-size: 0.95rem;
   box-shadow: 0 4px 15px rgba(129, 154, 145, 0.3);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
   overflow: hidden;
-
-  &::before {
+  &::before{
     content: '';
     position: absolute;
     top: 0;
@@ -549,7 +553,8 @@
 .mobile-menu-btn {
   width: 45px;
   height: 45px;
-  border: none;
+  border-radius: 3px;
+  border: 2px solid #0060df;
   background: transparent;
   display: flex;
   align-items: center;
@@ -558,6 +563,7 @@
   padding: 0;
   position: relative;
   z-index: 1001;
+
 }
 
 .hamburger {
@@ -710,17 +716,21 @@
     font-size: 1.1rem;
   }
 
-  &:hover {
-    background: rgba(129, 154, 145, 0.1);
-    border-left-color: $primary-color;
+  &:hover, &.active {
+    background: $primary-color;
+    border-left-color: $secondary-color;
+    color: white;
     padding-left: 2rem;
+    i{
+      color: white;
+    }
   }
 
-  &.active {
-    background: rgba(167, 193, 168, 0.2);
-    border-left-color: $secondary-color;
-    color: $secondary-color;
-  }
+  // &.active {
+  //   background: rgba(167, 193, 168, 0.2);
+  //   border-left-color: $secondary-color;
+  //   color: $secondary-color;
+  // }
 }
 
 // Sidebar Dropdown
@@ -754,17 +764,14 @@
     transition: transform 0.3s ease;
   }
 
-  &:hover {
-    background: rgba(129, 154, 145, 0.1);
-    border-left-color: $primary-color;
-  }
 
-  &.active {
-    background: rgba(129, 154, 145, 0.15);
-    border-left-color: $primary-color;
-
-    i:last-child {
-      transform: rotate(180deg);
+  &.active , &:hover {
+    background: $primary-color;
+    border-left-color: $secondary-color;
+    color: white;
+    padding-left: 2rem;
+    i{
+      color: white;
     }
   }
 }
@@ -789,17 +796,14 @@
   transition: all 0.2s ease;
   border-left: 4px solid transparent;
 
-  &:hover {
-    background: rgba(129, 154, 145, 0.15);
-    border-left-color: $primary-color;
-    padding-left: 4rem;
-  }
-
-  &.active {
-    background: rgba(167, 193, 168, 0.25);
+  &:hover, &.active {
+    background: $primary-color;
     border-left-color: $secondary-color;
-    color: $secondary-color;
-    font-weight: 600;
+    color: white;
+    padding-left: 2rem;
+    i{
+      color: white;
+    }
   }
 }
 
@@ -893,7 +897,7 @@
 .sidebar-action-btn {
   width: 45px;
   height: 45px;
-  border-radius: 50%;
+  border-radius: 3px;
   border: 2px solid $primary-color;
   background: white;
   color: $primary-color;
@@ -903,8 +907,7 @@
   text-decoration: none;
   transition: all 0.3s ease;
   font-size: 1.1rem;
-
-  &:hover {
+  &:hover{
     background: $primary-color;
     color: white;
     transform: translateY(-3px);
@@ -922,14 +925,13 @@
   width: 100%;
   padding: 0.875rem 1rem;
   border: 2px solid #e0e0e0;
-  border-radius: 12px;
+  border-radius: 3px;
   background: white;
   color: #2c3e50;
   font-size: 0.95rem;
   cursor: pointer;
   transition: all 0.2s ease;
-
-  &:hover {
+  &:hover{
     border-color: $primary-color;
   }
 
@@ -949,13 +951,12 @@
   background: linear-gradient(135deg, $primary-color 0%, $secondary-color 100%);
   color: white;
   text-decoration: none;
-  border-radius: 15px;
+  border-radius: 3px;
   font-weight: 600;
   font-size: 1rem;
   box-shadow: 0 4px 15px rgba(129, 154, 145, 0.3);
   transition: all 0.3s ease;
-
-  &:hover {
+  &:hover{
     transform: translateY(-3px);
     box-shadow: 0 6px 25px rgba(129, 154, 145, 0.4);
 
@@ -1022,4 +1023,9 @@
   &:hover {
     background: $secondary-color;
   }
+}
+
+::ng-deep .mat-mdc-tab-labels{
+  align-items: center;
+    justify-content: center !important;
 }
