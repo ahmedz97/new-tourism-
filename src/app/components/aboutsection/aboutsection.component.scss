@@ -1,0 +1,30 @@
+@import '../../../styles/#language';
+
+.about{
+  .counterBox{
+    width: 140px;
+    height: 140px;
+  }
+  @media screen and (max-width:586px) {
+   .counterBox{
+     width: 110px;
+     height: 110px;
+     h3{font-size: 20px;}
+     p{font-size: 14px;}
+   }
+
+ }
+
+ figure{
+  &:hover{
+    img{
+      transform: scale(1.1) rotate(3deg);
+      -webkit-transform: scale(1.1) rotate(3deg);
+      -moz-transform: scale(1.1) rotate(3deg);
+      -ms-transform: scale(1.1) rotate(3deg);
+      -o-transform: scale(1.1) rotate(3deg);
+}
+  }
+ }
+
+}

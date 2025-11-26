@@ -1,0 +1,57 @@
+<div class="row g-3 mt-4">
+  @for (blog of (blogs || []); track blog?.id || $index) { @if (blog) {
+
+  <div class="col-lg-4 col-md-6">
+    <div
+      role="button"
+      [routerLink]="['/blog', blog.slug || '']"
+      class="item border rounded-4 position-relative d-flex flex-column"
+    >
+      <figure class="mb-0 rounded-4 overflow-hidden">
+        <img
+          [src]="blog.featured_image || ''"
+          class="w-100 transition"
+          height="250px"
+          [alt]="blog.title || ''"
+          [title]="blog.title || ''"
+        />
+      </figure>
+      <!-- August 25, 2025 -->
+      <h4
+        class="bgMainColor text-white py-1 text-nowrap position-absolute px-2 rounded-3 fontsm"
+      >
+        {{ blog.updated_at ? (blog.updated_at | date : " MMMM dd yyyy") : "" }}
+      </h4>
+
+      <figcaption class="p-2">
+        <!-- <div class="py-2 border-bottom flexBetween flex-wrap">
+          <span class="me-3 textSecondColor">
+            <i class="fa-regular fa-user-circle me-1 textMainColor"></i>
+            By Alicia Davis
+          </span>
+          <span class="me-3 textSecondColor">
+            <i class="fa-regular fa-comments me-1 textMainColor"></i>
+            {{ blog.display_order }} Comments
+          </span>
+        </div> -->
+        <h5
+          [routerLink]="['/blog', blog.slug || '']"
+          class="textSecondColor text-capitalize fw-bold my-2"
+        >
+          {{ blog.title || "" }}
+        </h5>
+        <div
+          class="description mb-1"
+          [innerHTML]="getSanitizedHtml(blog.description || '')"
+        ></div>
+        <button
+          class="Btn mainBtn text-capitalize"
+          [routerLink]="['/blog', blog.slug || '']"
+        >
+          {{ "blog.readMore" | translate }}
+        </button>
+      </figcaption>
+    </div>
+  </div>
+  } }
+</div>

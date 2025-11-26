@@ -1,0 +1,379 @@
+<div class="nav-wrapper">
+  <!-- Modern Navbar -->
+  <nav class="modern-navbar" [class.scrolled]="scrolled">
+    <div class="nav-container">
+      <!-- Logo Section -->
+      <div class="logo-section" routerLink="/">
+        <img
+          src="../../../assets/image/Touregya/Touregya for print-02.png"
+          [alt]="siteTitle"
+          [title]="siteTitle"
+          class="logo-img"
+        />
+      </div>
+
+      <!-- Desktop Navigation -->
+      <div class="desktop-nav d-none d-lg-flex">
+        <div class="nav-links-wrapper">
+          <ng-container *ngFor="let link of navigationLinks">
+            <!-- Main Navigation Link -->
+            <a
+              [routerLink]="link.path"
+              routerLinkActive="active"
+              [routerLinkActiveOptions]="{ exact: link.path === '/' }"
+              class="nav-link-item"
+            >
+              <span>{{ link.label | translate }}</span>
+            </a>
+
+            <!-- Tours Dropdown -->
+            <ng-container *ngIf="link.path === '/' && allCategories?.length">
+              <div class="nav-link-item dropdown-wrapper">
+                <a
+                  routerLink="/tour"
+                  routerLinkActive="active"
+                  class="dropdown-trigger"
+                >
+                  <span>{{ "nav.tours" | translate }}</span>
+                  <i class="fas fa-chevron-down"></i>
+                </a>
+                <div class="dropdown-menu-modern">
+                  <div class="dropdown-content">
+                    <ng-container *ngFor="let cat of allCategories">
+                      <a
+                        class="dropdown-item-modern"
+                        [routerLink]="['/tour']"
+                        routerLinkActive="active"
+                        [queryParams]="{ type: cat.id }"
+                      >
+                        <i class="fas fa-map-marked-alt"></i>
+                        <span>{{ cat.title }}</span>
+                      </a>
+                    </ng-container>
+                  </div>
+                </div>
+              </div>
+            </ng-container>
+
+            <!-- Destinations Dropdown -->
+            <ng-container *ngIf="link.path === '/' && allDestinations?.length">
+              <div class="nav-link-item dropdown-wrapper">
+                <a
+                  routerLink="/destination"
+                  routerLinkActive="active"
+                  class="dropdown-trigger"
+                >
+                  <span>{{ "nav.destinations" | translate }}</span>
+                  <i class="fas fa-chevron-down"></i>
+                </a>
+                <div class="dropdown-menu-modern destinations-dropdown">
+                  <div class="dropdown-content">
+                    <ng-container *ngFor="let dest of allDestinations">
+                      <!-- Regular Destination -->
+                      <ng-container *ngIf="!isEgypt(dest)">
+                        <a
+                          class="dropdown-item-modern"
+                          [routerLink]="['/destination', dest.slug]"
+                          routerLinkActive="active"
+                        >
+                          <i class="fas fa-globe-americas"></i>
+                          <span>{{ dest.title }}</span>
+                        </a>
+                      </ng-container>
+
+                      <!-- Egypt with Submenu -->
+                      <ng-container *ngIf="isEgypt(dest)">
+                        <div class="dropdown-item-modern has-submenu">
+                          <a
+                            [routerLink]="['/destination', dest.slug]"
+                            class="submenu-trigger"
+                          >
+                            <i class="fas fa-globe-americas"></i>
+                            <span>{{ dest.title }}</span>
+                            <i class="fas fa-chevron-right submenu-icon"></i>
+                          </a>
+                          <div class="submenu-modern">
+                            <div class="submenu-content">
+                              <ng-container *ngFor="let cat of egyptCategories">
+                                <a
+                                  class="submenu-item"
+                                  [routerLink]="['/tour']"
+                                  routerLinkActive="active"
+                                  [queryParams]="{ type: cat.id }"
+                                >
+                                  <i class="fas fa-map-pin"></i>
+                                  <span>{{ cat.title }}</span>
+                                </a>
+                              </ng-container>
+                            </div>
+                          </div>
+                        </div>
+                      </ng-container>
+                    </ng-container>
+                  </div>
+                </div>
+              </div>
+            </ng-container>
+          </ng-container>
+        </div>
+      </div>
+
+      <!-- Right Actions Section -->
+      <div class="nav-actions">
+        <!-- Settings Dropdown (Desktop) -->
+        <div class="settings-dropdown d-none d-lg-block">
+          <button class="settings-btn" type="button">
+            <i class="fas fa-cog"></i>
+          </button>
+          <div class="settings-menu">
+            <div class="settings-section">
+              <a
+                routerLink="/makeTrip"
+                routerLinkActive="active"
+                class="action-item"
+              >
+                <i class="fas fa-plane"></i>
+                <span>{{ "common.makeTrip" | translate }}</span>
+              </a>
+              <a
+                routerLink="/signup"
+                routerLinkActive="active"
+                class="action-item"
+              >
+                <i class="fas fa-user-plus"></i>
+                <span>Sign Up</span>
+              </a>
+              <a
+                routerLink="/cart"
+                routerLinkActive="active"
+                class="action-item"
+              >
+                <i class="fas fa-shopping-cart"></i>
+                <span>Cart</span>
+              </a>
+              <a
+                routerLink="/profile"
+                routerLinkActive="active"
+                class="action-item"
+              >
+                <i class="fas fa-user-circle"></i>
+                <span>Profile</span>
+              </a>
+            </div>
+            <div class="settings-divider"></div>
+            <div class="language-section">
+              <label class="language-label">
+                <i class="fas fa-language"></i>
+                <span>{{ "common.selectLanguage" | translate }}</span>
+              </label>
+              <select
+                name="language"
+                id="language"
+                (change)="onLangChange($event)"
+                class="language-select"
+              >
+                <option value="en">{{ "common.english" | translate }}</option>
+                <option value="es">{{ "common.spanish" | translate }}</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Make Trip Button (Desktop) -->
+        <!-- <a routerLink="/makeTrip" class="make-trip-btn d-none d-lg-flex">
+          <span>{{ "common.makeTrip" | translate }}</span>
+          <i class="fas fa-plane"></i>
+        </a> -->
+
+        <!-- Mobile Menu Toggle -->
+        <button
+          class="mobile-menu-btn d-lg-none"
+          (click)="toggleSidebar()"
+          type="button"
+          aria-label="Toggle menu"
+        >
+          <span class="hamburger" [class.active]="isSidebarOpen">
+            <span></span>
+            <span></span>
+            <span></span>
+          </span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Modern Mobile Sidebar -->
+  <div class="mobile-sidebar" [class.open]="isSidebarOpen">
+    <div class="sidebar-overlay" (click)="closeSidebar()"></div>
+    <div class="sidebar-content">
+      <!-- Sidebar Header -->
+      <div class="sidebar-header">
+        <div class="sidebar-logo" routerLink="/" (click)="closeSidebar()">
+          <img
+            src="../../../assets/image/Touregya/Touregya for print-02.png"
+            [alt]="siteTitle"
+            [title]="siteTitle"
+            class="logo-img"
+          />
+        </div>
+        <button class="sidebar-close" (click)="closeSidebar()" type="button">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+
+      <!-- Sidebar Navigation -->
+      <div class="sidebar-nav">
+        <ng-container *ngFor="let link of navigationLinks">
+          <a
+            [routerLink]="link.path"
+            routerLinkActive="active"
+            [routerLinkActiveOptions]="{ exact: link.path === '/' }"
+            class="sidebar-link"
+            (click)="closeSidebar()"
+          >
+            <i class="fas fa-home" *ngIf="link.path === '/'"></i>
+            <i class="fas fa-info-circle" *ngIf="link.path === '/about'"></i>
+            <i class="fas fa-blog" *ngIf="link.path === '/blog'"></i>
+            <i class="fas fa-envelope" *ngIf="link.path === '/contact'"></i>
+            <span>{{ link.label | translate }}</span>
+          </a>
+
+          <!-- Tours Dropdown (Mobile) -->
+          <ng-container *ngIf="link.path === '/' && allCategories?.length">
+            <div class="sidebar-dropdown">
+              <div
+                class="sidebar-dropdown-trigger"
+                [class.active]="isDropdownOpen('tours')"
+                (click)="toggleMobileDropdown('tours', $event)"
+              >
+                <i class="fas fa-map-marked-alt"></i>
+                <span>{{ "nav.tours" | translate }}</span>
+                <i class="fas fa-chevron-down"></i>
+              </div>
+              <div
+                class="sidebar-dropdown-content"
+                [class.active]="isDropdownOpen('tours')"
+              >
+                <ng-container *ngFor="let cat of allCategories">
+                  <a
+                    class="sidebar-dropdown-item"
+                    [routerLink]="['/tour']"
+                    routerLinkActive="active"
+                    [queryParams]="{ type: cat.id }"
+                    (click)="closeSidebar()"
+                  >
+                    {{ cat.title }}
+                  </a>
+                </ng-container>
+              </div>
+            </div>
+          </ng-container>
+
+          <!-- Destinations Dropdown (Mobile) -->
+          <ng-container *ngIf="link.path === '/' && allDestinations?.length">
+            <div class="sidebar-dropdown">
+              <div
+                class="sidebar-dropdown-trigger"
+                [class.active]="isDropdownOpen('destinations')"
+                (click)="toggleMobileDropdown('destinations', $event)"
+              >
+                <i class="fas fa-globe-americas"></i>
+                <span>{{ "nav.destinations" | translate }}</span>
+                <i class="fas fa-chevron-down"></i>
+              </div>
+              <div
+                class="sidebar-dropdown-content"
+                [class.active]="isDropdownOpen('destinations')"
+              >
+                <ng-container *ngFor="let dest of allDestinations">
+                  <ng-container *ngIf="!isEgypt(dest)">
+                    <a
+                      class="sidebar-dropdown-item"
+                      [routerLink]="['/destination', dest.slug]"
+                      routerLinkActive="active"
+                      (click)="closeSidebar()"
+                    >
+                      {{ dest.title }}
+                    </a>
+                  </ng-container>
+                  <ng-container *ngIf="isEgypt(dest)">
+                    <div class="sidebar-submenu">
+                      <div
+                        class="sidebar-submenu-trigger"
+                        [class.active]="isDropdownOpen('egypt')"
+                        (click)="toggleMobileDropdown('egypt', $event)"
+                      >
+                        <span>{{ dest.title }}</span>
+                        <i class="fas fa-chevron-right"></i>
+                      </div>
+                      <div
+                        class="sidebar-submenu-content"
+                        [class.active]="isDropdownOpen('egypt')"
+                      >
+                        <ng-container *ngFor="let cat of egyptCategories">
+                          <a
+                            class="sidebar-submenu-item"
+                            [routerLink]="['/tour']"
+                            routerLinkActive="active"
+                            [queryParams]="{ type: cat.id }"
+                            (click)="closeSidebar()"
+                          >
+                            {{ cat.title }}
+                          </a>
+                        </ng-container>
+                      </div>
+                    </div>
+                  </ng-container>
+                </ng-container>
+              </div>
+            </div>
+          </ng-container>
+        </ng-container>
+      </div>
+
+      <!-- Sidebar Footer -->
+      <div class="sidebar-footer">
+        <div class="sidebar-actions">
+          <a
+            routerLink="/signup"
+            routerLinkActive="active"
+            class="sidebar-action-btn"
+          >
+            <i class="fas fa-user-plus"></i>
+          </a>
+          <a
+            routerLink="/cart"
+            routerLinkActive="active"
+            class="sidebar-action-btn"
+          >
+            <i class="fas fa-shopping-cart"></i>
+          </a>
+          <a
+            routerLink="/profile"
+            routerLinkActive="active"
+            class="sidebar-action-btn"
+          >
+            <i class="fas fa-user-circle"></i>
+          </a>
+        </div>
+        <select
+          name="language"
+          id="language-mobile"
+          (change)="onLangChange($event)"
+          class="sidebar-language-select"
+        >
+          <option value="en">{{ "common.english" | translate }}</option>
+          <option value="es">{{ "common.spanish" | translate }}</option>
+        </select>
+        <a
+          routerLink="/makeTrip"
+          class="sidebar-make-trip-btn"
+          (click)="closeSidebar()"
+        >
+          <span>{{ "common.makeTrip" | translate }}</span>
+          <i class="fas fa-plane"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,23 @@
+<app-nav></app-nav>
+<router-outlet></router-outlet>
+<app-footer></app-footer>
+
+<ngx-spinner
+  bdColor="#EEEFEF"
+  size="medium"
+  color="red"
+  class="textMainColor w-full"
+  type="square-jelly-box"
+  [fullScreen]="true"
+>
+  <figure>
+    <!-- width="200px"
+    height="200px" -->
+    <img
+      src="../assets/image/loader3.gif"
+      alt="loader gif"
+      class="w-100 h-100"
+    />
+  </figure>
+  <!-- <p class="text-capitalize text-center textMainColor fs-2">Loading...</p> -->
+</ngx-spinner>

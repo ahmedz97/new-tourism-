@@ -1,0 +1,12 @@
+@import '../../../styles/variables';
+
+.item{
+
+    &:hover{
+      background-color: $primary-color;
+      color: white !important;
+      a{color: white;}
+
+    }
+}
+

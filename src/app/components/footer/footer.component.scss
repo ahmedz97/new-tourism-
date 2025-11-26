@@ -1,0 +1,480 @@
+@import '../../../styles/variables';
+
+.footer-container {
+  position: relative;
+  z-index: 1;
+  background-color: #122842; // Dark blue-grey background
+  padding: 60px 0 0;
+  color: #fff;
+}
+
+.footer-content {
+  background-color: #122842;
+  padding: 50px 40px 30px;
+  width: 100%;
+}
+
+// Logo Section
+.footer-logo {
+  margin-bottom: 20px;
+
+  .logo-img {
+    max-width: 200px;
+    height: auto;
+    display: block;
+  }
+}
+
+.footer-description {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 14px;
+  line-height: 1.6;
+  margin: 0;
+}
+
+// Footer Headings
+.footer-heading {
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  position: relative;
+  display: inline-block;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 50px;
+    height: 3px;
+    background-color: $primary-color; // Blue underline
+  }
+}
+
+// Quick Links
+.footer-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+
+  li {
+    margin-bottom: 12px;
+
+    .nav-link {
+      color: rgba(255, 255, 255, 0.8);
+      text-decoration: none;
+      font-size: 14px;
+      transition: all 0.3s ease;
+      display: inline-block;
+
+      &:hover {
+        color: $primary-color;
+        padding-left: 5px;
+      }
+    }
+  }
+}
+
+// Contact Section
+.contact-intro {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 14px;
+  margin-bottom: 15px;
+}
+
+.footer-contact {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+
+  .contact-item {
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 14px;
+
+    i {
+      color: $primary-color;
+      font-size: 16px;
+      width: 20px;
+    }
+
+    .contact-link {
+      color: rgba(255, 255, 255, 0.8);
+      text-decoration: none;
+      transition: all 0.3s ease;
+
+      &:hover {
+          color: $primary-color;
+      }
+    }
+  }
+}
+
+// Gallery Section
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-top: 10px;
+
+  .gallery-item {
+    position: relative;
+    cursor: pointer;
+    overflow: hidden;
+    border-radius: 8px;
+    aspect-ratio: 1;
+    transition: transform 0.3s ease;
+
+    &:hover {
+      transform: scale(1.05);
+    }
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 8px;
+      transition: opacity 0.3s ease;
+    }
+
+    &:hover img {
+      opacity: 0.8;
+    }
+  }
+}
+
+// Newsletter Section
+.newsletter-section {
+  padding: 30px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  margin: 30px 0;
+
+  .footer-links-bottom {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+
+    .footer-link {
+      color: rgba(255, 255, 255, 0.8);
+      text-decoration: none;
+      font-size: 14px;
+      transition: all 0.3s ease;
+
+      &:hover {
+          color: $primary-color;
+      }
+    }
+
+    .separator {
+      color: rgba(255, 255, 255, 0.5);
+    }
+  }
+
+  .social-icons {
+    margin-right: 20px;
+  }
+
+  .newsletter-text {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 16px;
+    font-weight: 500;
+  }
+
+  .newsletter-form {
+
+
+    .newsletter-input {
+
+      padding: 12px 20px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 8px;
+      background-color: rgba(255, 255, 255, 0.1);
+      color: #fff;
+      font-size: 14px;
+      transition: all 0.3s ease;
+
+      &::placeholder {
+        color: rgba(255, 255, 255, 0.5);
+      }
+
+      &:focus {
+        outline: none;
+        border-color: $primary-color;
+        background-color: rgba(255, 255, 255, 0.15);
+      }
+    }
+
+    .newsletter-btn {
+      padding: 12px 30px;
+      background-color: transparent;
+      border: 1px solid #fff;
+      color: #fff;
+      border-radius: 8px;
+      font-weight: 600;
+      text-transform: uppercase;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      white-space: nowrap;
+
+      &:hover {
+        background-color: #fff;
+        color: #122842;
+      }
+    }
+  }
+}
+
+// Footer Bottom Section
+.footer-bottom {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+
+  .copyright-text {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 14px;
+    margin: 0;
+  }
+
+
+
+
+}
+
+// Gallery Modal/Slider
+.gallery-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.95);
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: fadeIn 0.3s ease;
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  .gallery-modal-content {
+    position: relative;
+    width: 100%;
+    max-width: 1200px;
+    max-height: 80vh;
+
+    .gallery-close {
+      position: absolute;
+      top: -40px;
+      right: 0;
+      background: transparent;
+      border: 2px solid #fff;
+      color: #fff;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10000;
+      transition: all 0.3s ease;
+      font-size: 20px;
+
+      &:hover {
+        background-color: #fff;
+        color: #122842;
+      }
+    }
+
+    .gallery-slider {
+      width: 100%;
+
+      .gallery-slide {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 80vh;
+
+        img {
+          max-width: 100%;
+          max-height: 100%;
+          //object-fit: contain;
+          border-radius: 28px;
+          -webkit-border-radius: 28px;
+          -moz-border-radius: 28px;
+          -ms-border-radius: 28px;
+          -o-border-radius: 28px;
+}
+      }
+    }
+
+    // Override owl carousel nav styles
+    ::ng-deep {
+      .owl-nav {
+        button {
+          position: absolute;
+          top: 50%;
+          transform: translateY(-50%);
+          background-color: rgba(255, 255, 255, 0.2) !important;
+          color: #fff !important;
+          width: 50px;
+          height: 50px;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          transition: all 0.3s ease;
+          border: 2px solid rgba(255, 255, 255, 0.3) !important;
+
+          &:hover {
+            background-color: rgba(255, 255, 255, 0.4) !important;
+            border-color: #fff !important;
+          }
+
+          &.owl-prev {
+            left: -70px;
+          }
+
+          &.owl-next {
+            right: -70px;
+          }
+
+          i {
+            font-size: 24px;
+          }
+        }
+      }
+    }
+  }
+}
+
+// Responsive Design
+@media (max-width: 992px) {
+  .footer-content {
+    padding: 40px 30px 25px;
+  }
+
+  .gallery-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+  }
+
+  .newsletter-section {
+    .newsletter-form {
+      .input-group {
+        flex-direction: column;
+      }
+
+    }
+  }
+
+  .footer-bottom {
+    .d-flex {
+      flex-direction: column;
+      align-items: flex-start !important;
+
+      .social-icons {
+        margin-right: 0;
+        margin-bottom: 15px;
+      }
+    }
+  }
+
+  .gallery-modal {
+    .gallery-modal-content {
+      .gallery-close {
+        top: -40px;
+        right: 10px;
+      }
+
+      ::ng-deep {
+        .owl-nav {
+          button {
+            &.owl-prev {
+              left: 10px;
+            }
+
+            &.owl-next {
+              right: 10px;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .footer-content {
+    padding: 30px 20px 20px;
+  }
+
+  .footer-logo .logo-img {
+    max-width: 150px;
+  }
+
+  .gallery-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+
+  .footer-heading {
+    font-size: 14px;
+  }
+
+  .newsletter-section {
+    .newsletter-text {
+      font-size: 14px;
+      margin-bottom: 15px;
+    }
+  }
+
+  .gallery-modal {
+    .gallery-modal-content {
+      .gallery-slide {
+        height: 60vh;
+      }
+
+
+    }
+  }
+}
+
+@media (max-width: 576px) {
+  .gallery-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 6px;
+  }
+
+  .footer-links-bottom {
+    flex-direction: column;
+    align-items: flex-start !important;
+    gap: 5px;
+
+    .separator {
+      display: none;
+    }
+  }
+
+  ::ng-deep .owl-theme .owl-nav .owl-prev , ::ng-deep .owl-theme .owl-nav .owl-next{
+    transform: translateX(0px) !important;
+    -webkit-transform: translateX(0px) !important;
+    -moz-transform: translateX(0px) !important;
+    -ms-transform: translateX(0px) !important;
+    -o-transform: translateX(0px) !important;
+}
+}

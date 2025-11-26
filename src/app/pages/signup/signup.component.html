@@ -1,0 +1,295 @@
+<div class="mb-5">
+  <app-banner [bannerTitle]="bannerTitle"></app-banner>
+</div>
+
+<section class="my-5 py-5">
+  <div class="container">
+    <div class="row g-3">
+      <div class="col-lg-6 col-md-4 d-none d-md-block">
+        <figure>
+          <img
+            src="../../../assets/image/signup.gif"
+            alt="signup"
+            class="img-fluid"
+          />
+        </figure>
+      </div>
+      <div class="col-lg-6 col-md-8 mx-auto">
+        <div class="specialBorder bg-white p-4 sideBar login-card" @scaleIn>
+          <div class="text-center" @fadeInUp>
+            <img
+              [src]="logo"
+              [alt]="siteTitle"
+              [title]="siteTitle"
+              width="200px"
+              height="70px"
+              class="logo-animation"
+            />
+            <br />
+            <p class="fs-5 my-2 title-animation">
+              {{ "signup.createAccount" | translate }}
+            </p>
+          </div>
+
+          <form
+            [formGroup]="registerForm"
+            (ngSubmit)="handleRegisterForm()"
+            class="form-animation row"
+          >
+            <div class="col-md-6 mb-3 form-group-animated" @slideIn>
+              <label
+                for="name"
+                class="textSecondColor text-capitalize fw-bold mb-2 form-label"
+                >{{ "signup.fullName" | translate }}</label
+              >
+              <div class="item position-relative input-wrapper">
+                <input
+                  type="text"
+                  id="name"
+                  formControlName="name"
+                  placeholder="{{ 'contact.yourName' | translate }}"
+                  class="form-control p-2 ps-5 rounded-3 animated-input"
+                />
+                <i class="fa-regular fa-user textMainColor input-icon"></i>
+              </div>
+
+              <!-- show validators -->
+              <div
+                *ngIf="
+                  registerForm.get('name')?.errors &&
+                  registerForm.get('name')?.touched
+                "
+                class="alert alert-danger mt-2"
+              >
+                <span *ngIf="registerForm.get('name')?.getError('required')">{{
+                  "signup.nameRequired" | translate
+                }}</span>
+              </div>
+            </div>
+            <div class="col-md-6 mb-3 form-group-animated" @slideIn>
+              <label
+                for="email"
+                class="textSecondColor text-capitalize fw-bold mb-2 form-label"
+                >{{ "signup.emailAddress" | translate }}</label
+              >
+              <div class="item position-relative input-wrapper">
+                <input
+                  type="email"
+                  id="email"
+                  formControlName="email"
+                  placeholder="{{ 'login.yourEmail' | translate }}"
+                  class="form-control p-2 ps-5 rounded-3 animated-input"
+                />
+                <i class="fa-regular fa-envelope textMainColor input-icon"></i>
+              </div>
+              <!-- show validators -->
+              <div
+                *ngIf="
+                  registerForm.get('email')?.errors &&
+                  registerForm.get('email')?.touched
+                "
+                class="alert alert-danger mt-2"
+              >
+                <span *ngIf="registerForm.get('email')?.getError('required')">{{
+                  "signup.emailRequired" | translate
+                }}</span>
+              </div>
+            </div>
+
+            <div class="col-md-6 mb-3 form-group-animated" @slideIn>
+              <label
+                for="password"
+                class="textSecondColor text-capitalize fw-bold mb-2 form-label"
+                >{{ "signup.password" | translate }}</label
+              >
+              <div class="item position-relative input-wrapper">
+                <input
+                  type="password"
+                  id="password"
+                  formControlName="password"
+                  placeholder="{{ 'login.yourPassword' | translate }}"
+                  class="form-control p-2 ps-5 rounded-3 animated-input"
+                />
+                <i class="fa fa-lock textMainColor input-icon"></i>
+              </div>
+              <!-- show validators -->
+              <div
+                *ngIf="
+                  registerForm.get('password')?.errors &&
+                  registerForm.get('password')?.touched
+                "
+                class="alert alert-danger mt-2"
+              >
+                <span
+                  *ngIf="registerForm.get('password')?.getError('required')"
+                  >{{ "signup.passwordRequired" | translate }}</span
+                >
+              </div>
+            </div>
+
+            <div class="col-md-6 mb-3 form-group-animated" @slideIn>
+              <label
+                for="password_confirmation"
+                class="textSecondColor text-capitalize fw-bold mb-2 form-label"
+                >{{ "signup.passwordConfirmation" | translate }}</label
+              >
+              <div class="item position-relative input-wrapper">
+                <input
+                  type="password"
+                  id="password_confirmation"
+                  formControlName="password_confirmation"
+                  placeholder="{{ 'signup.passwordConfirmation' | translate }}"
+                  class="form-control p-2 ps-5 rounded-3 animated-input"
+                />
+                <i class="fa fa-lock textMainColor input-icon"></i>
+              </div>
+              <!-- show validators -->
+              <div
+                *ngIf="
+                  registerForm.get('password_confirmation')?.errors &&
+                  registerForm.get('password_confirmation')?.touched
+                "
+                class="alert alert-danger mt-2"
+              >
+                <span
+                  *ngIf="
+                    registerForm
+                      .get('password_confirmation')
+                      ?.getError('required')
+                  "
+                  >{{ "signup.passwordConfirmationNotMatched" | translate }}
+                </span>
+              </div>
+            </div>
+
+            <div class="col-md-6 mb-3 form-group-animated" @slideIn>
+              <label
+                for="phone"
+                class="textSecondColor text-capitalize fw-bold mb-2 form-label"
+                >{{ "signup.phoneNumber" | translate }}</label
+              >
+              <div class="item position-relative input-wrapper">
+                <input
+                  type="tel"
+                  id="phone"
+                  formControlName="phone"
+                  placeholder="{{ 'contact.yourPhone' | translate }}"
+                  class="form-control p-2 ps-5 rounded-3 animated-input"
+                />
+                <i class="fa fa-phone textMainColor input-icon"></i>
+              </div>
+              <!-- show validators -->
+              <div
+                *ngIf="
+                  registerForm.get('phone')?.errors &&
+                  registerForm.get('phone')?.touched
+                "
+                class="alert alert-danger mt-2"
+              >
+                <span *ngIf="registerForm.get('phone')?.getError('required')">{{
+                  "signup.phoneRequired" | translate
+                }}</span>
+              </div>
+            </div>
+
+            <div class="col-md-6 mb-3 form-group-animated" @slideIn>
+              <label
+                for="birthdate"
+                class="textSecondColor text-capitalize fw-bold mb-2 form-label"
+                >{{ "signup.birthDate" | translate }}</label
+              >
+              <div class="item position-relative input-wrapper">
+                <input
+                  type="date"
+                  id="birthdate"
+                  formControlName="birthdate"
+                  class="form-control p-2 ps-5 rounded-3 animated-input"
+                  [class.filled]="!!registerForm.get('birthdate')?.value"
+                  [attr.data-placeholder]="'Birth date'"
+                />
+
+                <i
+                  class="fa-regular fa-calendar-alt textMainColor input-icon"
+                ></i>
+              </div>
+              <!-- show validators -->
+              <div
+                *ngIf="
+                  registerForm.get('birthDate')?.errors &&
+                  registerForm.get('birthDate')?.touched
+                "
+                class="alert alert-danger mt-2"
+              >
+                <span
+                  *ngIf="registerForm.get('birthDate')?.getError('required')"
+                  >{{ "signup.birthDateRequired" | translate }}</span
+                >
+              </div>
+            </div>
+
+            <div class="col-12 mb-3 form-group-animated" @slideIn>
+              <label
+                for="nationality"
+                class="textSecondColor text-capitalize fw-bold mb-2 form-label"
+                >{{ "signup.nationality" | translate }}</label
+              >
+
+              <div class="item input-wrapper">
+                <select
+                  formControlName="nationality"
+                  id="nationality"
+                  class="form-control text-capitalize animated-input"
+                >
+                  <option value="" class="bg-body-secondary" selected disabled>
+                    {{ "signup.selectNationality" | translate }}
+                  </option>
+                  @for (city of countryList; track $index) {
+                  <option [value]="city.name">{{ city.name }}</option>
+                  }
+                </select>
+              </div>
+              <!-- show validators -->
+              <div
+                *ngIf="
+                  registerForm.get('nationality')?.errors &&
+                  registerForm.get('nationality')?.touched
+                "
+                class="alert alert-danger mt-2"
+              >
+                <span
+                  *ngIf="registerForm.get('nationality')?.getError('required')"
+                  >{{ "signup.nationalityRequired" | translate }}</span
+                >
+              </div>
+            </div>
+
+            <button
+              [disabled]="registerForm.invalid"
+              type="submit"
+              class="mainBtn Btn mb-3 w-100 submit-btn"
+              @fadeInUp
+            >
+              <i
+                *ngIf="isLoading"
+                class="fa-solid fa-spinner fa-spin me-1 border-0 bg-transparent text-white"
+              ></i>
+              <i
+                class="fa fa-paper-plane mx-2 border-0 bg-transparent text-white"
+              ></i>
+              {{ "signup.signUp" | translate }}
+            </button>
+          </form>
+          <p class="my-2 text-center link-text" @fadeInUp>
+            {{ "signup.alreadyHaveAccount" | translate }}
+            <span
+              routerLink="/login"
+              class="textMainColor fw-bold cPointer link-hover"
+              >{{ "signup.login" | translate }}</span
+            >
+            .
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,63 @@
+<div class="banner position-relative z-1">
+  <div class="container text-center">
+    <h2 class="text-capitalize fw-bold text-black">{{ bannerTitle }}</h2>
+    <nav style="--bs-breadcrumb-divider: '✈️'" aria-label="breadcrumb">
+      <ol class="breadcrumb justify-content-center">
+        <li class="breadcrumb-item fw-bold fs-5">
+          <a [routerLink]="['/']" class="text-decoration-none text-black">{{
+            "banner.home" | translate
+          }}</a>
+        </li>
+        <li
+          class="breadcrumb-item fw-bold fs-5 active text-capitalize text-black"
+          aria-current="page"
+        >
+          {{ bannerTitle }}
+        </li>
+      </ol>
+    </nav>
+  </div>
+
+  <svg
+    class="waves"
+    xmlns="http://www.w3.org/2000/svg"
+    xmlns:xlink="http://www.w3.org/1999/xlink"
+    viewBox="0 24 150 28"
+    preserveAspectRatio="none"
+    shape-rendering="auto"
+  >
+    <defs>
+      <path
+        id="gentle-wave"
+        d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z"
+      ></path>
+    </defs>
+    <g class="parallax">
+      <use
+        xlink:href="#gentle-wave"
+        x="48"
+        y="0"
+        fill="rgba(255,255,255,0.7)"
+      ></use>
+      <use
+        xlink:href="#gentle-wave"
+        x="48"
+        y="3"
+        fill="rgba(255,255,255,0.5)"
+      ></use>
+      <use
+        xlink:href="#gentle-wave"
+        x="48"
+        y="5"
+        fill="rgba(255,255,255,0.3)"
+      ></use>
+      <use xlink:href="#gentle-wave" x="48" y="7" fill="#fff"></use>
+    </g>
+  </svg>
+
+  <!-- <img
+    src="../../../assets/image/banner/banner-bg-shape.png"
+    class="position-absolute start-0 w-100"
+    alt="shape banner"
+  /> -->
+</div>

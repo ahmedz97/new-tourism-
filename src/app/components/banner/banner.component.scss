@@ -1,0 +1,66 @@
+@import '../../../styles/variables';
+
+.banner{
+    margin-top: -96px;
+    padding: 150px 0 95px;
+    // background-color: #EDF2F1;
+    // background: linear-gradient(45deg,  #fff, $secondary-color, #000);
+    background-image: url('../../../assets/image/new/4.png');
+    background-size: cover;
+    background-position: top;
+    background-repeat: no-repeat;
+    height: 50vh;
+
+
+    .breadcrumb-item.active{color: $primary-color ;}
+
+    // img{
+    //   bottom: -3px;
+    // }
+
+    .waves{
+      position: absolute;
+      bottom: -20px;
+      left: 0;
+      width: 100%;
+      height: 122px;
+      // top: -122px;
+      min-height: 100px;
+      max-height: 150px;
+    }
+
+    .parallax > use {
+      animation: move-forever 25s cubic-bezier(.55,.5,.45,.5) infinite;
+    }
+
+    .parallax > use:nth-child(1) {
+      animation-delay: -2s;
+      animation-duration: 7s;
+    }
+
+    .parallax > use:nth-child(2) {
+      animation-delay: -3s;
+      animation-duration: 10s;
+    }
+
+    .parallax > use:nth-child(3) {
+      animation-delay: -4s;
+      animation-duration: 13s;
+    }
+
+    .parallax > use:nth-child(4) {
+      animation-delay: -5s;
+      animation-duration: 20s;
+    }
+
+    @keyframes move-forever {
+      0% {
+        transform: translate3d(-90px, 0, 0);
+      }
+      100% {
+        transform: translate3d(85px, 0, 0);
+      }
+    }
+
+
+}

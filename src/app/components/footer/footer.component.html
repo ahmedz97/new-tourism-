@@ -1,0 +1,180 @@
+<footer class="footer-container">
+  <div class="container-fluid">
+    <div class="footer-content">
+      <!-- Top Section: Four Columns -->
+      <div class="row g-3 justify-content-between mb-4">
+        <!-- Column 1: Company Info -->
+        <div class="col-lg-3 col-md-6">
+          <div class="footer-logo mb-3">
+            <img
+              src="../../../assets/image/Touregya/Touregya for print-10.png"
+              [alt]="projectTitle"
+              [title]="projectTitle"
+              class="logo-img"
+            />
+          </div>
+          <p class="footer-description">
+            Urna ratione ante harum provident, eleifend, vulputate molestiae
+            proin fringilla, praesentium magna conubia at perferendis, pretium,
+            aenean aut ultrices.
+          </p>
+        </div>
+
+        <!-- Column 2: Quick Links -->
+        <div class="col-lg-2 col-md-6">
+          <h5 class="footer-heading">
+            {{ "footer.quickLinks" | translate }}
+          </h5>
+          <ul class="footer-links list-unstyled">
+            <li>
+              <a routerLink="/about" class="nav-link">{{
+                "footer.aboutUs" | translate
+              }}</a>
+            </li>
+            <li>
+              <a routerLink="/contact" class="nav-link">{{
+                "footer.contactUs" | translate
+              }}</a>
+            </li>
+            <li>
+              <a routerLink="/destination" class="nav-link">{{
+                "footer.destination" | translate
+              }}</a>
+            </li>
+            <li>
+              <a routerLink="/tour" class="nav-link">{{
+                "footer.popularTour" | translate
+              }}</a>
+            </li>
+            <li>
+              <a routerLink="/blog" class="nav-link">{{
+                "footer.ourBlog" | translate
+              }}</a>
+            </li>
+            <li>
+              <a routerLink="/faq" class="nav-link">{{
+                "footer.faqs" | translate
+              }}</a>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Column 3: Contact Us -->
+        <div class="col-lg-3 col-md-6">
+          <h5 class="footer-heading">
+            {{ "footer.contactInfo" | translate }}
+          </h5>
+          <p class="contact-intro">Feel free to contact and reach us !!</p>
+          <ul class="footer-contact list-unstyled">
+            <li class="contact-item">
+              <i class="fa fa-phone me-2"></i>
+              <a href="tel:{{ phoneNumber }}" class="contact-link">{{
+                phoneNumber
+              }}</a>
+            </li>
+            <li class="contact-item">
+              <i class="fa fa-envelope me-2"></i>
+              <a href="mailTo:{{ userEmail }}" class="contact-link">{{
+                userEmail
+              }}</a>
+            </li>
+            <li class="contact-item">
+              <i class="fa fa-location-dot me-2"></i>
+              <a
+                href="{{ userLocation }}"
+                target="_blank"
+                class="contact-link"
+                >{{ userAddress }}</a
+              >
+            </li>
+          </ul>
+        </div>
+
+        <!-- Column 4: Gallery -->
+        <div class="col-lg-3 col-md-6">
+          <h5 class="footer-heading">GALLERY</h5>
+          <div class="gallery-grid">
+            @for (image of galleryImages.slice(0, 6); track $index) {
+            <div class="gallery-item" (click)="openGallery($index)">
+              <img [src]="image" [alt]="'Gallery image ' + ($index + 1)" />
+            </div>
+            }
+          </div>
+        </div>
+      </div>
+
+      <!-- Newsletter Section -->
+      <div class="newsletter-section">
+        <div class="row align-items-center">
+          <div class="col-lg-6 col-md-12">
+            <div class="d-flex flex-column gap-2">
+              <div class="footer-links-bottom">
+                <a href="#" class="footer-link">Privacy Policy</a>
+                <span class="separator">|</span>
+                <a href="#" class="footer-link">Term & Condition</a>
+                <span class="separator">|</span>
+                <a routerLink="/faq" class="footer-link">FAQ</a>
+              </div>
+              <div class="social-icons">
+                <app-social></app-social>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6 col-md-12">
+            <p class="newsletter-text mb-2">
+              Subscribe our newsletter for more update & news !!
+            </p>
+            <form class="newsletter-form" (ngSubmit)="subscribeNewsletter()">
+              <div class="input-grou w-100 d-flex align-items-center gap-2">
+                <input
+                  type="email"
+                  class="form-control newsletter-input flex-grow-1"
+                  placeholder="Enter Your Email"
+                  [(ngModel)]="newsletterEmail"
+                  name="newsletterEmail"
+                  required
+                />
+                <button class="btn newsletter-btn" type="submit">
+                  SUBSCRIBE
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom Section: Copyright and Social Media -->
+      <div class="footer-bottom pt-3">
+        <div class="row align-items-center">
+          <div class="col-12">
+            <p class="copyright-text text-center">
+              Copyright © {{ currentYear }}
+              <span class="fw-bold textMainColor">{{ projectTitle }}</span
+              >. All rights reserved.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Gallery Modal/Slider -->
+  @if (showGalleryModal) {
+  <div class="gallery-modal" (click)="closeGallery()">
+    <div class="gallery-modal-content" (click)="$event.stopPropagation()">
+      <button class="gallery-close" (click)="closeGallery()">
+        <i class="fa fa-times"></i>
+      </button>
+      <owl-carousel-o [options]="gallerySliderOptions" class="gallery-slider">
+        @for (image of allGalleryImages; track $index) {
+        <ng-template carouselSlide>
+          <div class="gallery-slide">
+            <img [src]="image" [alt]="'Gallery image ' + ($index + 1)" />
+          </div>
+        </ng-template>
+        }
+      </owl-carousel-o>
+    </div>
+  </div>
+  }
+</footer>
