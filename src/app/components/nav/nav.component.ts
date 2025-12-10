@@ -6,11 +6,17 @@ import {
   PLATFORM_ID,
 } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import {
+  RouterLink,
+  RouterLinkActive,
+  Router,
+  NavigationEnd,
+} from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { DataService } from '../../core/services/data.service';
 import { SocialComponent } from '../social/social.component';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-nav',
@@ -29,7 +35,8 @@ export class NavComponent implements OnInit {
   constructor(
     private _DataService: DataService,
     @Inject(PLATFORM_ID) private platformId: Object,
-    public translate: TranslateService
+    public translate: TranslateService,
+    private router: Router
   ) {}
 
   navigationLinks = [
@@ -64,6 +71,7 @@ export class NavComponent implements OnInit {
   // -------- end scroll code
 
   categoriesByDest: Record<string, any[]> = {};
+  currentRoute: string = '';
 
   ngOnInit(): void {
     this.getDestination();
@@ -71,6 +79,24 @@ export class NavComponent implements OnInit {
     this.getCategories();
     this.getEgyptCategory();
     this.applyLanguageSettings();
+
+    // Track current route
+    this.currentRoute = this.router.url;
+    this.router.events
+      .pipe(filter((event) => event instanceof NavigationEnd))
+      .subscribe((event: any) => {
+        this.currentRoute = event.url;
+      });
+  }
+
+  // Check if tours route is active
+  isToursActive(): boolean {
+    return this.currentRoute.startsWith('/tour');
+  }
+
+  // Check if destinations route is active
+  isDestinationsActive(): boolean {
+    return this.currentRoute.startsWith('/destination');
   }
 
   isEgypt(dest: any) {

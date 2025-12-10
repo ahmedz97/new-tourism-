@@ -3,13 +3,13 @@
 .footer-container {
   position: relative;
   z-index: 1;
-  background-color: #122842; // Dark blue-grey background
+  background-color: $secondary-color ; // Dark blue-grey background #122842
   padding: 60px 0 0;
   color: #fff;
 }
 
 .footer-content {
-  background-color: #122842;
+  background-color: $secondary-color;
   padding: 50px 40px 30px;
   width: 100%;
 }

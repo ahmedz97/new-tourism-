@@ -23,6 +23,7 @@
   }
 }
 ::ng-deep .mat-content {
+  align-items: center !important;
     flex-direction: row-reverse !important;
 }
 ::ng-deep {
@@ -54,7 +55,7 @@
 .AsideBar {
   position: sticky;
   top: 90px;
-  z-index: 1030;
+  z-index: 950;
 
   ul{
     .iconBox{

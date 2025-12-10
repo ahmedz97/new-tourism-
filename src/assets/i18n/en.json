@@ -40,7 +40,7 @@
     "selectLanguage": "Select Language",
     "english": "English",
     "spanish": "Spanish",
-    "makeTrip": "Make Trip"
+    "makeTrip": "Create your tour"
   },
   "home": {
     "findNextPlace": "Find Your Next Place to Visit",
@@ -59,10 +59,10 @@
     "tourExperience": "Tour Experience",
     "ourMostPopularTours": "Our Most Popular Tours",
     "ultimateTravelExperience": "Ultimate Travel Experience",
-    "makeYourTour": "Make Your Tour",
-    "findYourTour": "Find Your Tour",
-    "haveAnExactTime": "Have an Exact Time",
-    "haveAnApproximateTime": "Have an Approximate Time",
+    "makeYourTour": "Create your tour",
+    "findYourTour": "Create your adventure",
+    "haveAnExactTime": "Select an Exact Time slot.",
+    "haveAnApproximateTime": "Select an Approximate Time.",
     "myDestination": "My Destination...",
     "checkInDate": "Check In Date",
     "checkOutDate": "Check Out Date",
@@ -259,7 +259,6 @@
     "contactUs": "Contact Us",
     "contactInfo": "Contact Info",
     "followUs": "Follow Us",
-    "allRightsReserved": "All Rights Reserved",
     "popularTour": "Popular Tour",
     "ourBlog": "Our Blog",
     "importantLinks": "Important Links",
@@ -269,8 +268,9 @@
     "officeAddress": "Office Address",
     "callUs": "Call Us",
     "emailUs": "Email Us",
-    "copyright": "© Copyright 2025",
-    "perfectSolution": "perfect solution 4u",
+    "copyright": "© Copyright 2026",
+    "perfectSolution": "Perfect Solution 4u",
+    "allRightsReserved": "All Rights Reserved.",
     "description": "It is a long established fact thatder will be distracted by the readable content of a page when looking at its layoutpoint"
   },
   "aboutSection": {
@@ -278,7 +278,7 @@
     "satisfiedCustomers": "Satisfied Customers",
     "tourSuccess": "Tour Success",
     "yearInService": "Year in Service",
-    "makeTrip": "Make a Trip",
+    "makeTrip": "Create your tour",
     "description": "Whether you're looking for a romantic getaway, a family-friendly adventure, or a solo journey to explore the world, a travel agency can provide you with a custom-tailored itinerary that exceeds your expectations."
   },
   "whyBooking": {
@@ -293,7 +293,7 @@
     "home": "Home"
   },
   "makeTrip": {
-    "makeYourTrip": "Make Your Trip",
+    "makeYourTrip": "Create your tour",
     "haveExactTime": "Have an exact time",
     "haveApproximateTime": "Have an approximate time",
     "destinations": "Destinations",

@@ -7,9 +7,9 @@
         <div class="col-lg-3 col-md-6">
           <div class="footer-logo mb-3">
             <img
-              src="../../../assets/image/alfa omega logo.webp"
-              [alt]="projectTitle"
-              [title]="projectTitle"
+              src="../../../assets/image/alfa omega versions/Artboard 2@4x.png"
+              alt="alfa omega logo"
+              title="alfa omega logo"
               class="logo-img"
             />
           </div>
@@ -60,7 +60,8 @@
         </div>
 
         <!-- Column 3: Contact Us -->
-        <div class="col-lg-3 col-md-6">
+        <!-- userEmail , address and phoneNumber are coming from the settings -->
+        <!-- <div class="col-lg-3 col-md-6">
           <h5 class="footer-heading">
             {{ "footer.contactInfo" | translate }}
           </h5>
@@ -74,12 +75,9 @@
             </li>
             <li class="contact-item">
               <i class="fa fa-envelope me-2"></i>
-              <a href="mailTo:info@alfaomegatours.com" class="contact-link"
-                >info&#64;alfaomegatours.com</a
-              >
-              <!-- <a href="mailTo:{{ userEmail }}" class="contact-link">{{
+              <a href="mailTo:info@alfaomegatours.com" class="contact-link">{{
                 userEmail
-              }}</a> -->
+              }}</a>
             </li>
             <li class="contact-item">
               <i class="fa fa-location-dot me-2"></i>
@@ -88,6 +86,37 @@
                 target="_blank"
                 class="contact-link"
                 >{{ userAddress }}</a
+              >
+            </li>
+          </ul>
+        </div> -->
+
+        <!-- userEmail , address and phoneNumber are static -->
+        <div class="col-lg-3 col-md-6">
+          <h5 class="footer-heading">
+            {{ "footer.contactInfo" | translate }}
+          </h5>
+          <p class="contact-intro">Feel free to contact and reach us !!</p>
+          <ul class="footer-contact list-unstyled">
+            <li class="contact-item">
+              <i class="fa fa-phone me-2"></i>
+              <a href="tel:+1 (661) 578-3029" class="contact-link"
+                >+1 (661) 578-3029</a
+              >
+            </li>
+            <li class="contact-item">
+              <i class="fa fa-envelope me-2"></i>
+              <a href="mailTo:info@alfaomegatours.com" class="contact-link"
+                >info&#64;alfaomegatours.com</a
+              >
+            </li>
+            <li class="contact-item">
+              <i class="fa fa-location-dot me-2"></i>
+              <a
+                href="https://maps.app.goo.gl/QHVQESETMySUB1vo7"
+                target="_blank"
+                class="contact-link"
+                >Nasr City, Cairo, Egypt</a
               >
             </li>
           </ul>
@@ -153,8 +182,13 @@
             <p class="copyright-text text-center">
               Copyright © {{ currentYear }}
               <!-- <span class="fw-bold textMainColor">{{ projectTitle }}</span> -->
-              <span class="fw-bold textMainColor">Alfa Omega Tours</span>
-              . All rights reserved.
+              <a
+                href="https://maps.app.goo.gl/1uXrKk3G4oZtRt2AA"
+                target="_blank"
+                class="fw-bold textMainColor px-2"
+                >{{ "footer.perfectSolution" | translate }}</a
+              >
+              <span>{{ "footer.allRightsReserved" | translate }} </span>
             </p>
           </div>
         </div>

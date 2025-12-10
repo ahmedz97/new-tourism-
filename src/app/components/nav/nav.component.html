@@ -5,9 +5,9 @@
       <!-- Logo Section -->
       <div class="logo-section" routerLink="/">
         <img
-          src="../../../assets/image/alfa omega logo.webp"
-          [alt]="siteTitle"
-          [title]="siteTitle"
+          src="../../../assets/image/alfa omega versions/Artboard 2@4x.png"
+          alt="alfa omega logo"
+          title="alfa omega logo"
           class="logo-img"
         />
       </div>
@@ -28,7 +28,10 @@
 
             <!-- Tours Dropdown -->
             <ng-container *ngIf="link.path === '/' && allCategories?.length">
-              <div class="nav-link-item dropdown-wrapper">
+              <div
+                class="nav-link-item dropdown-wrapper"
+                [class.active]="isToursActive()"
+              >
                 <a
                   routerLink="/tour"
                   routerLinkActive="active"
@@ -57,7 +60,10 @@
 
             <!-- Destinations Dropdown -->
             <ng-container *ngIf="link.path === '/' && allDestinations?.length">
-              <div class="nav-link-item dropdown-wrapper">
+              <div
+                class="nav-link-item dropdown-wrapper"
+                [class.active]="isDestinationsActive()"
+              >
                 <a
                   routerLink="/destination"
                   routerLinkActive="active"
@@ -210,9 +216,9 @@
       <div class="sidebar-header">
         <div class="sidebar-logo" routerLink="/" (click)="closeSidebar()">
           <img
-            src="../../../assets/image/alfa omega logo.webp"
-            [alt]="siteTitle"
-            [title]="siteTitle"
+            src="../../../assets/image/alfa omega versions/Artboard 2@4x.png"
+            alt="alfa omega logo"
+            title="alfa omega logo"
             class="logo-img"
           />
         </div>

@@ -40,7 +40,7 @@
     "selectLanguage": "Seleccionar Idioma",
     "english": "Inglés",
     "spanish": "Español",
-    "makeTrip": "Hacer Viaje"
+    "makeTrip": "Crea tu tour"
   },
   "home": {
     "findNextPlace": "Encuentra Tu Próximo Lugar Para Visitar",
@@ -59,10 +59,10 @@
     "tourExperience": "Experiencia de Tour",
     "ourMostPopularTours": "Nuestros Tours Más Populares",
     "ultimateTravelExperience": "Experiencia de Viaje Más Completa",
-    "makeYourTour": "Hacer Tu Tour",
-    "findYourTour": "Encontrar Tu Tour",
-    "haveAnExactTime": "Tener una Hora Exacta",
-    "haveAnApproximateTime": "Tener una Hora Aproximada",
+    "makeYourTour": "Crea tu tour",
+    "findYourTour": "Crea tu propio tour",
+    "haveAnExactTime": "Seleccione un intervalo de tiempo exacto.",
+    "haveAnApproximateTime": "Seleccione un tiempo aproximado",
     "myDestination": "Mi Destino...",
     "checkInDate": "Fecha de Check In",
     "checkOutDate": "Fecha de Check Out",
@@ -261,7 +261,7 @@
     "quickLinks": "Enlaces Rápidos",
     "contactUs": "Contáctanos",
     "followUs": "Síguenos",
-    "allRightsReserved": "Todos los Derechos Reservados",
+    "allRightsReserved": "Todos los Derechos Reservados.",
     "popularTour": "Tour Popular",
     "ourBlog": "Nuestro Blog",
     "importantLinks": "Enlaces Importantes",
@@ -271,8 +271,8 @@
     "officeAddress": "Dirección de la Oficina",
     "callUs": "Llámanos",
     "emailUs": "Envíanos un Correo",
-    "copyright": "© Copyright 2025",
-    "perfectSolution": "perfect solution 4u",
+    "copyright": "© Copyright 2026",
+    "perfectSolution": "Perfect Solution 4u",
     "description": "Es un hecho establecido desde hace mucho tiempo que un lector se distraerá con el contenido legible de una página al mirar su diseño"
   },
   "aboutSection": {

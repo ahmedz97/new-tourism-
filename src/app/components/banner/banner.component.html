@@ -1,24 +1,44 @@
 <div class="banner position-relative z-1">
-  <div class="container text-center">
-    <h2 class="text-capitalize fw-bold text-black">{{ bannerTitle }}</h2>
-    <!-- <nav style="--bs-breadcrumb-divider: '✈️'" aria-label="breadcrumb">
-      <ol class="breadcrumb justify-content-center">
-        <li class="breadcrumb-item fw-bold fs-5">
-          <a [routerLink]="['/']" class="text-decoration-none text-black">{{
-            "banner.home" | translate
-          }}</a>
-        </li>
-        <li
-          class="breadcrumb-item fw-bold fs-5 active text-capitalize text-black"
-          aria-current="page"
-        >
-          {{ bannerTitle }}
-        </li>
-      </ol>
-    </nav> -->
+  <div class="banner-overlay"></div>
+  <div class="banner-pattern"></div>
+
+  <div class="container">
+    <div class="banner-content">
+      <!-- Breadcrumb Navigation -->
+      <nav class="banner-breadcrumb" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a [routerLink]="['/']" class="breadcrumb-link">
+              <span class="breadcrumb-icon">🏠</span>
+              <span>{{ "banner.home" | translate }}</span>
+            </a>
+          </li>
+          <li class="breadcrumb-item active" aria-current="page">
+            <span class="breadcrumb-separator">/</span>
+            <span class="breadcrumb-current">{{ bannerTitle }}</span>
+          </li>
+        </ol>
+      </nav>
+
+      <!-- Main Title -->
+      <div class="banner-title-wrapper">
+        <h1 class="banner-title">
+          <span class="title-line">{{ bannerTitle }}</span>
+        </h1>
+        <div class="title-underline"></div>
+      </div>
+
+      <!-- Decorative Elements -->
+      <div class="banner-decorations">
+        <div class="decoration-circle decoration-circle-1"></div>
+        <div class="decoration-circle decoration-circle-2"></div>
+        <div class="decoration-circle decoration-circle-3"></div>
+      </div>
+    </div>
   </div>
 
-  <svg
+  <!-- Animated Wave SVG -->
+  <!-- <svg
     class="waves"
     xmlns="http://www.w3.org/2000/svg"
     xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -53,11 +73,42 @@
       ></use>
       <use xlink:href="#gentle-wave" x="48" y="7" fill="#fff"></use>
     </g>
-  </svg>
-
-  <!-- <img
-    src="../../../assets/image/banner/banner-bg-shape.png"
-    class="position-absolute start-0 w-100"
-    alt="shape banner"
-  /> -->
+  </svg> -->
 </div>
+
+<!-- <svg
+  class="waves"
+  xmlns="http://www.w3.org/2000/svg"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+  viewBox="0 24 150 28"
+  preserveAspectRatio="none"
+  shape-rendering="auto"
+>
+  <defs>
+    <path
+      id="gentle-wave"
+      d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z"
+    ></path>
+  </defs>
+  <g class="parallax">
+    <use
+      xlink:href="#gentle-wave"
+      x="48"
+      y="0"
+      fill="rgba(255,255,255,0.7)"
+    ></use>
+    <use
+      xlink:href="#gentle-wave"
+      x="48"
+      y="3"
+      fill="rgba(255,255,255,0.5)"
+    ></use>
+    <use
+      xlink:href="#gentle-wave"
+      x="48"
+      y="5"
+      fill="rgba(255,255,255,0.3)"
+    ></use>
+    <use xlink:href="#gentle-wave" x="48" y="7" fill="#fff"></use>
+  </g>
+</svg> -->
