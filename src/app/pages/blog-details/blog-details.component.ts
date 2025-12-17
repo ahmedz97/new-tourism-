@@ -13,6 +13,7 @@ import {
 import { ToastrService } from 'ngx-toastr';
 import { MakeTripFormComponent } from '../../components/make-trip-form/make-trip-form.component';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { SeoService } from '../../core/services/seo.service';
 
 @Component({
   selector: 'app-blog-details',
@@ -36,7 +37,8 @@ export class BlogDetailsComponent implements OnInit {
     private _DataService: DataService,
     private _ActivatedRoute: ActivatedRoute,
     private toaster: ToastrService,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private seoService: SeoService
   ) {}
 
   getSanitizedHtml(content: string): SafeHtml {
@@ -57,17 +59,17 @@ export class BlogDetailsComponent implements OnInit {
   ngOnInit(): void {
     this._ActivatedRoute.paramMap.subscribe({
       next: (param) => {
-        console.log(param);
+        // console.log(param);
         this.blogParam = param.get('slug');
         // console.log('blog param:', this.blogParam);
 
         if (!isNaN(Number(this.blogParam))) {
           this._DataService.getCategoriesBlog(this.blogParam).subscribe({
             next: (response) => {
-              console.log(response.data);
+              // console.log(response.data);
               this.blogListById = response.data;
               this.bannerTitle = this.blogListById.title;
-              console.log(this.bannerTitle);
+              // console.log(this.bannerTitle);
               this.isListId = true;
               response.data.created_at = this.formatDate(
                 response.data.created_at
@@ -77,11 +79,12 @@ export class BlogDetailsComponent implements OnInit {
         } else {
           this._DataService.getBlogs(this.blogParam).subscribe({
             next: (response) => {
-              console.log(response.data);
+              // console.log(response.data);
               this.blogDetails = response.data;
               this.bannerTitle = this.blogDetails.title;
-              console.log(this.bannerTitle);
-
+              // console.log(this.bannerTitle);
+              // Update SEO
+              this.updateBlogSEO(response.data);
               this.isListId = false;
               response.data.created_at = this.formatDate(
                 response.data.created_at
@@ -113,7 +116,7 @@ export class BlogDetailsComponent implements OnInit {
 
   getWriteReview() {
     if (this.writeReview.valid) {
-      console.log(this.writeReview.value);
+      // console.log(this.writeReview.value);
       this.isLoading = true;
 
       //untill api is not ready and mos3an confirm it
@@ -161,5 +164,54 @@ export class BlogDetailsComponent implements OnInit {
         // console.log(err);
       },
     });
+  }
+
+  updateBlogSEO(blog: any): void {
+    // Extract SEO data from API if available
+    const seoData: any = {};
+    if (blog.seo) {
+      if (blog.seo.meta_title) seoData.meta_title = blog.seo.meta_title;
+      if (blog.seo.meta_description)
+        seoData.meta_description = blog.seo.meta_description;
+      if (blog.seo.meta_keywords)
+        seoData.meta_keywords = blog.seo.meta_keywords;
+      if (blog.seo.og_title) seoData.og_title = blog.seo.og_title;
+      if (blog.seo.og_description)
+        seoData.og_description = blog.seo.og_description;
+      if (blog.seo.og_image) seoData.og_image = blog.seo.og_image;
+      if (blog.seo.og_type) seoData.og_type = blog.seo.og_type;
+      if (blog.seo.twitter_title)
+        seoData.twitter_title = blog.seo.twitter_title;
+      if (blog.seo.twitter_description)
+        seoData.twitter_description = blog.seo.twitter_description;
+      if (blog.seo.twitter_card) seoData.twitter_card = blog.seo.twitter_card;
+      if (blog.seo.twitter_image)
+        seoData.twitter_image = blog.seo.twitter_image;
+      if (blog.seo.canonical) seoData.canonical = blog.seo.canonical;
+      if (blog.seo.robots) seoData.robots = blog.seo.robots;
+      if (blog.seo.structure_schema)
+        seoData.structure_schema = blog.seo.structure_schema;
+    }
+
+    const blogImage =
+      blog.seo?.og_image || blog.image || '/assets/image/alfa omega logo.webp';
+    const blogDescription =
+      blog.seo?.meta_description ||
+      blog.seo?.og_description ||
+      blog.short_description ||
+      blog.description ||
+      `Read ${blog.title} on Alfa Omega Tours blog. Travel tips, guides, and insights.`;
+
+    const fallbackTitle =
+      blog.seo?.meta_title ||
+      blog.seo?.og_title ||
+      `Alfa Omega Tours - ${blog.title}`;
+
+    this.seoService.updateSeoData(
+      seoData,
+      fallbackTitle,
+      blogDescription.substring(0, 160),
+      blogImage
+    );
   }
 }

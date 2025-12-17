@@ -37,6 +37,7 @@ import {
   query,
   stagger,
 } from '@angular/animations';
+import { SeoService } from '../../core/services/seo.service';
 
 @Component({
   selector: 'app-make-trip',
@@ -126,7 +127,8 @@ export class MakeTripComponent implements OnInit {
     private _MaketripService: MaketripService,
     private _BookingService: BookingService,
     private toaster: ToastrService,
-    private _Router: Router
+    private _Router: Router,
+    private seoService: SeoService
   ) {}
 
   @ViewChild('stepper') stepper!: MatStepper;
@@ -160,6 +162,12 @@ export class MakeTripComponent implements OnInit {
   maxBudget: number = 0;
 
   ngOnInit() {
+    this.seoService.updateSeoData(
+      {},
+      'Alfa Omega Tours - Make Your Trip',
+      'Create your custom travel itinerary with Alfa Omega Tours. Plan your perfect trip tailored to your preferences.',
+      '../../../assets/image/alfa omega versions/Artboard 1 copy 3@4x.png'
+    );
     this.showCountries();
     this.buildForms();
 

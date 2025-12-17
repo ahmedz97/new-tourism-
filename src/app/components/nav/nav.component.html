@@ -47,10 +47,10 @@
                         class="dropdown-item-modern"
                         [routerLink]="['/tour']"
                         routerLinkActive="active"
-                        [queryParams]="{ type: cat.id }"
+                        [queryParams]="{ type: cat.slug }"
                       >
                         <i class="fas fa-map-marked-alt"></i>
-                        <span>{{ cat.title }}</span>
+                        <span>{{ cat.title | translate }}</span>
                       </a>
                     </ng-container>
                   </div>
@@ -105,7 +105,7 @@
                                   class="submenu-item"
                                   [routerLink]="['/tour']"
                                   routerLinkActive="active"
-                                  [queryParams]="{ type: cat.id }"
+                                  [queryParams]="{ type: cat.slug }"
                                 >
                                   <i class="fas fa-map-pin"></i>
                                   <span>{{ cat.title }}</span>
@@ -265,7 +265,7 @@
                     class="sidebar-dropdown-item"
                     [routerLink]="['/tour']"
                     routerLinkActive="active"
-                    [queryParams]="{ type: cat.id }"
+                    [queryParams]="{ type: cat.slug }"
                     (click)="closeSidebar()"
                   >
                     {{ cat.title }}
@@ -321,7 +321,7 @@
                             class="sidebar-submenu-item"
                             [routerLink]="['/tour']"
                             routerLinkActive="active"
-                            [queryParams]="{ type: cat.id }"
+                            [queryParams]="{ type: cat.slug }"
                             (click)="closeSidebar()"
                           >
                             {{ cat.title }}

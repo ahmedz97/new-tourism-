@@ -30,6 +30,7 @@ import {
   query,
   stagger,
 } from '@angular/animations';
+import { SeoService } from '../../core/services/seo.service';
 
 @Component({
   selector: 'app-profile',
@@ -159,7 +160,8 @@ export class ProfileComponent implements OnInit {
     private _ProfileService: ProfileService,
     private _Router: Router,
     private toaster: ToastrService,
-    private _AuthService: AuthService
+    private _AuthService: AuthService,
+    private seoService: SeoService
   ) {}
   bannerTitle: string = 'my profile';
   updateProfile!: FormGroup;
@@ -175,6 +177,12 @@ export class ProfileComponent implements OnInit {
   selectedTab: string = 'dashboard';
 
   ngOnInit(): void {
+    this.seoService.updateSeoData(
+      {},
+      'Alfa Omega Tours - My Account',
+      'Manage your profile, bookings, and preferences with Alfa Omega Tours. Access your account dashboard.',
+      '../../../assets/image/alfa omega versions/Artboard 1 copy 3@4x.png'
+    );
     if (this._AuthService.getToken()) {
       // console.log('done', this._AuthService.getToken());
 
@@ -364,7 +372,7 @@ export class ProfileComponent implements OnInit {
       next: (response) => {
         if (localStorage.getItem('accessToken')) {
           this.favList = response.data.data;
-          console.log(response.data.data);
+          // console.log(response.data.data);
           if (this.favList.length === 0) {
             this.haveData = false;
             // // console.log(this.favList.length);

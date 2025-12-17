@@ -10,6 +10,7 @@ import { PartnerSliderComponent } from '../../components/partner-slider/partner-
 import { BannerComponent } from '../../components/banner/banner.component';
 import { MakeTripFormComponent } from '../../components/make-trip-form/make-trip-form.component';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { SeoService } from '../../core/services/seo.service';
 
 @Component({
   selector: 'app-destination-details',
@@ -32,7 +33,8 @@ export class DestinationDetailsComponent implements OnInit {
   constructor(
     private _DataService: DataService,
     private _ActivatedRoute: ActivatedRoute,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private seoService: SeoService
   ) {}
 
   getSanitizedHtml(content: string): SafeHtml {
@@ -60,11 +62,13 @@ export class DestinationDetailsComponent implements OnInit {
             // console.log(this.destinationSlug);
             this.showTours(this.destinationSlug);
             this.bannerTitle = this.destinationDetails.title;
-            console.log(
-              'destination Details title:',
-              this.destinationDetails.title
-            );
-            console.log('destination Details:', this.destinationDetails);
+            // Update SEO
+            this.updateDestinationSEO(response.data);
+            // console.log(
+            //   'destination Details title:',
+            //   this.destinationDetails.title
+            // );
+            // console.log('destination Details:', this.destinationDetails);
           },
           error: (err) => {
             console.error('Error fetching destination details:', err);
@@ -90,7 +94,7 @@ export class DestinationDetailsComponent implements OnInit {
     this._DataService.getTours().subscribe({
       next: (response) => {
         this.tours = response.data.data;
-        console.log('Tours Data:', this.tours, this.tours.length);
+        // console.log('Tours Data:', this.tours, this.tours.length);
         for (let i = 0; i < this.tours.length; i++) {
           const tour = this.tours[i];
           const tourDestinationSlugs = (tour.destinations ?? []).map((x: any) =>
@@ -101,13 +105,67 @@ export class DestinationDetailsComponent implements OnInit {
           if (tourDestinationSlugs.includes(desSlug.toLowerCase())) {
             this.filteredTours.push(tour);
           }
-          console.log(tourDestinationSlugs, this.filteredTours, desSlug);
+          // console.log(tourDestinationSlugs, this.filteredTours, desSlug);
         }
       },
       error: (err) => {
         console.error('Error fetching tours:', err);
       },
     });
+  }
+
+  updateDestinationSEO(destination: any): void {
+    // Extract SEO data from API if available
+    const seoData: any = {};
+    if (destination.seo) {
+      if (destination.seo.meta_title)
+        seoData.meta_title = destination.seo.meta_title;
+      if (destination.seo.meta_description)
+        seoData.meta_description = destination.seo.meta_description;
+      if (destination.seo.meta_keywords)
+        seoData.meta_keywords = destination.seo.meta_keywords;
+      if (destination.seo.og_title) seoData.og_title = destination.seo.og_title;
+      if (destination.seo.og_description)
+        seoData.og_description = destination.seo.og_description;
+      if (destination.seo.og_image) seoData.og_image = destination.seo.og_image;
+      if (destination.seo.og_type) seoData.og_type = destination.seo.og_type;
+      if (destination.seo.twitter_title)
+        seoData.twitter_title = destination.seo.twitter_title;
+      if (destination.seo.twitter_description)
+        seoData.twitter_description = destination.seo.twitter_description;
+      if (destination.seo.twitter_card)
+        seoData.twitter_card = destination.seo.twitter_card;
+      if (destination.seo.twitter_image)
+        seoData.twitter_image = destination.seo.twitter_image;
+      if (destination.seo.canonical)
+        seoData.canonical = destination.seo.canonical;
+      if (destination.seo.robots) seoData.robots = destination.seo.robots;
+      if (destination.seo.structure_schema)
+        seoData.structure_schema = destination.seo.structure_schema;
+    }
+
+    const destImage =
+      destination.seo?.og_image ||
+      destination.image ||
+      '/assets/image/alfa omega logo.webp';
+    const destDescription =
+      destination.seo?.meta_description ||
+      destination.seo?.og_description ||
+      destination.description ||
+      destination.short_description ||
+      `Explore ${destination.title} with Alfa Omega Tours. Discover amazing tours and experiences.`;
+
+    const fallbackTitle =
+      destination.seo?.meta_title ||
+      destination.seo?.og_title ||
+      `Alfa Omega Tours - ${destination.title}`;
+
+    this.seoService.updateSeoData(
+      seoData,
+      fallbackTitle,
+      destDescription.substring(0, 160),
+      destImage
+    );
   }
 
   galleryOptions: OwlOptions = {

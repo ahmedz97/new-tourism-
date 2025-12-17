@@ -13,6 +13,7 @@ import { CommonModule } from '@angular/common';
 import { BannerComponent } from '../../components/banner/banner.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { trigger, state, style, transition, animate } from '@angular/animations';
+import { SeoService } from '../../core/services/seo.service';
 
 @Component({
   selector: 'app-forget-password',
@@ -46,7 +47,8 @@ export class ForgetPasswordComponent implements OnInit {
     private _DataService: DataService,
     private _AuthService: AuthService,
     private toastr: ToastrService,
-    private _Router: Router
+    private _Router: Router,
+    private seoService: SeoService
   ) {}
 
   bannerTitle = 'forget password';
@@ -61,6 +63,12 @@ export class ForgetPasswordComponent implements OnInit {
   });
 
   ngOnInit(): void {
+    this.seoService.updateSeoData(
+      {},
+      'Alfa Omega Tours - Forget Password',
+      'Reset your Alfa Omega Tours account password. Recover access to your travel account securely.',
+      '../../../assets/image/alfa omega versions/Artboard 1 copy 3@4x.png'
+    );
     this.getSettings();
     this.getCountries();
   }
@@ -68,7 +76,7 @@ export class ForgetPasswordComponent implements OnInit {
   getSettings(): void {
     this._DataService.getSetting().subscribe({
       next: (res) => {
-        console.log(res.data);
+        // console.log(res.data);
 
         const contactLogo = res.data.find(
           (item: any) => item.option_key === 'logo'
@@ -91,7 +99,7 @@ export class ForgetPasswordComponent implements OnInit {
   getCountries() {
     this._DataService.getCountries().subscribe({
       next: (response) => {
-        console.log(response.data);
+        // console.log(response.data);
         this.countryList = response.data;
       },
     });
@@ -103,7 +111,7 @@ export class ForgetPasswordComponent implements OnInit {
       this._AuthService.setOTP(this.forgetPasswordForm.value).subscribe({
         next: (response) => {
           if (response.status == true) {
-            console.log(response);
+            // console.log(response);
             this.isLoading = false;
             this.toastr.success(response.message);
           }

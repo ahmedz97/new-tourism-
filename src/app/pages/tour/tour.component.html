@@ -5,52 +5,55 @@
 <section class="my-5 py-5 tourSearchBox">
   <div class="container">
     <div class="row g-3">
-      <div class="col-xl-3 col-lg-4 order-2 order-lg-1">
+      <div class="col-xl-3 col-lg-4">
         <div
           class="sideBar p-3 rounded-3 bg-white text-capitalize textSecondColor"
         >
-          <!-- category -->
-          <div class="mb-4">
-            <div class="flexBetween pb-2 border-bottom mb-2">
-              <h4 class="h5 fw-bold">
-                {{ "tour.tourCategory" | translate }}
-              </h4>
-
-              <i
-                class="fa fa-trash-can text-danger fs-5 flex-shrink-0 cPointer"
-                (click)="clearAllFilters()"
-                *ngIf="
-                  selectedTripType.length > 0 ||
-                  selectedDestination.length > 0 ||
-                  selectedDuration.length > 0 ||
-                  minBudget > 0 ||
-                  maxBudget < 5000
-                "
-              ></i>
-            </div>
-            <div
-              *ngFor="let type of allCategories"
-              class="flexBetween listFilter p-1 rounded-2"
+          <mat-accordion [multi]="false">
+            <!-- category -->
+            <mat-expansion-panel
+              [expanded]="!isCategoryCollapsed"
+              (opened)="isCategoryCollapsed = false"
+              (closed)="isCategoryCollapsed = true"
             >
-              <mat-checkbox
-                class="cPointer"
-                [checked]="isChecked('selectedTripType', type.id)"
-                (change)="toggle('selectedTripType', type.id, $event.checked)"
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  <h4 class="h5 fw-bold mb-0">
+                    {{ "tour.tourCategory" | translate }}
+                  </h4>
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+              <mat-radio-group
+                [value]="selectedTripType"
+                (change)="onRadioChange('selectedTripType', $event.value)"
               >
-                {{ type.title }}
-              </mat-checkbox>
-              <span class="flexCenter rounded-circle">{{
-                type.tours_count
-              }}</span>
-            </div>
-          </div>
+                <div
+                  *ngFor="let type of allCategories"
+                  class="flexBetween listFilter p-1 rounded-2"
+                >
+                  <mat-radio-button class="cPointer" [value]="type.id">
+                    {{ type.title }}
+                  </mat-radio-button>
+                  <span class="flexCenter rounded-circle">{{
+                    getCategoryToursCount(type.id)
+                  }}</span>
+                </div>
+              </mat-radio-group>
+            </mat-expansion-panel>
 
-          <!-- price -->
-          <div class="mb-4">
-            <h4 class="h5 fw-bold pb-3 border-bottom mb-3">
-              {{ "tour.tourPrice" | translate }}
-            </h4>
-            <div>
+            <!-- price -->
+            <mat-expansion-panel
+              [expanded]="!isPriceCollapsed"
+              (opened)="isPriceCollapsed = false"
+              (closed)="isPriceCollapsed = true"
+            >
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  <h4 class="h5 fw-bold mb-0">
+                    {{ "tour.tourPrice" | translate }}
+                  </h4>
+                </mat-panel-title>
+              </mat-expansion-panel-header>
               <p class="mb-0 text-capitalize">
                 {{ "tour.priceFrom" | translate }}:
                 <span class="textMainColor"> {{ minBudget | currency }} </span>
@@ -72,67 +75,91 @@
                   (change)="filterTours()"
                 />
               </mat-slider>
-            </div>
-          </div>
+            </mat-expansion-panel>
 
-          <!-- duartion -->
-          <div class="mb-4">
-            <h4 class="h5 fw-bold pb-3 border-bottom mb-3">
-              {{ "tour.tourDuration" | translate }}
-            </h4>
-
-            <div
-              *ngFor="let d of allDurations"
-              class="flexBetween listFilter p-1 rounded-2"
+            <!-- duration -->
+            <mat-expansion-panel
+              [expanded]="!isDurationCollapsed"
+              (opened)="isDurationCollapsed = false"
+              (closed)="isDurationCollapsed = true"
             >
-              <mat-checkbox
-                class="cPointer"
-                [checked]="isChecked('selectedDuration', d.id)"
-                (change)="toggle('selectedDuration', d.id, $event.checked)"
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  <h4 class="h5 fw-bold mb-0">
+                    {{ "tour.tourDuration" | translate }}
+                  </h4>
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+              <mat-radio-group
+                [value]="selectedDuration"
+                (change)="onRadioChange('selectedDuration', $event.value)"
               >
-                {{ d.title }}
-              </mat-checkbox>
+                <div
+                  *ngFor="let d of allDurations"
+                  class="flexBetween listFilter p-1 rounded-2"
+                >
+                  <mat-radio-button class="cPointer" [value]="d.id">
+                    {{ d.title }}
+                  </mat-radio-button>
 
-              <span class="flexCenter rounded-circle">{{ d.tours_count }}</span>
-            </div>
-          </div>
+                  <span class="flexCenter rounded-circle">{{
+                    getDurationToursCount(d.id)
+                  }}</span>
+                </div>
+              </mat-radio-group>
+            </mat-expansion-panel>
 
-          <!-- destination -->
-          <div class="mb-4">
-            <h4 class="h5 fw-bold pb-3 border-bottom mb-3">
-              {{ "tour.tourDestination" | translate }}
-            </h4>
-            <div
-              *ngFor="let dest of allDestinations"
-              class="flexBetween listFilter p-2 rounded-2"
+            <!-- destination -->
+            <mat-expansion-panel
+              [expanded]="!isDestinationCollapsed"
+              (opened)="isDestinationCollapsed = false"
+              (closed)="isDestinationCollapsed = true"
             >
-              <mat-checkbox
-                class="cPointer"
-                [checked]="isChecked('selectedDestination', dest.id)"
-                (change)="
-                  toggle('selectedDestination', dest.id, $event.checked)
-                "
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  <h4 class="h5 fw-bold mb-0">
+                    {{ "tour.tourDestination" | translate }}
+                  </h4>
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+              <mat-radio-group
+                [value]="selectedDestination"
+                (change)="onRadioChange('selectedDestination', $event.value)"
               >
-                {{ dest.title }}
-              </mat-checkbox>
-              <span class="flexCenter textMainColor rounded-circle">{{
-                dest.tours_count
-              }}</span>
-            </div>
-          </div>
+                <div
+                  *ngFor="let dest of allDestinations"
+                  class="flexBetween listFilter p-2 rounded-2"
+                >
+                  <mat-radio-button class="cPointer" [value]="dest.id">
+                    {{ dest.title }}
+                  </mat-radio-button>
+                  <span class="flexCenter textMainColor rounded-circle">{{
+                    getDestinationToursCount(dest.id)
+                  }}</span>
+                </div>
+              </mat-radio-group>
+            </mat-expansion-panel>
+          </mat-accordion>
         </div>
       </div>
-      <div class="col-xl-9 col-lg-8 order-1 order-lg-2">
+      <div class="col-xl-9 col-lg-8">
         <div>
           <div
             class="flexBetween flex-wrap p-3 py-2 sideBar rounded-3 bg-white"
           >
-            <h6 class="textSecondColor fw-bold mb-0">
-              {{ filteredTours.length }} {{ "tour.resultsFound" | translate }}
-            </h6>
-            <!-- <div class="d-flex align-items-center gap-3">
+            <div class="d-flex align-items-center gap-3">
+              <h6 class="textSecondColor fw-bold mb-0">
+                {{ filteredTours.length }} {{ "tour.resultsFound" | translate }}
+              </h6>
+              @if (selectedTripType !== null || selectedDestination !== null ||
+              selectedDuration !== null || minBudget > 0 || maxBudget < 5000) {
 
-            </div> -->
+              <i
+                class="fa fa-trash cPointer text-danger fs-5"
+                (click)="clearAllFilters()"
+              ></i>
+              }
+            </div>
             <!-- style toggle -->
             <div>
               <i

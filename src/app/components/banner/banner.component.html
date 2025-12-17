@@ -13,10 +13,28 @@
               <span>{{ "banner.home" | translate }}</span>
             </a>
           </li>
-          <li class="breadcrumb-item active" aria-current="page">
-            <span class="breadcrumb-separator">/</span>
-            <span class="breadcrumb-current">{{ bannerTitle }}</span>
-          </li>
+          <ng-container *ngIf="(categoryName || categorySlug) && tourName">
+            <li class="breadcrumb-item">
+              <span class="breadcrumb-separator">/</span>
+              <a
+                [routerLink]="['/tour']"
+                [queryParams]="{ type: categorySlug || categoryName }"
+                class="breadcrumb-link"
+              >
+                <span>{{ categoryName || categorySlug }}</span>
+              </a>
+            </li>
+            <!-- <li class="breadcrumb-item active" aria-current="page">
+              <span class="breadcrumb-separator">/</span>
+              <span class="breadcrumb-current">{{ tourName }}</span>
+            </li> -->
+          </ng-container>
+          <ng-container *ngIf="!(categoryName || categorySlug) || !tourName">
+            <li class="breadcrumb-item active" aria-current="page">
+              <span class="breadcrumb-separator">/</span>
+              <span class="breadcrumb-current">{{ bannerTitle }}</span>
+            </li>
+          </ng-container>
         </ol>
       </nav>
 

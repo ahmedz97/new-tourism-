@@ -5,6 +5,7 @@ import { BookingService } from '../../core/services/booking.service';
 import { CommonModule } from '@angular/common';
 import { BannerComponent } from '../../components/banner/banner.component';
 import { TranslateModule } from '@ngx-translate/core';
+import { SeoService } from '../../core/services/seo.service';
 
 @Component({
   selector: 'app-cart',
@@ -16,7 +17,8 @@ import { TranslateModule } from '@ngx-translate/core';
 export class CartComponent implements OnInit {
   constructor(
     private _BookingService: BookingService,
-    private toaster: ToastrService
+    private toaster: ToastrService,
+    private seoService: SeoService
   ) {}
 
   bannerTitle: string = 'cart';
@@ -27,6 +29,12 @@ export class CartComponent implements OnInit {
   totalPrice: number = 0;
 
   ngOnInit(): void {
+    this.seoService.updateSeoData(
+      {},
+      'Alfa Omega Tours - Cart',
+      'Review your selected tours in your cart. Complete your booking with Alfa Omega Tours.',
+      '../../../assets/image/alfa omega versions/Artboard 1 copy 3@4x.png'
+    );
     this.getListCart();
   }
 
@@ -36,10 +44,10 @@ export class CartComponent implements OnInit {
         this.tourCart = response.data;
         if (this.tourCart.length === 0) {
           this.haveData = false;
-          console.log(this.tourCart);
+          // console.log(this.tourCart);
         } else {
           this.haveData = true;
-          console.log(this.tourCart);
+          // console.log(this.tourCart);
 
           this.tourCart.forEach((item) => {
             let adultPrice = 0;

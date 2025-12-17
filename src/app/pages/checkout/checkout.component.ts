@@ -11,6 +11,7 @@ import { ToastrService } from 'ngx-toastr';
 import { CarouselModule, OwlOptions } from 'ngx-owl-carousel-o';
 import { BannerComponent } from '../../components/banner/banner.component';
 import { TranslateModule } from '@ngx-translate/core';
+import { SeoService } from '../../core/services/seo.service';
 
 @Component({
   selector: 'app-checkout',
@@ -33,7 +34,8 @@ import { TranslateModule } from '@ngx-translate/core';
 export class CheckoutComponent implements OnInit {
   constructor(
     private _BookingService: BookingService,
-    private toaster: ToastrService
+    private toaster: ToastrService,
+    private seoService: SeoService
   ) {}
 
   bannerTitle: string = 'checkout';
@@ -47,6 +49,12 @@ export class CheckoutComponent implements OnInit {
   couponData: any = null;
 
   ngOnInit(): void {
+    this.seoService.updateSeoData(
+      {},
+      'Alfa Omega Tours - Checkout',
+      'Complete your booking with Alfa Omega Tours. Secure checkout for your travel reservations.',
+      '../../../assets/image/alfa omega versions/Artboard 1 copy 3@4x.png'
+    );
     this._BookingService.getCountries().subscribe({
       next: (response) => {
         // console.log(response.data);
@@ -80,11 +88,11 @@ export class CheckoutComponent implements OnInit {
     if (this.checkoutForm.valid) {
       this._BookingService.sendCheckoutData(this.checkoutData).subscribe({
         next: (response) => {
-          console.log(response);
+          // console.log(response);
           this.toaster.success(response.message);
         },
         error: (err) => {
-          console.log(err);
+          // console.log(err);
           this.toaster.error(err.error.message);
         },
       });
@@ -159,7 +167,7 @@ export class CheckoutComponent implements OnInit {
 
     this._BookingService.getCoupon(couponCode).subscribe({
       next: (cResponse) => {
-        console.log(cResponse);
+        // console.log(cResponse);
         this.couponApplied = true;
         this.couponData = cResponse.data;
 
@@ -176,7 +184,7 @@ export class CheckoutComponent implements OnInit {
         );
       },
       error: (cError) => {
-        console.log(cError);
+        // console.log(cError);
         this.couponApplied = false;
         this.couponDiscount = 0;
         this.couponData = null;

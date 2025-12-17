@@ -1,4 +1,10 @@
-import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  Inject,
+  OnInit,
+  PLATFORM_ID,
+} from '@angular/core';
 import { CarouselModule, OwlOptions } from 'ngx-owl-carousel-o';
 import { DataService } from '../../core/services/data.service';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
@@ -35,10 +41,13 @@ import { MaketripService } from '../../core/services/maketrip.service';
 import { CounterComponent } from '../../components/counter/counter.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { AboutCategoryComponent } from '../../components/about-category/about-category.component';
+import { SeoService } from '../../core/services/seo.service';
 
 interface DestinationPriceMap {
   [title: string]: number;
 }
+
+declare var $: any;
 
 @Component({
   selector: 'app-home',
@@ -82,7 +91,9 @@ export class HomeComponent implements OnInit {
     private _Router: Router,
     private _MaketripService: MaketripService,
     private sanitizer: DomSanitizer,
-    @Inject(PLATFORM_ID) private platformId: Object
+    private seoService: SeoService,
+    @Inject(PLATFORM_ID) private platformId: Object,
+    private el: ElementRef
   ) {
     this.sanitizedVideoUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
       this.rawVideoUrl
@@ -143,6 +154,8 @@ export class HomeComponent implements OnInit {
   ];
 
   ngOnInit(): void {
+    // Get settings and update SEO from API, with fallback to defaults
+    this.getSettingsAndUpdateSeo();
     this.getDestination();
     this.getCategory();
     this.getDurations();
@@ -153,6 +166,64 @@ export class HomeComponent implements OnInit {
       location: new FormControl('', Validators.required),
       type: new FormControl('', Validators.required),
       duration: new FormControl(''),
+    });
+  }
+
+  getSettingsAndUpdateSeo(): void {
+    this._DataService.getSetting().subscribe({
+      next: (res) => {
+        if (res.data && Array.isArray(res.data)) {
+          // Get current language or default to 'en'
+          const currentLang = isPlatformBrowser(this.platformId)
+            ? localStorage.getItem('language') || 'en'
+            : 'en';
+          // console.log(res.data);
+
+          // Extract SEO data from settings
+          const seoData = this.seoService.extractSeoFromSettings(
+            res.data,
+            currentLang
+          );
+
+          // Always add "test" to title in home page
+          const baseTitle =
+            seoData.meta_title || seoData.og_title || 'Alfa Omega Tours - Home';
+          const titleWithTest = ` ${baseTitle}`;
+
+          // Update SEO with test in title
+          this.seoService.updateSeoData(
+            { ...seoData, meta_title: titleWithTest, og_title: titleWithTest },
+            titleWithTest,
+            seoData.meta_description ||
+              seoData.og_description ||
+              'Discover amazing tours and travel experiences with Alfa Omega Tours. Book your dream vacation today.',
+            seoData.og_image || '/assets/image/alfa omega logo.webp'
+          );
+        } else {
+          // If settings API fails, use defaults with test
+          this.seoService.updateSeoData(
+            {
+              meta_title: 'Alfa Omega Tours - Home',
+              og_title: 'Alfa Omega Tours - Home',
+            },
+            'Alfa Omega Tours - Home',
+            'Discover amazing tours and travel experiences with Alfa Omega Tours. Book your dream vacation today.',
+            '/assets/image/alfa omega logo.webp'
+          );
+        }
+      },
+      error: (err) => {
+        // If settings API fails, use defaults with test
+        this.seoService.updateSeoData(
+          {
+            meta_title: 'Alfa Omega Tours - Home',
+            og_title: 'Alfa Omega Tours - Home',
+          },
+          'Alfa Omega Tours - Home',
+          'Discover amazing tours and travel experiences with Alfa Omega Tours. Book your dream vacation today.',
+          '/assets/image/alfa omega logo.webp'
+        );
+      },
     });
   }
 
@@ -335,7 +406,7 @@ export class HomeComponent implements OnInit {
   getCategory() {
     this._DataService.getCategories().subscribe({
       next: (res) => {
-        console.log(res.data.data);
+        // console.log(res.data.data);
 
         this.allCategories = res.data.data;
         this.categoriesWithTours = res.data.data;
@@ -371,7 +442,7 @@ export class HomeComponent implements OnInit {
         });
 
         const pricesMap = this.categoryPrices; // مثل { Multi Days Tours: 80, Egypt Classic Tours: 100, Nile Cruises: 150 , Adventure Tours: 80,Culture Tours: 80 }
-        console.log(pricesMap);
+        // console.log(pricesMap);
 
         this.allCategories = this.allCategories.map((cat: any) => {
           const categoryTitle = cat.title.trim().toLowerCase();
@@ -390,16 +461,16 @@ export class HomeComponent implements OnInit {
 
           if (!matched) {
             cat.start_price = pricesMap['Nile Cruises']; // fallback to Nile Cruises price
-            console.log('not matched');
+            // console.log('not matched');
           }
 
           return cat;
         });
 
-        console.log('all categories with start price', this.allCategories);
-        console.log('All tours from categories:', this.allToursFromCategories);
-        console.log('Categories with tours:', this.categoriesWithTours);
-        console.log('Tour category mapping:', tourCategoryMap);
+        // console.log('all categories with start price', this.allCategories);
+        // console.log('All tours from categories:', this.allToursFromCategories);
+        // console.log('Categories with tours:', this.categoriesWithTours);
+        // console.log('Tour category mapping:', tourCategoryMap);
 
         // Prepare master list and initialize default views
         if (this.allToursFromCategories.length > 0) {
@@ -409,7 +480,7 @@ export class HomeComponent implements OnInit {
           this.getDestinationTours();
         } else {
           // If no tours found in categories, get all tours as fallback
-          console.log('No tours found in categories, fetching all tours...');
+          // console.log('No tours found in categories, fetching all tours...');
           this.getAllToursFallback();
         }
       },
@@ -427,9 +498,11 @@ export class HomeComponent implements OnInit {
         // Initialize default lists for both category and destination views
         this.getTours();
         this.getDestinationTours();
-        console.log('Fallback: All tours loaded:', this.allToursFromCategories);
+        // console.log('Fallback: All tours loaded:', this.allToursFromCategories);
       },
-      error: (err) => console.log(err),
+      error: (err) => {
+        // console.log(err);
+      },
     });
   }
 
@@ -440,7 +513,7 @@ export class HomeComponent implements OnInit {
         takeUntil(this.$destory), // close , clear suscripe memory on destroy
         tap((res) => {
           this.allDurations = res.data;
-          console.log(this.allDurations);
+          // console.log(this.allDurations);
         })
       )
       .subscribe({
@@ -458,10 +531,10 @@ export class HomeComponent implements OnInit {
     this._DataService.getReviews().subscribe({
       next: (res) => {
         this.allReviews = res.data.data;
-        console.log(this.allReviews);
+        // console.log(this.allReviews);
       },
       error: (err) => {
-        console.log(err);
+        // console.log(err);
       },
     });
   }

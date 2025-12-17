@@ -72,8 +72,8 @@
     <div class="row g-3 mb-5">
       <ng-container *ngIf="filteredTours.length != 0; else elseTemplate">
         <div
-          class="col-xl-4 col-lg-6 px-3"
-          *ngFor="let tour of filteredTours.slice(0, 9); let i = index"
+          class="col-xl-4 col-lg-6"
+          *ngFor="let tour of filteredTours.slice(0, 6); let i = index"
         >
           <app-tour-cart [tour]="tour"></app-tour-cart>
         </div>

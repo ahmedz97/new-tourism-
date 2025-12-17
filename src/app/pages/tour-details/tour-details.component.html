@@ -1,5 +1,12 @@
 <div class="mb-5">
-  <app-banner [bannerTitle]="bannerTitle"></app-banner>
+  <app-banner
+    [bannerTitle]="bannerTitle"
+    [categoryName]="categoryName"
+    [categorySlug]="categorySlug"
+    [tourName]="tourData?.title || ''"
+  >
+    <ng-content> </ng-content>
+  </app-banner>
 </div>
 
 <section class="my-5">

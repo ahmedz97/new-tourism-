@@ -7,6 +7,7 @@ import { DataService } from '../../core/services/data.service';
 import { PartnerSliderComponent } from '../../components/partner-slider/partner-slider.component';
 import { BannerComponent } from '../../components/banner/banner.component';
 import { MakeTripFormComponent } from '../../components/make-trip-form/make-trip-form.component';
+import { SeoService } from '../../core/services/seo.service';
 
 @Component({
   selector: 'app-destination',
@@ -23,12 +24,21 @@ import { MakeTripFormComponent } from '../../components/make-trip-form/make-trip
   styleUrl: './destination.component.scss',
 })
 export class DestinationComponent implements OnInit {
-  constructor(private _DataService: DataService) {}
+  constructor(
+    private _DataService: DataService,
+    private seoService: SeoService
+  ) {}
   allDestinations: any[] = [];
 
   bannerTitle: string = 'destination';
 
   ngOnInit(): void {
+    this.seoService.updateSeoData(
+      {},
+      'Alfa Omega Tours - Destinations',
+      'Explore amazing destinations around the world with Alfa Omega Tours. Discover your next travel adventure.',
+      '../../../assets/image/alfa omega versions/Artboard 1 copy 3@4x.png'
+    );
     this.getDestination();
   }
 
@@ -37,10 +47,10 @@ export class DestinationComponent implements OnInit {
       next: (res) => {
         this.allDestinations = res.data.data;
 
-        console.log('all destinations', res);
+        // console.log('all destinations', res);
       },
       error: (err) => {
-        console.log(err);
+        // console.log(err);
       },
     });
   }

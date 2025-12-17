@@ -8,6 +8,7 @@ import { PartnerSliderComponent } from '../../components/partner-slider/partner-
 import { BannerComponent } from '../../components/banner/banner.component';
 import { MakeTripFormComponent } from '../../components/make-trip-form/make-trip-form.component';
 import { TranslateModule } from '@ngx-translate/core';
+import { SeoService } from '../../core/services/seo.service';
 
 @Component({
   selector: 'app-contact',
@@ -27,7 +28,8 @@ import { TranslateModule } from '@ngx-translate/core';
 export class ContactComponent implements OnInit {
   constructor(
     private _DataService: DataService,
-    private toaster: ToastrService
+    private toaster: ToastrService,
+    private seoService: SeoService
   ) {}
 
   bannerTitle: string = 'contact';
@@ -39,6 +41,12 @@ export class ContactComponent implements OnInit {
   userLocation: any;
 
   ngOnInit(): void {
+    this.seoService.updateSeoData(
+      {},
+      'Alfa Omega Tours - Contact us',
+      'Get in touch with Alfa Omega Tours. Contact us for inquiries, bookings, and exceptional travel experiences.',
+      '../../../assets/image/alfa omega versions/Artboard 1 copy 3@4x.png'
+    );
     this.getCountries();
     this.getSettings();
   }
@@ -57,7 +65,7 @@ export class ContactComponent implements OnInit {
 
     this._DataService.contactData(this.contactForm.value).subscribe({
       next: (response) => {
-        console.log(response);
+        // console.log(response);
         this.toaster.success(response.message);
       },
       error: (err) => {
@@ -71,7 +79,7 @@ export class ContactComponent implements OnInit {
   getCountries() {
     this._DataService.getCountries().subscribe({
       next: (response) => {
-        console.log(response.data);
+        // console.log(response.data);
         this.countryList = response.data;
       },
     });

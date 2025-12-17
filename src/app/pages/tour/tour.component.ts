@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 // import { TourcartComponent } from '../../components/tourcart/tourcart.component';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -8,6 +8,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatSliderModule } from '@angular/material/slider';
+import { MatExpansionModule } from '@angular/material/expansion';
 import { DataService } from '../../core/services/data.service';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { TourCartComponent } from '../../components/tour-cart/tour-cart.component';
@@ -15,6 +16,7 @@ import { PaginationComponent } from '../../components/pagination/pagination.comp
 import { BannerComponent } from '../../components/banner/banner.component';
 import { MakeTripFormComponent } from '../../components/make-trip-form/make-trip-form.component';
 import { TranslateModule } from '@ngx-translate/core';
+import { SeoService } from '../../core/services/seo.service';
 
 type FilterKey = 'selectedTripType' | 'selectedDestination';
 
@@ -28,6 +30,7 @@ type FilterKey = 'selectedTripType' | 'selectedDestination';
     MatCheckboxModule,
     MatBadgeModule,
     MatSliderModule,
+    MatExpansionModule,
     NgxPaginationModule,
     TourCartComponent,
     PaginationComponent,
@@ -41,7 +44,9 @@ type FilterKey = 'selectedTripType' | 'selectedDestination';
 export class TourComponent implements OnInit {
   constructor(
     private _DataService: DataService,
-    private _ActivatedRoute: ActivatedRoute
+    private _ActivatedRoute: ActivatedRoute,
+    private router: Router,
+    private seoService: SeoService
   ) {}
 
   bannerTitle: string = 'tour search';
@@ -55,11 +60,13 @@ export class TourComponent implements OnInit {
   minBudget = 0;
   maxBudget = 5000;
 
-  selectedDestination: number[] = [];
-  selectedTripType: number[] = [];
-  selectedDuration: number[] = [];
+  selectedDestination: number | null = null;
+  selectedTripType: number | null = null;
+  selectedDuration: number | null = null;
+  selectedCategorySlug: string | null = null; // Store slug from URL
 
-  selectedDurationSlug: string | null = null;
+  // Accordion panel management
+  openPanel: string | null = 'price'; // Price panel open by default
 
   allCategories: any[] = [];
   allDestinations: any[] = [];
@@ -70,21 +77,62 @@ export class TourComponent implements OnInit {
 
   allToursRaw: any[] = []; // النسخة الخام من API بدون فلاتر
 
+  // Collapse states for filter sections (first one open by default)
+  isCategoryCollapsed: boolean = false; // First section open
+  isPriceCollapsed: boolean = true;
+  isDurationCollapsed: boolean = true;
+  isDestinationCollapsed: boolean = true;
+
   ngOnInit(): void {
+    this.seoService.updateSeoData(
+      {},
+      'Alfa Omega Tours - Tours',
+      'Explore our wide range of premium tours and travel packages with Alfa Omega Tours. Find your perfect adventure today.',
+      '../../../assets/image/alfa omega versions/Artboard 1 copy 3@4x.png'
+    );
     this.getDestination();
     this.getCategories(); // This now includes tours data
     this.getDurations();
     this._ActivatedRoute.queryParams.subscribe((param) => {
-      this.selectedDestination = param['location'] ? [param['location']] : [];
-      this.selectedTripType = param['type'] ? [param['type']] : [];
-      this.selectedDuration = param['duration'] ? [param['duration']] : [];
+      // console.log('params', param);
+
+      this.selectedDestination = param['location']
+        ? Number(param['location'])
+        : null;
+
+      // Handle category slug instead of ID
+      if (param['type']) {
+        this.selectedCategorySlug = param['type'];
+        // Find category ID from slug
+        const category = this.allCategories.find(
+          (cat) => cat.slug === param['type']
+        );
+        if (category) {
+          this.selectedTripType = category.id;
+        } else {
+          // If categories not loaded yet, store slug and resolve after categories load
+          this.selectedTripType = null;
+        }
+      } else {
+        this.selectedCategorySlug = null;
+        this.selectedTripType = null;
+      }
+
+      this.selectedDuration = param['duration']
+        ? Number(param['duration'])
+        : null;
       this.filterTours();
     });
   }
 
   getDestination() {
     this._DataService.getDestination().subscribe({
-      next: (res) => (this.allDestinations = res.data.data),
+      next: (res) => {
+        this.allDestinations = res.data.data;
+        // console.log('allDestinations', this.allDestinations);
+        // Update destination counts after loading
+        // this.updateDestinationCounts();
+      },
       // error: (err) => console.log(err),
     });
   }
@@ -135,8 +183,22 @@ export class TourComponent implements OnInit {
 
         // If no tours found in categories, get all tours as fallback
         if (this.allTours.length === 0) {
-          console.log('No tours found in categories, fetching all tours...');
+          // console.log('No tours found in categories, fetching all tours...');
           this.getAllTours();
+        } else {
+          // Apply filters after loading tours
+          this.filterTours();
+        }
+
+        // Resolve category slug to ID if it was set before categories loaded
+        if (this.selectedCategorySlug && this.selectedTripType === null) {
+          const category = this.allCategories.find(
+            (cat) => cat.slug === this.selectedCategorySlug
+          );
+          if (category) {
+            this.selectedTripType = category.id;
+            this.filterTours();
+          }
         }
       },
       // error: (err) => console.log(err),
@@ -146,7 +208,7 @@ export class TourComponent implements OnInit {
     this._DataService.getToursDuration().subscribe({
       next: (res) => {
         this.allDurations = res.data;
-        console.log(this.allDurations);
+        // console.log(this.allDurations);
       },
       // error: (err) => console.log(err),
     });
@@ -157,10 +219,12 @@ export class TourComponent implements OnInit {
     this._DataService.getTours().subscribe({
       next: (res) => {
         this.allTours = res.data.data;
-        this.filteredTours = [...this.allTours];
-        console.log('Fallback: All tours loaded:', this.allTours);
+        this.filterTours(); // Apply filters after loading
+        // console.log('Fallback: All tours loaded:', this.allTours);
       },
-      error: (err) => console.log(err),
+      error: (err) => {
+        // console.log(err);
+      },
     });
   }
 
@@ -169,61 +233,57 @@ export class TourComponent implements OnInit {
     let filtered = [...this.allTours];
 
     // Filter by selected categories
-    if (this.selectedTripType && this.selectedTripType.length > 0) {
+    if (this.selectedTripType !== null) {
       filtered = filtered.filter((tour) => {
         // Check if tour has category_ids array (added during extraction)
         if (tour.category_ids && Array.isArray(tour.category_ids)) {
-          return tour.category_ids.some((catId: number) =>
-            this.selectedTripType.includes(catId)
-          );
+          return tour.category_ids.includes(this.selectedTripType!);
         }
         // Check if tour has categories array (from regular API calls)
         if (tour.categories && Array.isArray(tour.categories)) {
-          return tour.categories.some((cat: any) =>
-            this.selectedTripType.includes(cat.id)
+          return tour.categories.some(
+            (cat: any) => cat.id === this.selectedTripType
           );
         }
         // Check if tour has pivot with category_id (from included tours data)
         if (tour.pivot && tour.pivot.category_id) {
-          return this.selectedTripType.includes(tour.pivot.category_id);
+          return tour.pivot.category_id === this.selectedTripType;
         }
         // Check if tour has single category_id (legacy support)
         if (tour.category_id) {
-          return this.selectedTripType.includes(tour.category_id);
+          return tour.category_id === this.selectedTripType;
         }
         return false;
       });
     }
 
     // Filter by selected destinations
-    if (this.selectedDestination && this.selectedDestination.length > 0) {
+    if (this.selectedDestination !== null) {
       filtered = filtered.filter((tour) => {
         return (
           tour.destinations &&
-          tour.destinations.some((dest: any) =>
-            this.selectedDestination.includes(dest.id)
+          tour.destinations.some(
+            (dest: any) => dest.id === this.selectedDestination
           )
         );
       });
     }
 
     // Filter by selected durations
-    if (this.selectedDuration && this.selectedDuration.length > 0) {
+    if (this.selectedDuration !== null) {
       filtered = filtered.filter((tour) => {
         // Check if tour has duration_in_days property
         if (tour.duration_in_days) {
-          return this.selectedDuration.includes(tour.duration_in_days);
+          return tour.duration_in_days === this.selectedDuration;
         }
         // Check if tour has days array
         if (tour.days && Array.isArray(tour.days)) {
-          return this.selectedDuration.includes(tour.days.length);
+          return tour.days.length === this.selectedDuration;
         }
         // Check if tour has duration property
         if (tour.duration) {
           const durationNum = Number(tour.duration);
-          return (
-            !isNaN(durationNum) && this.selectedDuration.includes(durationNum)
-          );
+          return !isNaN(durationNum) && durationNum === this.selectedDuration;
         }
         return false;
       });
@@ -233,76 +293,304 @@ export class TourComponent implements OnInit {
     filtered = filtered.filter((tour) => {
       // Try different price properties
       let price = 0;
-      if (tour.start_from) {
+      if (tour.start_from !== undefined && tour.start_from !== null) {
         price = Number(tour.start_from);
-      } else if (tour.adult_price) {
+      } else if (tour.adult_price !== undefined && tour.adult_price !== null) {
         price = Number(tour.adult_price);
-      } else if (tour.price) {
+      } else if (tour.price !== undefined && tour.price !== null) {
         price = Number(tour.price);
+      }
+
+      // If price is 0 or NaN, include the tour (assume it's valid or free)
+      if (isNaN(price) || price === 0) {
+        return true;
       }
 
       return price >= this.minBudget && price <= this.maxBudget;
     });
 
     this.filteredTours = filtered;
-    console.log('=== FILTERING RESULTS ===');
-    console.log('Selected categories:', this.selectedTripType);
-    console.log('Selected destinations:', this.selectedDestination);
-    console.log('Selected durations:', this.selectedDuration);
-    console.log('Price range:', this.minBudget, '-', this.maxBudget);
-    console.log('Total tours before filtering:', this.allTours.length);
-    console.log('Total tours after filtering:', filtered.length);
-    console.log('Filtered tours:', this.filteredTours);
-    console.log('========================');
+    this.totalItems = filtered.length;
+    this.currentPage = 1; // Reset to first page when filters change
+    // console.log('=== FILTERING RESULTS ===');
+    // console.log('Selected categories:', this.selectedTripType);
+    // console.log('Selected destinations:', this.selectedDestination);
+    // console.log('Selected durations:', this.selectedDuration);
+    // console.log('Price range:', this.minBudget, '-', this.maxBudget);
+    // console.log('Total tours before filtering:', this.allTours.length);
+    // console.log('Total tours after filtering:', filtered.length);
+    // console.log('Filtered tours:', this.filteredTours);
+    // console.log('========================');
   }
 
-  // Utility methods for filtering
-  private getList(
-    key: 'selectedTripType' | 'selectedDuration' | 'selectedDestination'
-  ): number[] {
-    const list = this[key];
-    return Array.isArray(list) ? list : [];
-  }
+  // Get available tours count for a specific category based on current filters
+  getCategoryToursCount(categoryId: number): number {
+    let filtered = [...this.allTours];
 
-  isChecked(
-    key: 'selectedTripType' | 'selectedDuration' | 'selectedDestination',
-    id: number
-  ): boolean {
-    return this.getList(key).includes(id);
-  }
-
-  toggle(
-    key: 'selectedTripType' | 'selectedDuration' | 'selectedDestination',
-    id: number,
-    checked: boolean
-  ) {
-    console.log(`Toggle called: ${key}, id: ${id}, checked: ${checked}`);
-    const current = this.getList(key);
-    console.log(`Current ${key}:`, current);
-
-    if (checked) {
-      if (!current.includes(id)) {
-        this[key] = [...current, id];
-        console.log(`Added ${id} to ${key}:`, this[key]);
-      }
-
-      // If this is a category and no tours are found, try to get tours for this category
-      if (key === 'selectedTripType') {
-        const categoryHasTours = this.allTours.some(
-          (tour) => tour.category_ids && tour.category_ids.includes(id)
+    // Filter by selected destinations
+    if (this.selectedDestination !== null) {
+      filtered = filtered.filter((tour) => {
+        return (
+          tour.destinations &&
+          tour.destinations.some(
+            (dest: any) => dest.id === this.selectedDestination
+          )
         );
-        if (!categoryHasTours) {
-          console.log(`No tours found for category ${id}, fetching...`);
-          this.getToursForCategory(id);
-        }
-      }
-    } else {
-      this[key] = current.filter((x) => x !== id);
-      console.log(`Removed ${id} from ${key}:`, this[key]);
+      });
     }
 
-    console.log(`Final ${key}:`, this[key]);
+    // Filter by selected durations
+    if (this.selectedDuration !== null) {
+      filtered = filtered.filter((tour) => {
+        if (tour.duration_in_days) {
+          return tour.duration_in_days === this.selectedDuration;
+        }
+        if (tour.days && Array.isArray(tour.days)) {
+          return tour.days.length === this.selectedDuration;
+        }
+        if (tour.duration) {
+          const durationNum = Number(tour.duration);
+          return !isNaN(durationNum) && durationNum === this.selectedDuration;
+        }
+        return false;
+      });
+    }
+
+    // Filter by price range
+    filtered = filtered.filter((tour) => {
+      let price = 0;
+      if (tour.start_from !== undefined && tour.start_from !== null) {
+        price = Number(tour.start_from);
+      } else if (tour.adult_price !== undefined && tour.adult_price !== null) {
+        price = Number(tour.adult_price);
+      } else if (tour.price !== undefined && tour.price !== null) {
+        price = Number(tour.price);
+      }
+
+      // If price is 0 or NaN, include the tour (assume it's valid or free)
+      if (isNaN(price) || price === 0) {
+        return true;
+      }
+
+      return price >= this.minBudget && price <= this.maxBudget;
+    });
+
+    // Now count tours that belong to this category
+    return filtered.filter((tour) => {
+      if (tour.category_ids && Array.isArray(tour.category_ids)) {
+        return tour.category_ids.includes(categoryId);
+      }
+      if (tour.categories && Array.isArray(tour.categories)) {
+        return tour.categories.some((cat: any) => cat.id === categoryId);
+      }
+      if (tour.pivot && tour.pivot.category_id) {
+        return tour.pivot.category_id === categoryId;
+      }
+      if (tour.category_id) {
+        return tour.category_id === categoryId;
+      }
+      return false;
+    }).length;
+  }
+
+  // Get available tours count for a specific destination based on current filters
+  getDestinationToursCount(destinationId: number): number {
+    let filtered = [...this.allTours];
+
+    // Filter by selected categories
+    if (this.selectedTripType !== null) {
+      filtered = filtered.filter((tour) => {
+        if (tour.category_ids && Array.isArray(tour.category_ids)) {
+          return tour.category_ids.includes(this.selectedTripType!);
+        }
+        if (tour.categories && Array.isArray(tour.categories)) {
+          return tour.categories.some(
+            (cat: any) => cat.id === this.selectedTripType
+          );
+        }
+        if (tour.pivot && tour.pivot.category_id) {
+          return tour.pivot.category_id === this.selectedTripType;
+        }
+        if (tour.category_id) {
+          return tour.category_id === this.selectedTripType;
+        }
+        return false;
+      });
+    }
+
+    // Filter by selected durations
+    if (this.selectedDuration !== null) {
+      filtered = filtered.filter((tour) => {
+        if (tour.duration_in_days) {
+          return tour.duration_in_days === this.selectedDuration;
+        }
+        if (tour.days && Array.isArray(tour.days)) {
+          return tour.days.length === this.selectedDuration;
+        }
+        if (tour.duration) {
+          const durationNum = Number(tour.duration);
+          return !isNaN(durationNum) && durationNum === this.selectedDuration;
+        }
+        return false;
+      });
+    }
+
+    // Filter by price range
+    filtered = filtered.filter((tour) => {
+      let price = 0;
+      if (tour.start_from !== undefined && tour.start_from !== null) {
+        price = Number(tour.start_from);
+      } else if (tour.adult_price !== undefined && tour.adult_price !== null) {
+        price = Number(tour.adult_price);
+      } else if (tour.price !== undefined && tour.price !== null) {
+        price = Number(tour.price);
+      }
+
+      // If price is 0 or NaN, include the tour (assume it's valid or free)
+      if (isNaN(price) || price === 0) {
+        return true;
+      }
+
+      return price >= this.minBudget && price <= this.maxBudget;
+    });
+
+    // Now count tours that belong to this destination
+    return filtered.filter((tour) => {
+      return (
+        tour.destinations &&
+        tour.destinations.some((dest: any) => dest.id === destinationId)
+      );
+    }).length;
+  }
+
+  // Get available tours count for a specific duration based on current filters
+  getDurationToursCount(durationId: number): number {
+    let filtered = [...this.allTours];
+
+    // Filter by selected categories
+    if (this.selectedTripType !== null) {
+      filtered = filtered.filter((tour) => {
+        if (tour.category_ids && Array.isArray(tour.category_ids)) {
+          return tour.category_ids.includes(this.selectedTripType!);
+        }
+        if (tour.categories && Array.isArray(tour.categories)) {
+          return tour.categories.some(
+            (cat: any) => cat.id === this.selectedTripType
+          );
+        }
+        if (tour.pivot && tour.pivot.category_id) {
+          return tour.pivot.category_id === this.selectedTripType;
+        }
+        if (tour.category_id) {
+          return tour.category_id === this.selectedTripType;
+        }
+        return false;
+      });
+    }
+
+    // Filter by selected destinations
+    if (this.selectedDestination !== null) {
+      filtered = filtered.filter((tour) => {
+        return (
+          tour.destinations &&
+          tour.destinations.some(
+            (dest: any) => dest.id === this.selectedDestination
+          )
+        );
+      });
+    }
+
+    // Filter by price range
+    filtered = filtered.filter((tour) => {
+      let price = 0;
+      if (tour.start_from !== undefined && tour.start_from !== null) {
+        price = Number(tour.start_from);
+      } else if (tour.adult_price !== undefined && tour.adult_price !== null) {
+        price = Number(tour.adult_price);
+      } else if (tour.price !== undefined && tour.price !== null) {
+        price = Number(tour.price);
+      }
+
+      // If price is 0 or NaN, include the tour (assume it's valid or free)
+      if (isNaN(price) || price === 0) {
+        return true;
+      }
+
+      return price >= this.minBudget && price <= this.maxBudget;
+    });
+
+    // Now count tours that match this duration
+    return filtered.filter((tour) => {
+      if (tour.duration_in_days) {
+        return tour.duration_in_days === durationId;
+      }
+      if (tour.days && Array.isArray(tour.days)) {
+        return tour.days.length === durationId;
+      }
+      if (tour.duration) {
+        const durationNum = Number(tour.duration);
+        return !isNaN(durationNum) && durationNum === durationId;
+      }
+      return false;
+    }).length;
+  }
+
+  onRadioChange(
+    key: 'selectedTripType' | 'selectedDuration' | 'selectedDestination',
+    value: number | null
+  ) {
+    // For radio, set the value directly (single selection)
+    if (key === 'selectedTripType') {
+      this.selectedTripType = value;
+      // Update URL with slug if category is selected
+      if (value !== null) {
+        const category = this.allCategories.find((cat) => cat.id === value);
+        if (category) {
+          this.selectedCategorySlug = category.slug;
+          this.updateUrlWithSlug(category.slug);
+        } else {
+          this.selectedCategorySlug = null;
+          this.updateUrlWithSlug(null);
+        }
+      } else {
+        this.selectedCategorySlug = null;
+        this.updateUrlWithSlug(null);
+      }
+    } else if (key === 'selectedDuration') {
+      this.selectedDuration = value;
+    } else if (key === 'selectedDestination') {
+      this.selectedDestination = value;
+    }
+
+    // If this is a category and no tours are found, try to get tours for this category
+    if (key === 'selectedTripType' && value !== null) {
+      const categoryHasTours = this.allTours.some(
+        (tour) => tour.category_ids && tour.category_ids.includes(value)
+      );
+      if (!categoryHasTours) {
+        // console.log(`No tours found for category ${value}, fetching...`);
+        this.getToursForCategory(value);
+      }
+    }
+
     this.filterTours();
+  }
+
+  // Update URL with slug instead of ID
+  updateUrlWithSlug(slug: string | null) {
+    const queryParams: any = { ...this._ActivatedRoute.snapshot.queryParams };
+
+    if (slug) {
+      queryParams['type'] = slug;
+    } else {
+      delete queryParams['type'];
+    }
+
+    this.router.navigate([], {
+      relativeTo: this._ActivatedRoute,
+      queryParams: queryParams,
+      queryParamsHandling: 'merge',
+    });
   }
 
   setLayout(type: 'grid' | 'list') {
@@ -315,13 +603,36 @@ export class TourComponent implements OnInit {
 
   // Method to clear all filters
   clearAllFilters() {
-    this.selectedTripType = [];
-    this.selectedDestination = [];
-    this.selectedDuration = [];
+    this.selectedTripType = null;
+    this.selectedDestination = null;
+    this.selectedDuration = null;
+    this.selectedCategorySlug = null;
     this.minBudget = 0;
     this.maxBudget = 5000;
+
+    // Clear URL parameters
+    this.router.navigate([], {
+      relativeTo: this._ActivatedRoute,
+      queryParams: {},
+    });
+
     this.filterTours();
-    console.log('All filters cleared');
+    // console.log('All filters cleared');
+  }
+
+  // Accordion panel management methods
+  onPanelOpened(panelName: string) {
+    // Close other panels when one opens (accordion behavior)
+    this.openPanel = panelName;
+  }
+
+  onPanelClosed(panelName: string) {
+    if (this.openPanel === panelName) {
+      // Only set to null if price panel is closed, otherwise keep price open
+      if (panelName === 'price') {
+        this.openPanel = null;
+      }
+    }
   }
 
   // Method to get tours for a specific category if not found in included data
@@ -344,134 +655,38 @@ export class TourComponent implements OnInit {
           }
         });
         this.filterTours();
-        console.log(`Tours loaded for category ${categoryId}:`, categoryTours);
+        // console.log(`Tours loaded for category ${categoryId}:`, categoryTours);
       },
-      error: (err) => console.log(err),
+      error: (err) => {
+        // console.log(err);
+      },
     });
   }
 
-  // getDurations() {
-  //   this._DataService.getToursDuration().subscribe({
-  //     next: (res) => {
-  //       this.allDurations = res.data;
-  //       console.log(this.allDurations);
-  //       this.selectedDurationSlug = null;
-  //       this.applyDurationFilter();
-  //     },
-  //     // error: (err) => console.log(err),
-  //   });
-  // }
+  // Toggle collapse state for filter sections (accordion behavior)
+  toggleCollapse(section: 'category' | 'price' | 'duration' | 'destination') {
+    // Close all sections first
+    this.isCategoryCollapsed = true;
+    this.isPriceCollapsed = true;
+    this.isDurationCollapsed = true;
+    this.isDestinationCollapsed = true;
 
-  // onDurationChange(slug: string, checked: boolean) {
-  //   if (checked) this.getTourDuration(slug);
-  //   else if (this.selectedDurationSlug === slug)
-  //     this.selectedDurationSlug = null;
-  // }
-
-  // getTourDuration(durationSlug: string) {
-  //   this.selectedDurationSlug = durationSlug;
-  //   const match = this.allDurations?.find((d: any) => d.slug === durationSlug);
-  //   this.applyDurationFilter();
-  // }
-
-  // private applyDurationFilter() {
-  //   let list = this.allToursRaw;
-
-  //   if (this.selectedDurationSlug) {
-  //     const match = this.allDurations?.find(
-  //       (d: any) => d.slug === this.selectedDurationSlug
-  //     );
-  //     if (match && Array.isArray(match.tours)) {
-  //       list = match.tours; // <-- المطلوب: allTours = match.tours
-  //     }
-  //   }
-
-  //   // حوّل القائمة النهائية إلى allTours + ضِف destinationsTitle
-  //   this.allTours = list.map((t: any) => ({
-  //     ...t,
-  //     destinationsTitle: Array.isArray(t.destinations)
-  //       ? t.destinations.map((x: any) => x.title).join(',')
-  //       : '',
-  //   }));
-
-  //   this.filteredTours = [...this.allTours];
-  //   // لو عايز تعكس الفلتر في الباجينيشن
-  //   this.totalItems = this.allTours.length;
-  //   this.currentPage = 1;
-  // }
-
-  // getTourSearch(params: any) {
-  //   const query: any = {};
-  //   if (params.location) query['destination_id'] = params.location;
-  //   if (params.type) query['category_id'] = params.type;
-
-  //   this._DataService.getTours(query).subscribe({
-  //     next: (res) => {
-  //       this.allTours = res.data.data;
-  //       this.itemsPerPage = res.data.per_page;
-  //       this.currentPage = res.data.current_page;
-  //       this.totalItems = res.data.total;
-
-  //       for (let i = 0; i < this.allTours.length; i++) {
-  //         this.allTours[i].destinationsTitle = this.allTours[i].destinations
-  //           .map((x: any) => x.title)
-  //           .join(',');
-  //       }
-
-  //       if (this.selectedDurationSlug) {
-  //         this.applyDurationFilter(); // keeps your duration logic
-  //       } else {
-  //         this.filteredTours = [...this.allTours];
-  //       }
-
-  //       // ✅ now apply budget range on whatever filteredTours currently is
-  //       this.applyBudgetFilter();
-
-  //       console.log('filteredTours:', this.filteredTours);
-  //     },
-  //     error: (err) => console.error(err),
-  //   });
-  // }
-
-  // choose the correct field name used in your tour object:
-  // private pickPrice(t: any): number {
-  //   // adjust if your API uses a different key
-  //   const raw = t?.start_from ?? t?.price_from ?? t?.starting_price ?? 0;
-  //   const n = Number(raw);
-  //   return Number.isFinite(n) ? n : 0;
-  // }
-
-  // private applyBudgetFilter(): void {
-  //   const min = Number(this.minBudget ?? 0);
-  //   const max = Number(this.maxBudget ?? Number.POSITIVE_INFINITY);
-
-  //   // base list to filter is whatever you already put in filteredTours
-  //   const base = Array.isArray(this.filteredTours) ? this.filteredTours : [];
-
-  //   this.filteredTours = base.filter((t) => {
-  //     const price = this.pickPrice(t);
-  //     return price >= min && price <= max;
-  //   });
-
-  //   // (optional) keep pagination in sync with current filter
-  //   this.totalItems = this.filteredTours.length;
-  //   this.currentPage = 1;
-  // }
-
-  // checkbox button
-  // finish checkbox
-
-  // filterTours() {
-  //   this.getTourSearch({
-  //     location: this.selectedDestination,
-  //     type: this.selectedTripType,
-  //     // duration: this.selectedDuration,
-  //     min_price: this.minBudget,
-  //     max_price: this.maxBudget,
-  //     page: this.currentPage,
-  //   });
-
-  //   }
+    // Then toggle the clicked section
+    switch (section) {
+      case 'category':
+        this.isCategoryCollapsed = !this.isCategoryCollapsed;
+        break;
+      case 'price':
+        this.isPriceCollapsed = !this.isPriceCollapsed;
+        break;
+      case 'duration':
+        this.isDurationCollapsed = !this.isDurationCollapsed;
+        break;
+      case 'destination':
+        this.isDestinationCollapsed = !this.isDestinationCollapsed;
+        break;
+    }
+  }
 
   getTourPage(page: number): void {
     this._DataService.getTourPagination(page).subscribe({
@@ -548,102 +763,3 @@ export class TourComponent implements OnInit {
     // console.log(this.filteredTours);
   }
 }
-
-// old html code
-/*
-
-<div
-          class="sideBar p-3 rounded-3 bg-white text-capitalize textSecondColor"
-        >
-          <!-- category -->
-          <div class="mb-4">
-            <h4 class="h5 fw-bold pb-3 border-bottom mb-3">tour category</h4>
-            <div
-              *ngFor="let type of allCategories"
-              class="flexBetween listFilter p-1 rounded-2"
-            >
-              <mat-checkbox
-                class="cPointer"
-                [checked]="isChecked('selectedTripType', type.id)"
-                (change)="toggle('selectedTripType', type.id, $event.checked)"
-              >
-                {{ type.title }}
-              </mat-checkbox>
-              <span class="flexCenter rounded-circle">{{
-                type.tours_count
-              }}</span>
-            </div>
-          </div>
-
-          <!-- price -->
-          <div class="mb-4">
-            <h4 class="h5 fw-bold pb-3 border-bottom mb-3">tour price</h4>
-            <div>
-              <p class="mb-0 text-capitalize">
-                price from:
-                <span class="textMainColor"> {{ minBudget | currency }} </span>
-                to:
-                <span class="textMainColor"> {{ maxBudget | currency }} </span>
-              </p>
-
-              <mat-slider class="w-100 mainSliderColor" [min]="0" [max]="9000">
-                <input
-                  [(ngModel)]="minBudget"
-                  name="minBudget"
-                  matSliderStartThumb
-                  (change)="filterTours()"
-                />
-                <input
-                  [(ngModel)]="maxBudget"
-                  name="maxBudget"
-                  matSliderEndThumb
-                  (change)="filterTours()"
-                />
-              </mat-slider>
-            </div>
-          </div>
-
-          <!-- duartion -->
-          <div class="mb-4">
-            <h4 class="h5 fw-bold pb-3 border-bottom mb-3">Tour Duration</h4>
-
-            <div
-              *ngFor="let d of allDurations"
-              class="flexBetween listFilter p-1 rounded-2"
-            >
-              <mat-checkbox
-                class="cPointer"
-                [checked]="selectedDurationSlug === d.slug"
-                (change)="onDurationChange(d.slug, $event.checked)"
-              >
-                {{ d.title }}
-              </mat-checkbox>
-
-              <span class="flexCenter rounded-circle">{{ d.tours_count }}</span>
-            </div>
-          </div>
-
-          <!-- destination -->
-          <div class="mb-4">
-            <h4 class="h5 fw-bold pb-3 border-bottom mb-3">tour destination</h4>
-            <div
-              *ngFor="let dest of allDestinations"
-              class="flexBetween listFilter p-2 rounded-2"
-            >
-              <mat-checkbox
-                class="cPointer"
-                [checked]="isChecked('selectedDestination', dest.id)"
-                (change)="
-                  toggle('selectedDestination', dest.id, $event.checked)
-                "
-              >
-                {{ dest.title }}
-              </mat-checkbox>
-              <span class="flexCenter textMainColor rounded-circle">{{
-                dest.tours_count
-              }}</span>
-            </div>
-          </div>
-        </div>
-
-*/

@@ -3,13 +3,13 @@
 .footer-container {
   position: relative;
   z-index: 1;
-  background-color: $secondary-color ; // Dark blue-grey background #122842
+  background-color: $primary-color ; // Dark blue-grey background #122842
   padding: 60px 0 0;
   color: #fff;
 }
 
 .footer-content {
-  background-color: $secondary-color;
+  background-color: $primary-color; //#073690
   padding: 50px 40px 30px;
   width: 100%;
 }
@@ -50,7 +50,7 @@
     left: 0;
     width: 50px;
     height: 3px;
-    background-color: $primary-color; // Blue underline
+    background-color: $secondary-color; // Blue underline
   }
 }
 
@@ -71,7 +71,7 @@
       display: inline-block;
 
       &:hover {
-        color: $primary-color;
+        color: $secondary-color;
         padding-left: 5px;
       }
     }
@@ -98,7 +98,7 @@
     font-size: 14px;
 
     i {
-      color: $primary-color;
+      color: $secondary-color;
       font-size: 16px;
       width: 20px;
     }
@@ -109,7 +109,7 @@
       transition: all 0.3s ease;
 
       &:hover {
-          color: $primary-color;
+          color: $secondary-color;
       }
     }
   }
@@ -167,7 +167,7 @@
       transition: all 0.3s ease;
 
       &:hover {
-          color: $primary-color;
+          color: $secondary-color;
       }
     }
 
@@ -205,7 +205,7 @@
 
       &:focus {
         outline: none;
-        border-color: $primary-color;
+        border-color: $secondary-color;
         background-color: rgba(255, 255, 255, 0.15);
       }
     }
@@ -225,7 +225,7 @@
 
       &:hover {
         background-color: #fff;
-        color: #122842;
+        color: $secondary-color;
       }
     }
   }
@@ -296,7 +296,7 @@
 
       &:hover {
         background-color: #fff;
-        color: #122842;
+        color: $secondary-color;
       }
     }
 

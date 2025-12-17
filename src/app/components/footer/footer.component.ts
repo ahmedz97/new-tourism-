@@ -64,7 +64,7 @@ export class FooterComponent implements OnInit {
   getSettings(): void {
     this._DataService.getSetting().subscribe({
       next: (res) => {
-        console.log(res.data);
+        // console.log(res.data);
 
         const contactPhone = res.data.find(
           (item: any) => item.option_key === 'CONTACT_PHONE_NUMBER'
@@ -122,7 +122,7 @@ export class FooterComponent implements OnInit {
         this.galleryImages = allImages;
       },
       error: (err) => {
-        console.log('Error loading gallery images:', err);
+        // console.log('Error loading gallery images:', err);
       },
     });
   }
@@ -148,7 +148,7 @@ export class FooterComponent implements OnInit {
   subscribeNewsletter(): void {
     if (this.newsletterEmail) {
       // TODO: Implement newsletter subscription API call
-      console.log('Newsletter subscription:', this.newsletterEmail);
+      // console.log('Newsletter subscription:', this.newsletterEmail);
       // You can add API call here when backend is ready
       // this._DataService.subscribeNewsletter(this.newsletterEmail).subscribe(...)
       alert('Thank you for subscribing!');

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AboutsectionComponent } from '../../components/aboutsection/aboutsection.component';
 import { TeamCartComponent } from '../../components/team-cart/team-cart.component';
 import { TestimonialCartComponent } from '../../components/testimonial-cart/testimonial-cart.component';
@@ -11,6 +11,7 @@ import { CounterComponent } from '../../components/counter/counter.component';
 import { BooknowComponent } from '../../components/booknow/booknow.component';
 import { MakeTripFormComponent } from '../../components/make-trip-form/make-trip-form.component';
 import { TranslateModule } from '@ngx-translate/core';
+import { SeoService } from '../../core/services/seo.service';
 
 @Component({
   selector: 'app-about',
@@ -24,13 +25,22 @@ import { TranslateModule } from '@ngx-translate/core';
     CommonModule,
     WhyBookingWithUsComponent,
     AboutCategoryComponent,
-    CounterComponent,
     MakeTripFormComponent,
     TranslateModule,
   ],
   templateUrl: './about.component.html',
   styleUrl: './about.component.scss',
 })
-export class AboutComponent {
+export class AboutComponent implements OnInit {
+  constructor(private seoService: SeoService) {}
   bannerTitle = 'about us';
+
+  ngOnInit(): void {
+    this.seoService.updateSeoData(
+      {},
+      'Alfa Omega Tours - About us',
+      'Learn more about Alfa Omega Tours, your trusted travel partner for premium tours and exceptional travel experiences.',
+      '/assets/images/alfa omega logo.webp'
+    );
+  }
 }

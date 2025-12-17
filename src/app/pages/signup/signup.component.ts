@@ -13,6 +13,7 @@ import { CommonModule } from '@angular/common';
 import { BannerComponent } from '../../components/banner/banner.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { trigger, state, style, transition, animate } from '@angular/animations';
+import { SeoService } from '../../core/services/seo.service';
 
 @Component({
   selector: 'app-signup',
@@ -46,7 +47,8 @@ export class SignupComponent implements OnInit {
     private _DataService: DataService,
     private _AuthService: AuthService,
     private toastr: ToastrService,
-    private _Router: Router
+    private _Router: Router,
+    private seoService: SeoService
   ) {}
 
   bannerTitle = 'sign up';
@@ -66,13 +68,19 @@ export class SignupComponent implements OnInit {
   });
 
   ngOnInit(): void {
+    this.seoService.updateSeoData(
+      {},
+      'Alfa Omega Tours - Sign Up',
+      'Create your Alfa Omega Tours account to access exclusive travel deals, manage bookings, and enjoy premium travel experiences.',
+      '../../../assets/image/alfa omega versions/Artboard 1 copy 3@4x.png'
+    );
     this.getSettings();
     this.getCountries();
   }
   getSettings(): void {
     this._DataService.getSetting().subscribe({
       next: (res) => {
-        console.log(res.data);
+        // console.log(res.data);
 
         const contactLogo = res.data.find(
           (item: any) => item.option_key === 'logo'
@@ -95,7 +103,7 @@ export class SignupComponent implements OnInit {
   getCountries() {
     this._DataService.getCountries().subscribe({
       next: (response) => {
-        console.log(response.data);
+        // console.log(response.data);
         this.countryList = response.data;
       },
     });
