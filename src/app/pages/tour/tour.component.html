@@ -35,7 +35,7 @@
                     {{ type.title }}
                   </mat-radio-button>
                   <span class="flexCenter rounded-circle">{{
-                    getCategoryToursCount(type.id)
+                    type.tours_count
                   }}</span>
                 </div>
               </mat-radio-group>
@@ -103,7 +103,7 @@
                   </mat-radio-button>
 
                   <span class="flexCenter rounded-circle">{{
-                    getDurationToursCount(d.id)
+                    d.tours_count
                   }}</span>
                 </div>
               </mat-radio-group>
@@ -134,7 +134,7 @@
                     {{ dest.title }}
                   </mat-radio-button>
                   <span class="flexCenter textMainColor rounded-circle">{{
-                    getDestinationToursCount(dest.id)
+                    dest.tours_count
                   }}</span>
                 </div>
               </mat-radio-group>
@@ -149,7 +149,7 @@
           >
             <div class="d-flex align-items-center gap-3">
               <h6 class="textSecondColor fw-bold mb-0">
-                {{ filteredTours.length }} {{ "tour.resultsFound" | translate }}
+                {{ filteredTours.length }} {{ "tour.resultsFound" | translate }} (of {{ totalItems }})
               </h6>
               @if (selectedTripType !== null || selectedDestination !== null ||
               selectedDuration !== null || minBudget > 0 || maxBudget < 5000) {
@@ -230,17 +230,17 @@
           </div>
 
           @if (filteredTours.length==0) {
-          <p class="text-capitalize text-danger fs-2 text-center">
-            {{ "tour.noDataMatched" | translate }}
-          </p>
-          } @else if (filteredTours.length >= 9) {
-          <app-pagination
-            [currentPage]="currentPage"
-            [itemsPerPage]="itemsPerPage"
-            [totalItems]="totalItems"
-            (pageChanged)="onPageChange($event)"
-          ></app-pagination>
-          }
+            <p class="text-capitalize text-danger fs-2 text-center">
+              {{ "tour.noDataMatched" | translate }}
+            </p>
+            } @else { @if (totalItems && totalItems > 15) {
+            <app-pagination
+              [currentPage]="currentPage"
+              [itemsPerPage]="itemsPerPage"
+              [totalItems]="totalItems"
+              (pageChanged)="onPageChange($event)"
+            ></app-pagination>
+            } }
         </div>
       </div>
     </div>
