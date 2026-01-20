@@ -246,19 +246,18 @@
 
               <!-- Reviews list -->
               <div
-                class="row justify-content-between g-3 my-3"
+                class="row justify-content-between g-3 my-1"
                 *ngFor="let item of tourReviews"
               >
                 <div class="col-lg-2 col-sm-3 col-4">
                   <figure class="rounded-circle overflow-hidden">
                     <img
-                      [src]="
-                        item.user_avatar || '../../../assets/image/blog2.jpg'
-                      "
+                      src=
+                         '../../../assets/image/alfa omega versions/Artboard 3@4x.png'
+
                       class="w-100 h-100 object-fit-cover"
                       [alt]="item.reviewer_name"
                       [title]="item.reviewer_name"
-                      onerror="this.src='../../../assets/image/blog2.jpg'"
                     />
                   </figure>
                 </div>

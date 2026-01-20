@@ -12,7 +12,7 @@ export const loaderInterceptor: HttpInterceptorFn = (req, next) => {
   const currentRoute = router.url;
 
   // 🛑 routes you want to ignore loader for
-  const ignoredRoutes = ['/tour'];
+  const ignoredRoutes = ['/faq'];
 
   const shouldIgnore = ignoredRoutes.some((r) => currentRoute.startsWith(r));
 

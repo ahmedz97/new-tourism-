@@ -181,6 +181,17 @@ export class TourDetailsComponent implements OnInit {
     });
   }
 
+  // Helper method to format date as YYYY-MM-DD (local time, no timezone conversion)
+  formatDateForSubmission(date: Date | null): string | null {
+    if (!date) return null;
+
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+
+    return `${year}-${month}-${day}`;
+  }
+
   updateTourSEO(tour: any): void {
     // Extract SEO data from API if available
     const seoData: any = {};
@@ -280,6 +291,15 @@ export class TourDetailsComponent implements OnInit {
   submitBookingForm(): void {
     if (this.bookingFormData.valid) {
       // console.log(this.bookingFormData.value);
+
+      // Format the date for submission
+      const formValue = this.bookingFormData.value;
+      const selectedDate = formValue.start_date;
+
+      if (selectedDate instanceof Date) {
+        formValue.start_date = this.formatDateForSubmission(selectedDate);
+      }
+
       this._BookingService
         // ,localStorage.getItem('accessToken')
         .appendBookingData(this.bookingFormData.value)
