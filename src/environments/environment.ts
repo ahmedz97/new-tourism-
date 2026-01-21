@@ -4,5 +4,6 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'https://tourism-api.perfectsolutions4u.com/api',
+  // apiUrl: 'https://tourism-api.perfectsolutions4u.com/api',
+  apiUrl: 'https://alfa-omega1-dashboard.techup4u.net/api',
 };
