@@ -93,69 +93,59 @@ export class TourComponent implements OnInit {
     );
 
     // 2. Fetch base data
-    this.getAllTours();
+    // this.getAllTours();
     this.getDestination();
     this.getCategories();
     this.getDurations();
 
     // 3. Subscribe to queryParams to read filters from URL
     this._ActivatedRoute.queryParams.subscribe((param) => {
-      // Handle destination from URL
-      if (param['destination']) {
-        this.selectedDestinationSlug = param['destination'];
-        const destination = this.allDestinations.find(
-          (dest) => dest.slug === param['destination']
-        );
-        if (destination) {
-          this.selectedDestination = destination.id;
-        } else {
-          // If destinations not loaded yet, will be resolved in getDestination()
-          this.selectedDestination = null;
+      console.log('params', param);
+
+      // Read query params from URL and set component properties
+      // Support both 'destination' and 'location' for backward compatibility
+      const destinationSlug = param['destination'] || param['location'];
+      if (destinationSlug) {
+        this.selectedDestinationSlug = destinationSlug;
+        // Resolve to ID if destinations are already loaded
+        if (this.allDestinations.length > 0) {
+          const destination = this.allDestinations.find(
+            (dest) => dest.slug === this.selectedDestinationSlug
+          );
+          if (destination) {
+            this.selectedDestination = destination.id;
+          }
         }
       } else {
         this.selectedDestinationSlug = null;
         this.selectedDestination = null;
       }
 
-      // Handle category from URL
       if (param['type']) {
         this.selectedCategorySlug = param['type'];
-        const category = this.allCategories.find(
-          (cat) => cat.slug === param['type']
-        );
-        if (category) {
-          this.selectedTripType = category.id;
-        } else {
-          // If categories not loaded yet, will be resolved in getCategories()
-          this.selectedTripType = null;
+        // Resolve to ID if categories are already loaded
+        if (this.allCategories.length > 0) {
+          const category = this.allCategories.find(
+            (cat) => cat.slug === this.selectedCategorySlug
+          );
+          if (category) {
+            this.selectedTripType = category.id;
+          }
         }
       } else {
         this.selectedCategorySlug = null;
         this.selectedTripType = null;
       }
 
-      // Handle duration from URL (support both ID and slug)
       if (param['duration']) {
-        const durationParam = param['duration'];
-        const isNumeric = !isNaN(Number(durationParam));
-
-        if (isNumeric) {
-          // Legacy format (ID)
-          this.selectedDuration = Number(durationParam);
+        this.selectedDurationSlug = param['duration'];
+        // Resolve to ID if durations are already loaded
+        if (this.allDurations.length > 0) {
           const duration = this.allDurations.find(
-            (dur) => dur.id === this.selectedDuration
-          );
-          this.selectedDurationSlug = duration?.slug || null;
-        } else {
-          // New format (slug)
-          this.selectedDurationSlug = durationParam;
-          const duration = this.allDurations.find(
-            (dur) => dur.slug === durationParam
+            (dur) => dur.slug === this.selectedDurationSlug
           );
           if (duration) {
             this.selectedDuration = duration.id;
-          } else {
-            this.selectedDuration = null;
           }
         }
       } else {
@@ -163,7 +153,15 @@ export class TourComponent implements OnInit {
         this.selectedDuration = null;
       }
 
-      // Reload tours with filters from URL
+      // Read price range from query params if available
+      if (param['minPrice']) {
+        this.minBudget = Number(param['minPrice']) || 0;
+      }
+      if (param['maxPrice']) {
+        this.maxBudget = Number(param['maxPrice']) || 5000;
+      }
+
+      // Fetch tours with filters - getAllTours will use the component properties
       this.getAllTours();
     });
   }
@@ -452,6 +450,34 @@ export class TourComponent implements OnInit {
     this.getAllTours();
 
     // Update URL
+    this.updateURL();
+  }
+
+  clearCategoryFilters() {
+    this.selectedTripType = null;
+    this.selectedCategorySlug = null;
+    this.getAllTours();
+    this.updateURL();
+  }
+
+  clearPriceFilters() {
+    this.minBudget = 0;
+    this.maxBudget = 5000;
+    this.getAllTours();
+    this.updateURL();
+  }
+
+  clearDurationFilters() {
+    this.selectedDuration = null;
+    this.selectedDurationSlug = null;
+    this.getAllTours();
+    this.updateURL();
+  }
+
+  clearDestinationFilters() {
+    this.selectedDestination = null;
+    this.selectedDestinationSlug = null;
+    this.getAllTours();
     this.updateURL();
   }
 

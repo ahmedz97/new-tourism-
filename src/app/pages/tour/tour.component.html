@@ -21,6 +21,7 @@
                   <h4 class="h5 fw-bold mb-0">
                     {{ "tour.tourCategory" | translate }}
                   </h4>
+                  <i class="fa-regular fa-trash-can  ms-4 cPointer text-danger" (click)="clearCategoryFilters()"></i>
                 </mat-panel-title>
               </mat-expansion-panel-header>
               <mat-radio-group
@@ -52,6 +53,7 @@
                   <h4 class="h5 fw-bold mb-0">
                     {{ "tour.tourPrice" | translate }}
                   </h4>
+                  <i class="fa-regular fa-trash-can  ms-4 cPointer text-danger" (click)="clearPriceFilters()"></i>
                 </mat-panel-title>
               </mat-expansion-panel-header>
               <p class="mb-0 text-capitalize">
@@ -88,6 +90,7 @@
                   <h4 class="h5 fw-bold mb-0">
                     {{ "tour.tourDuration" | translate }}
                   </h4>
+                  <i class="fa-regular fa-trash-can  ms-4 cPointer text-danger" (click)="clearDurationFilters()"></i>
                 </mat-panel-title>
               </mat-expansion-panel-header>
               <mat-radio-group
@@ -120,6 +123,7 @@
                   <h4 class="h5 fw-bold mb-0">
                     {{ "tour.tourDestination" | translate }}
                   </h4>
+                  <i class="fa-regular fa-trash-can  ms-4 cPointer text-danger" (click)="clearDestinationFilters()"></i>
                 </mat-panel-title>
               </mat-expansion-panel-header>
               <mat-radio-group
