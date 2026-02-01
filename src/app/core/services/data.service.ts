@@ -9,7 +9,7 @@ import { BaseService } from './base.service';
 export class DataService extends BaseService {
   getTours(searchObj?: any, page: number = 1): Observable<any> {
     const params = {
-      includes: 'destinations,categories,days',
+      includes: 'destinations,categories,days,options',
       ...searchObj,
       page: page,
     };

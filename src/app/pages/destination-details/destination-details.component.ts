@@ -60,7 +60,7 @@ export class DestinationDetailsComponent implements OnInit {
           next: (response) => {
             this.destinationDetails = response.data;
             // console.log(this.destinationSlug);
-            this.showTours(this.destinationSlug);
+
             this.bannerTitle = this.destinationDetails.title;
             // Update SEO
             this.updateDestinationSEO(response.data);
@@ -74,10 +74,15 @@ export class DestinationDetailsComponent implements OnInit {
             console.error('Error fetching destination details:', err);
           },
         });
+
+        const queryParams: any = {
+          destination_slug: this.destinationSlug,
+        };
+
+        this.showTours(queryParams);
       },
     });
     this.getDestinations();
-    // this.showTours();
   }
 
   getDestinations() {
@@ -90,23 +95,26 @@ export class DestinationDetailsComponent implements OnInit {
   }
 
   // to display tours which related this destination
-  showTours(desSlug: string): void {
-    this._DataService.getTours().subscribe({
+  showTours(queryParams: any): void {
+    this._DataService.getTours(queryParams).subscribe({
       next: (response) => {
+        console.log('queryParams', queryParams);
+        console.log('response', response.data.data);
+
         this.tours = response.data.data;
         // console.log('Tours Data:', this.tours, this.tours.length);
-        for (let i = 0; i < this.tours.length; i++) {
-          const tour = this.tours[i];
-          const tourDestinationSlugs = (tour.destinations ?? []).map((x: any) =>
-            x?.slug != null ? String(x.slug).toLowerCase().trim() : ''
-          );
+        // for (let i = 0; i < this.tours.length; i++) {
+        //   const tour = this.tours[i];
+        //   const tourDestinationSlugs = (tour.destinations ?? []).map((x: any) =>
+        //     x?.slug != null ? String(x.slug).toLowerCase().trim() : ''
+        //   );
 
-          // check if any destination matches the slug
-          if (tourDestinationSlugs.includes(desSlug.toLowerCase())) {
-            this.filteredTours.push(tour);
-          }
-          // console.log(tourDestinationSlugs, this.filteredTours, desSlug);
-        }
+        //   // check if any destination matches the slug
+        //   if (tourDestinationSlugs.includes(desSlug.toLowerCase())) {
+        //     this.filteredTours.push(tour);
+        //   }
+        //   // console.log(tourDestinationSlugs, this.filteredTours, desSlug);
+        // }
       },
       error: (err) => {
         console.error('Error fetching tours:', err);

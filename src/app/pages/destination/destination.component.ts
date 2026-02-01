@@ -45,7 +45,7 @@ export class DestinationComponent implements OnInit {
   getDestination() {
     this._DataService.getDestination().subscribe({
       next: (res) => {
-        this.allDestinations = res.data.data;
+        this.allDestinations = res.data.data.reverse();
 
         // console.log('all destinations', res);
       },
@@ -70,7 +70,7 @@ export class DestinationComponent implements OnInit {
       992: { items: 3.5 },
       1200: { items: 4.5 },
     },
-    nav: true,
+    nav: false,
     navText: [
       '<i class="fa fa-angle-double-left"></i>',
       '<i class="fa fa-angle-double-right"></i>',

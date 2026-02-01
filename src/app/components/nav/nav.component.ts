@@ -183,8 +183,8 @@ export class NavComponent implements OnInit {
   getDestination() {
     this._DataService.getDestination().subscribe({
       next: (res) => {
-        // console.log(res.data.data);
-        this.allDestinations = res.data.data;
+        console.log(res.data.data);
+        this.allDestinations = res.data.data.reverse();
       },
       error: (err) => {
         // console.log(err);
@@ -207,7 +207,7 @@ export class NavComponent implements OnInit {
   getSettings(): void {
     this._DataService.getSetting().subscribe({
       next: (res) => {
-        // console.log(res.data);
+        console.log('settings', res.data);
 
         const contactLogo = res.data.find(
           (item: any) => item.option_key === 'logo'

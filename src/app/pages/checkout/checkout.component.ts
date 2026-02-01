@@ -1,5 +1,10 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -71,8 +76,8 @@ export class CheckoutComponent implements OnInit {
   checkoutForm: FormGroup = new FormGroup({
     first_name: new FormControl(''),
     last_name: new FormControl(''),
-    phone: new FormControl('' , [Validators.pattern(this.phonePattern)]),
-    email: new FormControl('' , [Validators.email]),
+    phone: new FormControl('', [Validators.pattern(this.phonePattern)]),
+    email: new FormControl('', [Validators.email]),
     // start_date: new FormControl(''),
     country: new FormControl(''),
     // state: new FormControl(''),
@@ -94,6 +99,8 @@ export class CheckoutComponent implements OnInit {
         next: (response) => {
           // console.log(response);
           this.toaster.success(response.message);
+          this.getListCart();
+          this._Router.navigate(['/']);
         },
         error: (err) => {
           // console.log(err);

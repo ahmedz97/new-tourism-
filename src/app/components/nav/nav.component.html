@@ -27,7 +27,7 @@
             </a>
 
             <!-- Tours Dropdown -->
-            <ng-container *ngIf="link.path === '/' && allCategories?.length">
+            <ng-container *ngIf="link.path === '/' && allCategories.length">
               <div
                 class="nav-link-item dropdown-wrapper"
                 [class.active]="isToursActive()"
@@ -59,7 +59,7 @@
             </ng-container>
 
             <!-- Destinations Dropdown -->
-            <ng-container *ngIf="link.path === '/' && allDestinations?.length">
+            <ng-container *ngIf="link.path === '/' && allDestinations.length">
               <div
                 class="nav-link-item dropdown-wrapper"
                 [class.active]="isDestinationsActive()"
@@ -245,7 +245,7 @@
           </a>
 
           <!-- Tours Dropdown (Mobile) -->
-          <ng-container *ngIf="link.path === '/' && allCategories?.length">
+          <ng-container *ngIf="link.path === '/' && allCategories.length">
             <div class="sidebar-dropdown">
               <div
                 class="sidebar-dropdown-trigger"
@@ -276,7 +276,7 @@
           </ng-container>
 
           <!-- Destinations Dropdown (Mobile) -->
-          <ng-container *ngIf="link.path === '/' && allDestinations?.length">
+          <ng-container *ngIf="link.path === '/' && allDestinations.length">
             <div class="sidebar-dropdown">
               <div
                 class="sidebar-dropdown-trigger"

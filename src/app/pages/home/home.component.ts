@@ -396,7 +396,7 @@ export class HomeComponent implements OnInit {
         tap((res) => {
           if (res) {
             // console.log('home page -- ', res);
-            this.allDestinations = res.data.data;
+            this.allDestinations = res.data.data.reverse();
           }
         })
       )
