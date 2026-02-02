@@ -40,7 +40,7 @@ export class AboutComponent implements OnInit {
       {},
       'Alfa Omega Tours - About us',
       'Learn more about Alfa Omega Tours, your trusted travel partner for premium tours and exceptional travel experiences.',
-      '/assets/images/alfa omega logo.webp'
+      '/assets/image/alfa omega logo .webp'
     );
   }
 }

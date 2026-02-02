@@ -132,7 +132,7 @@ export class HomeComponent implements OnInit {
   // video
   rawVideoUrl =
     'https://www.youtube.com/embed/k3KqP69xuPc?autoplay=1&mute=1&loop=1&playlist=k3KqP69xuPc&controls=0&showinfo=0&rel=0&iv_load_policy=3';
-  posterSrc = '../../../assets/images/blog2.jpg';
+  posterSrc = '../../../assets/image/blog2.jpg';
   sanitizedVideoUrl: SafeResourceUrl | null = null;
   isVideoPlaying = false;
   isBrowser = false;
@@ -197,7 +197,7 @@ export class HomeComponent implements OnInit {
             seoData.meta_description ||
               seoData.og_description ||
               'Discover amazing tours and travel experiences with Alfa Omega Tours. Book your dream vacation today.',
-            seoData.og_image || '/assets/image/alfa omega logo.webp'
+            seoData.og_image || '/assets/image/alfa omega logo .webp'
           );
         } else {
           // If settings API fails, use defaults with test
@@ -208,7 +208,7 @@ export class HomeComponent implements OnInit {
             },
             'Alfa Omega Tours - Home',
             'Discover amazing tours and travel experiences with Alfa Omega Tours. Book your dream vacation today.',
-            '/assets/image/alfa omega logo.webp'
+            '/assets/image/alfa omega logo .webp'
           );
         }
       },
@@ -221,7 +221,7 @@ export class HomeComponent implements OnInit {
           },
           'Alfa Omega Tours - Home',
           'Discover amazing tours and travel experiences with Alfa Omega Tours. Book your dream vacation today.',
-          '/assets/image/alfa omega logo.webp'
+          '/assets/image/alfa omega logo .webp'
         );
       },
     });

@@ -38,7 +38,7 @@ export class SeoService {
   private defaultTitle = 'Golden Oceans - Premium Travel Experiences';
   private defaultDescription =
     'Discover amazing tours and travel experiences with Golden Oceans. Book your dream vacation today.';
-  private defaultImage = '/assets/image/golden ocean/Artboard 2.png';
+  private defaultImage = '/assets/image/alfa omega logo .webp';
   private siteUrl = 'https://backend-goldenoceans.perfectsolutions4u.com';
 
   constructor(

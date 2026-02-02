@@ -223,7 +223,7 @@ export class TourDetailsComponent implements OnInit {
       tour.seo?.og_image ||
       tour.image ||
       tour.gallery?.[0]?.image ||
-      '/assets/images/alfa omega logo.webp';
+      '/assets/image/alfa omega logo .webp';
     const tourDescription =
       tour.seo?.meta_description ||
       tour.seo?.og_description ||

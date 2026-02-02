@@ -155,7 +155,7 @@ export class DestinationDetailsComponent implements OnInit {
     const destImage =
       destination.seo?.og_image ||
       destination.image ||
-      '/assets/image/alfa omega logo.webp';
+      '/assets/image/alfa omega logo .webp';
     const destDescription =
       destination.seo?.meta_description ||
       destination.seo?.og_description ||

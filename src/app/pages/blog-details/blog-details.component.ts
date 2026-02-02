@@ -194,7 +194,7 @@ export class BlogDetailsComponent implements OnInit {
     }
 
     const blogImage =
-      blog.seo?.og_image || blog.image || '/assets/image/alfa omega logo.webp';
+      blog.seo?.og_image || blog.image || '/assets/image/alfa omega logo .webp';
     const blogDescription =
       blog.seo?.meta_description ||
       blog.seo?.og_description ||
