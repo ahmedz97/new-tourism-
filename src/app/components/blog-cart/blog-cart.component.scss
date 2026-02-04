@@ -1,0 +1,35 @@
+@import '../../../styles/variables';
+
+.item{
+
+        h4{
+          top: -5% !important;
+        left: 50% !important;
+        transform: translate(-50%, 30%);
+        }
+
+        figcaption{
+          h5{
+            line-clamp: 2;
+            -webkit-line-clamp: 2;
+            overflow: hidden;
+            -webkit-box-orient: vertical;
+            display: -webkit-box;
+            height: 60px;
+        }
+        .description{
+          height: 80px;
+          overflow: hidden;
+          }
+        }
+
+        &:hover{
+          img{
+            transform: scale(1.1) rotate(2deg);
+            -webkit-transform: scale(1.1) rotate(2deg);
+            -moz-transform: scale(1.1) rotate(2deg);
+            -ms-transform: scale(1.1) rotate(2deg);
+            -o-transform: scale(1.1) rotate(2deg);
+}
+        }
+}

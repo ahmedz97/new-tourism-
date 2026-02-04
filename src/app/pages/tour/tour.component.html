@@ -1,0 +1,254 @@
+<div class="mb-5">
+  <app-banner [bannerTitle]="bannerTitle"></app-banner>
+</div>
+
+<section class="my-5 py-5 tourSearchBox">
+  <div class="container">
+    <div class="row g-3">
+      <div class="col-xl-3 col-lg-4">
+        <div
+          class="sideBar p-3 rounded-3 bg-white text-capitalize textSecondColor"
+        >
+          <mat-accordion [multi]="false">
+            <!-- category -->
+            <mat-expansion-panel
+              [expanded]="!isCategoryCollapsed"
+              (opened)="isCategoryCollapsed = false"
+              (closed)="isCategoryCollapsed = true"
+            >
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  <h4 class="h5 fw-bold mb-0">
+                    {{ "tour.tourCategory" | translate }}
+                  </h4>
+                  <i class="fa-regular fa-trash-can  ms-4 cPointer text-danger" (click)="clearCategoryFilters()"></i>
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+              <mat-radio-group
+                [value]="selectedTripType"
+                (change)="onRadioChange('selectedTripType', $event.value)"
+              >
+                <div
+                  *ngFor="let type of allCategories"
+                  class="flexBetween listFilter p-1 rounded-2"
+                >
+                  <mat-radio-button class="cPointer" [value]="type.id">
+                    {{ type.title }}
+                  </mat-radio-button>
+                  <span class="flexCenter rounded-circle">{{
+                    type.tours_count
+                  }}</span>
+                </div>
+              </mat-radio-group>
+            </mat-expansion-panel>
+
+            <!-- price -->
+            <mat-expansion-panel
+              [expanded]="!isPriceCollapsed"
+              (opened)="isPriceCollapsed = false"
+              (closed)="isPriceCollapsed = true"
+            >
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  <h4 class="h5 fw-bold mb-0">
+                    {{ "tour.tourPrice" | translate }}
+                  </h4>
+                  <i class="fa-regular fa-trash-can  ms-4 cPointer text-danger" (click)="clearPriceFilters()"></i>
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+              <p class="mb-0 text-capitalize">
+                {{ "tour.priceFrom" | translate }}:
+                <span class="textMainColor"> {{ minBudget | currency }} </span>
+                {{ "tour.to" | translate }}:
+                <span class="textMainColor"> {{ maxBudget | currency }} </span>
+              </p>
+
+              <mat-slider class="w-100 mainSliderColor" [min]="0" [max]="9000">
+                <input
+                  [(ngModel)]="minBudget"
+                  name="minBudget"
+                  matSliderStartThumb
+                  (change)="filterTours()"
+                />
+                <input
+                  [(ngModel)]="maxBudget"
+                  name="maxBudget"
+                  matSliderEndThumb
+                  (change)="filterTours()"
+                />
+              </mat-slider>
+            </mat-expansion-panel>
+
+            <!-- duration -->
+            <mat-expansion-panel
+              [expanded]="!isDurationCollapsed"
+              (opened)="isDurationCollapsed = false"
+              (closed)="isDurationCollapsed = true"
+            >
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  <h4 class="h5 fw-bold mb-0">
+                    {{ "tour.tourDuration" | translate }}
+                  </h4>
+                  <i class="fa-regular fa-trash-can  ms-4 cPointer text-danger" (click)="clearDurationFilters()"></i>
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+              <mat-radio-group
+                [value]="selectedDuration"
+                (change)="onRadioChange('selectedDuration', $event.value)"
+              >
+                <div
+                  *ngFor="let d of allDurations"
+                  class="flexBetween listFilter p-1 rounded-2"
+                >
+                  <mat-radio-button class="cPointer" [value]="d.id">
+                    {{ d.title }}
+                  </mat-radio-button>
+
+                  <span class="flexCenter rounded-circle">{{
+                    d.tours_count
+                  }}</span>
+                </div>
+              </mat-radio-group>
+            </mat-expansion-panel>
+
+            <!-- destination -->
+            <mat-expansion-panel
+              [expanded]="!isDestinationCollapsed"
+              (opened)="isDestinationCollapsed = false"
+              (closed)="isDestinationCollapsed = true"
+            >
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  <h4 class="h5 fw-bold mb-0">
+                    {{ "tour.tourDestination" | translate }}
+                  </h4>
+                  <i class="fa-regular fa-trash-can  ms-4 cPointer text-danger" (click)="clearDestinationFilters()"></i>
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+              <mat-radio-group
+                [value]="selectedDestination"
+                (change)="onRadioChange('selectedDestination', $event.value)"
+              >
+                <div
+                  *ngFor="let dest of allDestinations"
+                  class="flexBetween listFilter p-2 rounded-2"
+                >
+                  <mat-radio-button class="cPointer" [value]="dest.id">
+                    {{ dest.title }}
+                  </mat-radio-button>
+                  <span class="flexCenter textMainColor rounded-circle">{{
+                    dest.tours_count
+                  }}</span>
+                </div>
+              </mat-radio-group>
+            </mat-expansion-panel>
+          </mat-accordion>
+        </div>
+      </div>
+      <div class="col-xl-9 col-lg-8">
+        <div>
+          <div
+            class="flexBetween flex-wrap p-3 py-2 sideBar rounded-3 bg-white"
+          >
+            <div class="d-flex align-items-center gap-3">
+              <h6 class="textSecondColor fw-bold mb-0">
+                {{ filteredTours.length }} {{ "tour.resultsFound" | translate }} (of {{ totalItems }})
+              </h6>
+              @if (selectedTripType !== null || selectedDestination !== null ||
+              selectedDuration !== null || minBudget > 0 || maxBudget < 5000) {
+
+              <i
+                class="fa fa-trash cPointer text-danger fs-5"
+                (click)="clearAllFilters()"
+              ></i>
+              }
+            </div>
+            <!-- style toggle -->
+            <div>
+              <i
+                class="fa-regular fa-table-cells mx-1 fs-5 fw-bold cPointer rounded-2"
+                [ngClass]="{
+                  'borderMainColor textMainColor border  py-1':
+                    layoutType === 'grid',
+                  'borderSecondColor textSecondColor': layoutType !== 'grid'
+                }"
+                (click)="setLayout('grid')"
+              >
+              </i>
+
+              <i
+                class="fa-regular fa-table-list mx-1 fs-5 fw-bold cPointer rounded-2"
+                [ngClass]="{
+                  'borderMainColor textMainColor border py-1 ':
+                    layoutType === 'list',
+                  'borderSecondColor textSecondColor': layoutType !== 'list'
+                }"
+                (click)="setLayout('list')"
+              >
+              </i>
+            </div>
+            <select
+              (change)="onSortChange($event)"
+              class="text-capitalize form-control wfit"
+            >
+              <option value="" selected disabled>
+                -- {{ "tour.sortBy" | translate }} --
+              </option>
+              <option value="recent">
+                {{ "tour.mostRecent" | translate }}
+              </option>
+              <option value="seller">
+                {{ "tour.mostSeller" | translate }}
+              </option>
+              <option value="priceLowToHigh">
+                {{ "tour.priceLowToHigh" | translate }}
+              </option>
+              <option value="priceHighToLow">
+                {{ "tour.priceHighToLow" | translate }}
+              </option>
+            </select>
+          </div>
+
+          <div class="row g-4 my-3">
+            <div
+              class="mt-0 px-0"
+              [ngClass]="layoutType === 'grid' ? 'col-xl-4 col-md-6' : 'col-12'"
+              *ngFor="
+                let tour of filteredTours
+                  | paginate
+                    : {
+                        id: 'tour-pagination',
+                        currentPage: currentPage,
+                        itemsPerPage: itemsPerPage,
+                        totalItems: totalItems
+                      };
+                let i = index
+              "
+            >
+              <app-tour-cart
+                [tour]="tour"
+                [layoutType]="layoutType"
+              ></app-tour-cart>
+            </div>
+          </div>
+
+          @if (filteredTours.length==0) {
+            <p class="text-capitalize text-danger fs-2 text-center">
+              {{ "tour.noDataMatched" | translate }}
+            </p>
+            } @else { @if (totalItems && totalItems > 15) {
+            <app-pagination
+              [currentPage]="currentPage"
+              [itemsPerPage]="itemsPerPage"
+              [totalItems]="totalItems"
+              (pageChanged)="onPageChange($event)"
+            ></app-pagination>
+            } }
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<app-make-trip-form></app-make-trip-form>
