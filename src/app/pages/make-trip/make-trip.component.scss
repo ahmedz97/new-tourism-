@@ -28,10 +28,10 @@
 }
 
 /* ============================================
-   Modern Stepper Styles
+   Custom Stepper Styles
    ============================================ */
 
-.modern-stepper {
+.custom-stepper {
   background: white;
   border-radius: 24px;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
@@ -46,43 +46,123 @@
     left: 0;
     right: 0;
     height: 4px;
-    background: linear-gradient(90deg, $primary-color 0%, $secondary-color 100%);
+    background: linear-gradient(90deg, $secondary-color 50%, $primary-color 50%);
+  }
+}
+
+.stepper-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+  padding: 1.5rem 0;
+  position: relative;
+}
+.step-header-item {
+  display: flex;
+  // flex-direction: column;
+  align-items: center;
+  flex: 1;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  z-index: 2;
+
+  &:hover {
+    transform: translateY(-5px);
   }
 
-  ::ng-deep {
-    .mat-step-header {
-      padding: 1.5rem;
-      border-radius: 12px;
-      transition: all 0.3s ease;
-      margin-bottom: 2rem;
-
-      &:hover {
-        background: rgba(129, 154, 145, 0.05);
-        transform: translateX(5px);
-      }
-
-      .mat-step-label {
-        font-size: 1.1rem;
-        font-weight: 600;
-        color: $text-color;
-      }
-
-      .mat-step-icon-selected {
-        background-color: $primary-color;
-        color: white;
-        transform: scale(1.1);
-        box-shadow: 0 4px 12px rgba(129, 154, 145, 0.4);
-      }
-
-      .mat-step-icon-state-done {
-        background-color: $secondary-color;
-        color: white;
-      }
+  &.active {
+    .step-number {
+      background-color: $primary-color;
+      color: white;
+      transform: scale(1.1);
+      box-shadow: 0 4px 12px rgba(129, 154, 145, 0.4);
     }
 
-    .mat-step-content {
-      padding: 2rem 0;
+    .step-label {
+      color: $primary-color;
+      font-weight: 700;
     }
+  }
+
+  &.completed {
+    .step-number {
+      background-color: $secondary-color;
+      color: white;
+    }
+
+    .step-label {
+      color: $secondary-color;
+    }
+  }
+}
+
+
+.step-number {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: #e5e7eb;
+  color: #6b7280;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  font-weight: 700;
+  margin-inline: 0.75rem;
+  transition: all 0.3s ease;
+  position: relative;
+  flex-shrink: 0;
+
+  i {
+    font-size: 1rem;
+  }
+}
+
+.step-label {
+  display: flex;
+  align-items: center;
+  font-size: 1rem;
+  font-weight: 600;
+  color: $text-color;
+  // text-align: center;
+  transition: all 0.3s ease;
+
+  i {
+    color: $primary-color;
+    margin-right: 0.5rem;
+  }
+}
+
+.step-connector {
+  flex: 1;
+  height: 3px;
+  background-color: #e5e7eb;
+  margin: 0 1rem;
+  margin-top: -3px;
+  position: relative;
+  z-index: 1;
+  transition: all 0.3s ease;
+
+  &.completed {
+    background: linear-gradient(90deg, $secondary-color 50%, $primary-color 50%);
+  }
+}
+
+.step-content-wrapper {
+  min-height: 400px;
+  animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
@@ -124,7 +204,7 @@
     transform: translateX(-50%);
     width: 80px;
     height: 2px;
-    background: linear-gradient(90deg, $primary-color, $secondary-color);
+    background: linear-gradient(90deg, $secondary-color 50%, $primary-color 50%);
   }
 }
 
@@ -303,7 +383,7 @@ input:checked + .destination-card-label .card_data::before {
 .destination-indicator {
   width: 0;
   height: 3px;
-  background: linear-gradient(90deg, $primary-color, $secondary-color);
+  background: linear-gradient(90deg, $secondary-color 50%, transparent 50%);
   margin: 0.75rem auto 0;
   border-radius: 2px;
   transition: width 0.3s ease;
@@ -311,7 +391,7 @@ input:checked + .destination-card-label .card_data::before {
 
 input:checked + .destination-card-label {
   .card_data {
-    background: linear-gradient(135deg, $primary-color 0%, $secondary-color 100%);
+    background: linear-gradient(135deg, $secondary-color 100%, transparent);
     color: white;
   }
 
@@ -570,7 +650,7 @@ input[type="radio"] {
   height: 45px;
   border-radius: 50%;
   border: none;
-  background: linear-gradient(135deg, $primary-color 0%, $secondary-color 100%);
+  background: linear-gradient(135deg, $secondary-color 80%, transparent);
   color: white;
   font-size: 1.2rem;
   cursor: pointer;
@@ -685,7 +765,7 @@ input[type="radio"] {
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, $primary-color 0%, $secondary-color 100%);
+  background: linear-gradient(135deg, $secondary-color 80%, transparent );
   color: white;
 
   &:hover {
@@ -756,6 +836,22 @@ input[type="radio"] {
    ============================================ */
 
 @media screen and (max-width: 768px) {
+  ::ng-deep .mat-horizontal-stepper-header-container {
+    flex-wrap: wrap !important;
+  }
+
+  .stepper-header{
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .step-header-item{
+    width: 100%;
+    margin-bottom: 1rem !important;
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
   .make-trip-section {
     padding: 2rem 0 4rem;
   }

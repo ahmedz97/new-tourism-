@@ -78,16 +78,6 @@ export class MakeTripFormComponent implements OnInit {
     approximate_time: new FormControl(''),
   });
 
-  // onTourSubmit() {
-  //   const formData = {
-  //     ...this.tourSearchForm.value,
-  //   };
-
-  //   // navigate to tour List
-  //   this._Router.navigate(['/tour'], {
-  //     queryParams: formData,
-  //   });
-  // }
 
   onMakeTripSubmit() {
     if (this.makeTripForm.invalid) return;
@@ -97,6 +87,25 @@ export class MakeTripFormComponent implements OnInit {
 
     const formValue = this.makeTripForm.value;
 
+    // Prepare query parameters
+    const queryParams: any = {};
+    if (formValue.city) queryParams.city = formValue.city;
+    if (formValue.start_date) {
+      // Convert Date to string if it's a Date object (format: YYYY-MM-DD)
+      const startDate = formValue.start_date as any;
+      queryParams.start_date = startDate instanceof Date 
+        ? this.formatDateForQuery(startDate)
+        : formValue.start_date;
+    }
+    if (formValue.end_date) {
+      // Convert Date to string if it's a Date object (format: YYYY-MM-DD)
+      const endDate = formValue.end_date as any;
+      queryParams.end_date = endDate instanceof Date 
+        ? this.formatDateForQuery(endDate)
+        : formValue.end_date;
+    }
+    if (formValue.approximate_time) queryParams.approximate_time = formValue.approximate_time;
+
     this._MaketripService.setMakeTripSteps({
       destination: formValue.city || undefined,
       fromDuration: formValue.start_date || null,
@@ -104,7 +113,7 @@ export class MakeTripFormComponent implements OnInit {
       appro: formValue.approximate_time || null,
     });
 
-    this._Router.navigate(['/makeTrip']);
+    this._Router.navigate(['/makeTrip'], { queryParams });
   }
 
   onChangeTime(TypeTime: string): void {
@@ -129,5 +138,13 @@ export class MakeTripFormComponent implements OnInit {
   ngOnDestroy(): void {
     this.$destory.next();
     this.$destory.complete();
+  }
+
+  private formatDateForQuery(date: Date): string {
+    // Format date as YYYY-MM-DD without timezone conversion
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
   }
 }

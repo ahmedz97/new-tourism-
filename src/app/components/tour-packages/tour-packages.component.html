@@ -1,0 +1,30 @@
+
+<div class="mb-5">
+    <app-banner [bannerTitle]="bannerTitle"></app-banner>
+</div>
+
+<section class="my-5 py-5 special-tours">
+    <div class="container">
+        <div class="secTitle text-center mb-5">
+            <h2 class="text-black fw-bold">{{ 'tourPackages.ourTourPackagesTitle' | translate }}</h2>
+            <p class="text-muted">
+                {{ 'tourPackages.ourTourPackagesDescription' | translate }}
+            </p>
+        </div>
+        <!-- Grid Layout (when fewer tours than items shown) -->
+        <div *ngIf="shouldUseGrid" class="row g-3">
+            <div *ngFor="let tour of allTours" class="col-lg-4 col-md-6">
+                <app-tour-cart [tour]="tour"></app-tour-cart>
+            </div>
+        </div>
+
+        <!-- Carousel Layout (when tours >= items shown) -->
+        <owl-carousel-o *ngIf="!shouldUseGrid" [options]="tourOptions">
+            <ng-container *ngFor="let tour of allTours">
+                <ng-template carouselSlide>
+                    <app-tour-cart [tour]="tour"></app-tour-cart>
+                </ng-template>
+            </ng-container>
+        </owl-carousel-o>
+    </div>
+</section>

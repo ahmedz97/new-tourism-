@@ -1,6 +1,12 @@
-@import '../../../styles/#language';
+@import '../../../styles/variables';
 
 .about{
+  // Section heading - Brand Blue
+  .secTitle h2 {
+    color: $primary-color !important; // #0B3D91 - Brand Blue
+    font-weight: 600-700;
+  }
+
   .counterBox{
     width: 140px;
     height: 140px;

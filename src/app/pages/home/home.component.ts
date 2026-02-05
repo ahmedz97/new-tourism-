@@ -77,7 +77,6 @@ declare var $: any;
     MatRadioModule,
     TranslateModule,
     DestinationCartComponent,
-    AboutCategoryComponent,
     // CounterComponent,
     // TeamCartComponent,
   ],
@@ -129,9 +128,9 @@ export class HomeComponent implements OnInit {
     // { src: '../../../assets/image/new/5.png' },
   ];
 
-  // video
   rawVideoUrl =
-    'https://www.youtube.com/embed/k3KqP69xuPc?autoplay=1&mute=1&loop=1&playlist=k3KqP69xuPc&controls=0&showinfo=0&rel=0&iv_load_policy=3';
+    'https://www.youtube.com/embed/mfxQy5A_tHs?si=eilUOO8UUpKaHj58&autoplay=1&mute=1&loop=1&playlist=mfxQy5A_tHs&controls=0&showinfo=0&rel=0&iv_load_policy=3';
+    // 'https://www.youtube.com/embed/k3KqP69xuPc?autoplay=1&mute=1&loop=1&playlist=k3KqP69xuPc&controls=0&showinfo=0&rel=0&iv_load_policy=3';
   posterSrc = '../../../assets/image/blog2.jpg';
   sanitizedVideoUrl: SafeResourceUrl | null = null;
   isVideoPlaying = false;
@@ -248,10 +247,28 @@ export class HomeComponent implements OnInit {
   onMakeTripSubmit() {
     if (this.makeTripForm.invalid) return;
 
-    // console.log('fire done onMakeTripSubmit');
-    // console.log(this.makeTripForm.value);
+    console.log('makeTripForm', this.makeTripForm.value);
 
     const formValue = this.makeTripForm.value;
+
+    // Prepare query parameters
+    const queryParams: any = {};
+    if (formValue.city) queryParams.city = formValue.city;
+    if (formValue.start_date) {
+      // Convert Date to string if it's a Date object (format: YYYY-MM-DD)
+      const startDate = formValue.start_date as any;
+      queryParams.start_date = startDate instanceof Date 
+        ? this.formatDateForQuery(startDate)
+        : formValue.start_date;
+    }
+    if (formValue.end_date) {
+      // Convert Date to string if it's a Date object (format: YYYY-MM-DD)
+      const endDate = formValue.end_date as any;
+      queryParams.end_date = endDate instanceof Date 
+        ? this.formatDateForQuery(endDate)
+        : formValue.end_date;
+    }
+    if (formValue.approximate_time) queryParams.approximate_time = formValue.approximate_time;
 
     this._MaketripService.setMakeTripSteps({
       destination: formValue.city || undefined,
@@ -260,7 +277,7 @@ export class HomeComponent implements OnInit {
       appro: formValue.approximate_time || null,
     });
 
-    this._Router.navigate(['/makeTrip']);
+    this._Router.navigate(['/makeTrip'], { queryParams });
   }
 
   onChangeTime(TypeTime: string): void {
@@ -585,25 +602,7 @@ export class HomeComponent implements OnInit {
     //   '<i class="fa fa-angle-double-right"></i>',
     // ],
   };
-  // testimonialOptions: OwlOptions = {
-  //   loop: true,
-  //   mouseDrag: true,
-  //   touchDrag: true,
-  //   pullDrag: true,
-  //   autoplay: true,
-  //   dots: false,
-  //   smartSpeed: 1500,
-  //   margin: 30,
-  //   responsive: {
-  //     0: { items: 1 },
-  //     992: { items: 2 },
-  //   },
-  //   nav: true,
-  //   navText: [
-  //     '<i class="fa fa-angle-double-left"></i>',
-  //     '<i class="fa fa-angle-double-right"></i>',
-  //   ],
-  // };
+ 
   tourOptions: OwlOptions = {
     loop: true,
     mouseDrag: true,
@@ -672,4 +671,12 @@ export class HomeComponent implements OnInit {
       '<i class="fa fa-angle-double-right"></i>',
     ],
   };
+
+  private formatDateForQuery(date: Date): string {
+    // Format date as YYYY-MM-DD without timezone conversion
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
 }

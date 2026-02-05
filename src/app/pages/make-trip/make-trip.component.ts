@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, inject } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild, ChangeDetectorRef } from '@angular/core';
 import {
   FormBuilder,
   Validators,
@@ -6,14 +6,12 @@ import {
   FormGroup,
   FormArray,
 } from '@angular/forms';
-import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
 import {
   MaketripService,
   TripPayload,
 } from '../../core/services/maketrip.service';
 import { BookingService } from '../../core/services/booking.service';
 import { ToastrService } from 'ngx-toastr';
-import { MatStepper, MatStepperModule } from '@angular/material/stepper';
 import { CommonModule } from '@angular/common';
 import { MatRadioModule } from '@angular/material/radio';
 import {
@@ -26,7 +24,7 @@ import { MatSliderModule } from '@angular/material/slider';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
-import { Router, RouterLink } from '@angular/router';
+import { Router, RouterLink, ActivatedRoute } from '@angular/router';
 import { BannerComponent } from '../../components/banner/banner.component';
 import {
   trigger,
@@ -43,7 +41,6 @@ import { SeoService } from '../../core/services/seo.service';
   selector: 'app-make-trip',
   standalone: true,
   imports: [
-    MatStepperModule,
     MatRadioModule,
     MatSelectModule,
     MatSliderModule,
@@ -54,12 +51,6 @@ import { SeoService } from '../../core/services/seo.service';
     CommonModule,
     ReactiveFormsModule,
     BannerComponent,
-  ],
-  providers: [
-    {
-      provide: STEPPER_GLOBAL_OPTIONS,
-      useValue: { showError: true },
-    },
   ],
   templateUrl: './make-trip.component.html',
   styleUrl: './make-trip.component.scss',
@@ -122,16 +113,18 @@ import { SeoService } from '../../core/services/seo.service';
     ]),
   ],
 })
-export class MakeTripComponent implements OnInit {
+export class MakeTripComponent implements OnInit, AfterViewInit {
   constructor(
     private _MaketripService: MaketripService,
     private _BookingService: BookingService,
     private toaster: ToastrService,
     private _Router: Router,
-    private seoService: SeoService
+    private seoService: SeoService,
+    private _ActivatedRoute: ActivatedRoute,
+    private cdr: ChangeDetectorRef
   ) {}
 
-  @ViewChild('stepper') stepper!: MatStepper;
+  currentStep: number = 0;
 
   bannerTitle: string = 'make Your trip';
 
@@ -160,6 +153,7 @@ export class MakeTripComponent implements OnInit {
   destinationList: any[] = [];
   minBudget: number = 0;
   maxBudget: number = 0;
+  private prefilledData: TripPayload | null = null;
 
   ngOnInit() {
     this.seoService.updateSeoData(
@@ -171,10 +165,40 @@ export class MakeTripComponent implements OnInit {
     this.showCountries();
     this.buildForms();
 
+    // Read query parameters from URL
+    this._ActivatedRoute.queryParams.subscribe((params) => {
+      if (params && Object.keys(params).length > 0) {
+        const queryData: TripPayload = {
+          destination: params['city'] || undefined,
+          fromDuration: params['start_date'] ? this.toDate(params['start_date']) : null,
+          ToDuration: params['end_date'] ? this.toDate(params['end_date']) : null,
+          appro: params['approximate_time'] ? Number(params['approximate_time']) : null,
+        };
+
+        // Set data in service
+        this._MaketripService.setMakeTripSteps(queryData);
+        this.prefilledData = queryData;
+        this.prefilled = true;
+      }
+    });
+
+    // Check for existing data from service first
+    const existingData = this._MaketripService.getMakeTripSteps();
+    if (existingData) {
+      this.prefilledData = existingData;
+      this.prefilled = true;
+    }
+
     this._MaketripService.getDestination().subscribe({
       next: (response) => {
         this.destinationList = response.data.data.reverse() || [];
-        // console.log('destinationList', this.destinationList);
+        // Apply prefilled data after destinationList is loaded
+        if (this.prefilledData) {
+          this.applyIncoming(this.prefilledData);
+          setTimeout(() => {
+            this.navigateToCorrectStep();
+          }, 100);
+        }
       },
       error: (err) => {
         // console.log(err.error.message);
@@ -182,24 +206,82 @@ export class MakeTripComponent implements OnInit {
     });
 
     this._MaketripService.makeTripSteps$.subscribe((data) => {
-      // this.tripData = data;
-      // console.log('Received shared data:', data);
-
-      // patch data
       if (!data) {
         this.prefilled = false;
+        this.prefilledData = null;
         return;
       }
+      this.prefilledData = data;
       this.applyIncoming(data);
       this.prefilled = true;
 
-      // ignore first , second step after patchh values
-      queueMicrotask(() => {
-        if (this.stepper) this.stepper.selectedIndex = 2;
-      });
+      // Navigate to correct step after data is applied
+      setTimeout(() => {
+        this.navigateToCorrectStep();
+      }, 100);
     });
 
     this.onBudgetChange();
+  }
+
+  ngAfterViewInit() {
+    // Wait for stepper to be ready, then navigate if needed
+    setTimeout(() => {
+      this.navigateToCorrectStep();
+    }, 200);
+  }
+
+  goToStep(stepIndex: number) {
+    this.currentStep = stepIndex;
+    this.cdr.detectChanges();
+  }
+
+  nextStep() {
+    if (this.currentStep < 2) {
+      this.currentStep++;
+      this.cdr.detectChanges();
+    }
+  }
+
+  previousStep() {
+    if (this.currentStep > 0) {
+      this.currentStep--;
+      this.cdr.detectChanges();
+    }
+  }
+
+  private navigateToCorrectStep() {
+    if (!this.prefilledData || !this.prefilledData.destination) {
+      // No destination, start from step 1
+      this.currentStep = 0;
+      this.cdr.detectChanges();
+      return;
+    }
+
+    // Check if dates are also provided
+    const hasDates = (this.prefilledData.fromDuration && this.prefilledData.ToDuration) || this.prefilledData.appro;
+    
+    if (hasDates) {
+      // Navigate to step 3
+      this.currentStep = 2;
+    } else {
+      // Navigate to step 2 (date selection)
+      this.currentStep = 1;
+    }
+    
+    this.cdr.detectChanges();
+  }
+
+  isStepCompleted(stepIndex: number): boolean {
+    if (stepIndex === 0) {
+      return this.prefilled && !!this.firstFormGroup.get('destination')?.value;
+    }
+    if (stepIndex === 1) {
+      return this.prefilled && (!!this.secondFormGroup.get('start_date')?.value || 
+                                !!this.secondFormGroup.get('end_date')?.value || 
+                                !!this.secondFormGroup.get('month')?.value);
+    }
+    return false;
   }
 
   private buildForms() {
@@ -231,17 +313,68 @@ export class MakeTripComponent implements OnInit {
     });
   }
 
-  private toDate(v: any) {
-    return v instanceof Date ? v : v ? new Date(v) : null;
+  private toDate(v: any): Date | null {
+    if (!v) return null;
+    if (v instanceof Date) {
+      // If it's already a Date, ensure it's at local midnight to avoid timezone issues
+      const year = v.getFullYear();
+      const month = v.getMonth();
+      const day = v.getDate();
+      return new Date(year, month, day);
+    }
+    
+    // Handle string dates (ISO format or date-only)
+    if (typeof v === 'string') {
+      // If it's a date-only string (YYYY-MM-DD), create date at local midnight
+      if (/^\d{4}-\d{2}-\d{2}$/.test(v)) {
+        const [year, month, day] = v.split('-').map(Number);
+        return new Date(year, month - 1, day);
+      }
+      // If it's an ISO string, extract date part and create local date
+      const dateMatch = v.match(/^(\d{4})-(\d{2})-(\d{2})/);
+      if (dateMatch) {
+        const [, year, month, day] = dateMatch.map(Number);
+        return new Date(year, month - 1, day);
+      }
+      // Fallback to parsing the string
+      const date = new Date(v);
+      if (!isNaN(date.getTime())) {
+        const year = date.getFullYear();
+        const month = date.getMonth();
+        const day = date.getDate();
+        return new Date(year, month, day);
+      }
+    }
+    
+    return null;
   }
 
   private applyIncoming(data: TripPayload) {
-    const destination = data.destination ?? '';
+    const destinationSlug = data.destination ?? '';
     const fromDate = this.toDate(data.fromDuration ?? null);
     const toDate = this.toDate(data.ToDuration ?? null);
     const approx = data.appro ?? null;
 
-    this.firstFormGroup.patchValue({ destination });
+    // Convert slug to title for the form (form uses title as value)
+    let destinationTitle = '';
+    if (destinationSlug && this.destinationList.length > 0) {
+      const foundDestination = this.destinationList.find(
+        (dest) => dest.slug === destinationSlug
+      );
+      if (foundDestination) {
+        destinationTitle = foundDestination.title;
+      }
+    }
+
+    // Patch the form value
+    if (destinationTitle) {
+      this.firstFormGroup.patchValue({ destination: destinationTitle });
+      this.firstFormGroup.markAsTouched();
+      this.firstFormGroup.updateValueAndValidity();
+    } else if (destinationSlug) {
+      // If destinationList not loaded yet, store slug and will apply later
+      this.firstFormGroup.patchValue({ destination: destinationSlug });
+    }
 
     if (approx) {
       this.secondFormGroup.patchValue({
@@ -271,10 +404,20 @@ export class MakeTripComponent implements OnInit {
 
   submitForm() {
     if (this.submitFormGroup.status == 'VALID') {
+      // Get form values
+      const firstFormValue = this.firstFormGroup.value;
+      const secondFormValue = this.secondFormGroup.value;
+      const submitFormValue = this.submitFormGroup.value;
+
+      // Format dates to YYYY-MM-DD format
       this.makeTripForm = {
-        ...this.firstFormGroup.value,
-        ...this.secondFormGroup.value,
-        ...this.submitFormGroup.value,
+        ...firstFormValue,
+        start_date: this.formatDateForSubmission(secondFormValue.start_date),
+        end_date: this.formatDateForSubmission(secondFormValue.end_date),
+        type: secondFormValue.type,
+        month: secondFormValue.month,
+        days: secondFormValue.days,
+        ...submitFormValue,
       };
 
       this._MaketripService.sendDataTrip(this.makeTripForm).subscribe({
@@ -287,6 +430,43 @@ export class MakeTripComponent implements OnInit {
         },
       });
     }
+  }
+
+  private formatDateForSubmission(date: any): string | null {
+    if (!date) return null;
+    
+    // If it's already a Date object
+    if (date instanceof Date) {
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
+      return `${year}-${month}-${day}`;
+    }
+    
+    // If it's a string (ISO format or date-only)
+    if (typeof date === 'string') {
+      // If it's already in YYYY-MM-DD format, return as is
+      if (/^\d{4}-\d{2}-\d{2}$/.test(date)) {
+        return date;
+      }
+      
+      // If it's an ISO string, extract date part
+      const dateMatch = date.match(/^(\d{4})-(\d{2})-(\d{2})/);
+      if (dateMatch) {
+        return dateMatch[0]; // Returns YYYY-MM-DD
+      }
+      
+      // Try to parse as Date
+      const parsedDate = new Date(date);
+      if (!isNaN(parsedDate.getTime())) {
+        const year = parsedDate.getFullYear();
+        const month = String(parsedDate.getMonth() + 1).padStart(2, '0');
+        const day = String(parsedDate.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+      }
+    }
+    
+    return null;
   }
 
   onBudgetChange() {
@@ -314,5 +494,16 @@ export class MakeTripComponent implements OnInit {
         this.countriesList = response.data;
       },
     });
+  }
+
+  resetStepper() {
+    this.currentStep = 0;
+    this.prefilled = false;
+    this.prefilledData = null;
+    this.firstFormGroup.reset();
+    this.secondFormGroup.reset();
+    this.submitFormGroup.reset();
+    this._MaketripService.setMakeTripSteps(null as any);
+    this.cdr.detectChanges();
   }
 }

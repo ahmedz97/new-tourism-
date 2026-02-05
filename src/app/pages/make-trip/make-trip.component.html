@@ -5,22 +5,64 @@
 <section class="make-trip-section" id="makeTrip">
   <div class="container">
     <div class="stepper-wrapper" @fadeInUp>
-      <mat-stepper class="modern-stepper text-capitalize" #stepper>
-        <!-- Step 1: Choose Destinations -->
-        <mat-step
-          class="step-container"
-          [stepControl]="firstFormGroup"
-          [completed]="prefilled"
-          [editable]="!prefilled"
-        >
-          <form [formGroup]="firstFormGroup">
-            <ng-template matStepLabel>
-              <div class="step-label">
-                <i class="fa fa-map-marker-alt me-2"></i>
-                Choose Your Destinations
-              </div>
-            </ng-template>
+      <!-- Custom Stepper -->
+      <div class="custom-stepper">
+        <!-- Stepper Header -->
+        <div class="stepper-header">
+          <div
+            class="step-header-item d-flex"
+            [class.active]="currentStep === 0"
+            [class.completed]="isStepCompleted(0)"
+            (click)="goToStep(0)"
+          >
+            <div class="step-number">
+              <i class="fa fa-check" *ngIf="isStepCompleted(0)"></i>
+              <span *ngIf="!isStepCompleted(0)">1</span>
+            </div>
+            <div class="step-label">
+              <!-- <i class="fa fa-map-marker-alt me-2"></i> -->
+              Choose Your Destinations
+            </div>
+          </div>
 
+          <div class="step-connector" [class.completed]="isStepCompleted(0)"></div>
+
+          <div
+            class="step-header-item"
+            [class.active]="currentStep === 1"
+            [class.completed]="isStepCompleted(1)"
+            (click)="goToStep(1)"
+          >
+            <div class="step-number">
+              <i class="fa fa-check" *ngIf="isStepCompleted(1)"></i>
+              <span *ngIf="!isStepCompleted(1)">2</span>
+            </div>
+            <div class="step-label">
+              <!-- <i class="fa fa-calendar-alt me-2"></i> -->
+              Pickup Travel Dates
+            </div>
+          </div>
+
+          <div class="step-connector" [class.completed]="isStepCompleted(1)"></div>
+
+          <div
+            class="step-header-item"
+            [class.active]="currentStep === 2"
+            [class.completed]="currentStep === 2"
+          >
+            <div class="step-number">
+              <span>3</span>
+            </div>
+            <div class="step-label">
+              <!-- <i class="fa fa-user-edit me-2"></i> -->
+              Complete Your Information
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 1: Choose Destinations -->
+        <div class="step-content-wrapper" *ngIf="currentStep === 0">
+          <form [formGroup]="firstFormGroup">
             <div class="step-content" @fadeInUp>
               <div class="step-header">
                 <h2 class="step-title">Where would you like to go?</h2>
@@ -81,30 +123,23 @@
               </div>
 
               <div class="step-actions" @fadeInUp>
-                <button class="modern-btn btn-primary" matStepperNext>
+                <button
+                  type="button"
+                  class="modern-btn btn-primary"
+                  (click)="nextStep()"
+                  [disabled]="!firstFormGroup.get('destination')?.value"
+                >
                   <span>Continue</span>
                   <i class="fa fa-arrow-right ms-2"></i>
                 </button>
               </div>
             </div>
           </form>
-        </mat-step>
+        </div>
 
         <!-- Step 2: Pickup Travel Dates -->
-        <mat-step
-          class="step-container"
-          [stepControl]="secondFormGroup"
-          [completed]="prefilled"
-          [editable]="!prefilled"
-        >
+        <div class="step-content-wrapper" *ngIf="currentStep === 1">
           <form [formGroup]="secondFormGroup">
-            <ng-template matStepLabel>
-              <div class="step-label">
-                <i class="fa fa-calendar-alt me-2"></i>
-                Pickup Travel Dates
-              </div>
-            </ng-template>
-
             <div class="step-content" @fadeInUp>
               <div class="step-header">
                 <h2 class="step-title">When do you want to travel?</h2>
@@ -208,30 +243,31 @@
                 </div>
               </div>
 
-              <div class="step-actions" @fadeInUp *ngIf="!prefilled">
-                <button class="modern-btn btn-secondary" matStepperPrevious>
+              <div class="step-actions" @fadeInUp>
+                <button
+                  type="button"
+                  class="modern-btn btn-secondary"
+                  (click)="previousStep()"
+                >
                   <i class="fa fa-arrow-left me-2"></i>
                   <span>Back</span>
                 </button>
-                <button class="modern-btn btn-primary" matStepperNext>
+                <button
+                  type="button"
+                  class="modern-btn btn-primary"
+                  (click)="nextStep()"
+                >
                   <span>Continue</span>
                   <i class="fa fa-arrow-right ms-2"></i>
                 </button>
               </div>
             </div>
           </form>
-        </mat-step>
+        </div>
 
         <!-- Step 3: Submit -->
-        <mat-step class="step-container" [stepControl]="submitFormGroup">
+        <div class="step-content-wrapper" *ngIf="currentStep === 2">
           <form [formGroup]="submitFormGroup">
-            <ng-template matStepLabel>
-              <div class="step-label">
-                <i class="fa fa-user-edit me-2"></i>
-                Complete Your Information
-              </div>
-            </ng-template>
-
             <div class="step-content" @fadeInUp>
               <div class="step-header">
                 <h2 class="step-title">Tell us about yourself</h2>
@@ -258,7 +294,6 @@
                         formControlName="first_name"
                         placeholder="Ahmed"
                       />
-                      <!-- <mat-icon matPrefix>person</mat-icon> -->
                     </mat-form-field>
                   </div>
                   <div class="col-md-4" @fadeInUp>
@@ -273,7 +308,6 @@
                         formControlName="last_name"
                         placeholder="Zenger"
                       />
-                      <!-- <mat-icon matPrefix>person_outline</mat-icon> -->
                     </mat-form-field>
                   </div>
                   <div class="col-md-4" @fadeInUp>
@@ -288,7 +322,6 @@
                         formControlName="email"
                         placeholder="ahmed@gmail.com"
                       />
-                      <!-- <mat-icon matPrefix>email</mat-icon> -->
                     </mat-form-field>
                   </div>
                   <div class="col-md-6" @fadeInUp>
@@ -305,7 +338,6 @@
                           {{ item.name }}
                         </mat-option>
                       </mat-select>
-                      <!-- <mat-icon matPrefix>public</mat-icon> -->
                     </mat-form-field>
                   </div>
                   <div class="col-md-6" @fadeInUp>
@@ -320,7 +352,6 @@
                         formControlName="phone_number"
                         placeholder="01069769249"
                       />
-                      <!-- <mat-icon matPrefix>phone</mat-icon> -->
                     </mat-form-field>
                   </div>
                 </div>
@@ -344,7 +375,6 @@
                         formControlName="min_person_budget"
                         (input)="onBudgetChange()"
                       />
-                      <!-- <mat-icon matPrefix>attach_money</mat-icon> -->
                     </mat-form-field>
                   </div>
                   <div class="col-md-6" @fadeInUp>
@@ -359,7 +389,6 @@
                         formControlName="max_person_budget"
                         (input)="onBudgetChange()"
                       />
-                      <!-- <mat-icon matPrefix>attach_money</mat-icon> -->
                     </mat-form-field>
                   </div>
                   <div class="col-md-12" @fadeInUp>
@@ -500,32 +529,31 @@
                     rows="4"
                     placeholder="Add any special requests or notes here..."
                   ></textarea>
-                  <!-- <mat-icon matPrefix>note</mat-icon> -->
                 </mat-form-field>
               </div>
 
               <div class="step-actions final-actions" @fadeInUp>
                 <button
-                  class="modern-btn btn-secondary"
-                  matStepperPrevious
-                  *ngIf="!prefilled"
                   type="button"
+                  class="modern-btn btn-secondary"
+                  (click)="previousStep()"
+                  *ngIf="!prefilled"
                 >
                   <i class="fa fa-arrow-left me-2"></i>
                   <span>Back</span>
                 </button>
                 <button
+                  type="button"
                   (click)="submitForm()"
                   class="modern-btn btn-success"
-                  type="button"
                 >
                   <i class="fa fa-paper-plane me-2"></i>
                   <span>Submit Inquiry</span>
                 </button>
                 <button
-                  class="modern-btn btn-outline"
-                  (click)="stepper.reset()"
                   type="button"
+                  class="modern-btn btn-outline"
+                  (click)="resetStepper()"
                 >
                   <i class="fa fa-redo me-2"></i>
                   <span>Reset</span>
@@ -533,8 +561,8 @@
               </div>
             </div>
           </form>
-        </mat-step>
-      </mat-stepper>
+        </div>
+      </div>
     </div>
   </div>
 </section>

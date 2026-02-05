@@ -1,18 +1,40 @@
 @import '../../../styles/variables';
+
 .item{
-    box-shadow: rgba($primary-color, 0.16) 0px 10px 40px;
+    background: #FFFFFF; // Default white background
+    border: 1px solid $soft-border;
+    border-radius: 12px;
+    box-shadow: rgba($primary-color, 0.08) 0px 4px 16px;
+    transition: all 0.3s ease;
 
     h3{
       height: 50px;
+      color: $neutral-text; // Neutral text color
+    }
+    p{
+      height: 70px;
+      color: $neutral-text; // Neutral text color
+    }
+
+    i {
+      color: $primary-color; // Brand Blue icon
+      transition: all 0.3s ease;
     }
 
     &:hover{
-      background-color: $primary-color;
+      background-color: $primary-color; // Brand Blue on hover
       color: white;
       box-shadow: rgba($primary-color, 0.3) 0px 19px 38px, rgba($primary-color, 0.22) 0px 15px 12px;
-      i , h3 , p {
-          color: white;
-        }
+      transform: translateY(-4px); // Lift effect
+
+      i {
+        color: $secondary-color; // Luxury Gold icon on hover
+        fill: $secondary-color;
+      }
+
+      h3, p {
+        color: white;
+      }
     }
 
     @media screen and (max-width:568px) {

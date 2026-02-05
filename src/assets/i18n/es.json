@@ -1,10 +1,12 @@
 {
   "nav": {
     "home": "Inicio",
+    "tourPackages": "Paquetes Turísticos",
+    "nileCruises": "Cruceros por el Nilo",
     "about": "Acerca de",
     "blogs": "Blogs",
     "contact": "Contacto",
-    "tours": "Tours",
+    "tours": "Tipos de Viaje",
     "destinations": "Destinos"
   },
   "common": {
@@ -60,7 +62,7 @@
     "ourMostPopularTours": "Nuestros Tours Más Populares",
     "ultimateTravelExperience": "Experiencia de Viaje Más Completa",
     "makeYourTour": "Crea tu tour",
-    "findYourTour": "Crea tu propio tour",
+    "findYourTour": "Elige tu tour",
     "haveAnExactTime": "Seleccione un intervalo de tiempo exacto.",
     "haveAnApproximateTime": "Seleccione un tiempo aproximado",
     "myDestination": "Mi Destino...",
@@ -289,7 +291,19 @@
     "freedomToChange": "Libertad de Cambiar",
     "refundGuarantee": "Garantía de Reembolso",
     "bestPriceGuarantee": "Garantía de Mejor Precio",
-    "description": "Es un hecho establecido desde hace mucho tiempo que un lector se distraerá"
+    "description": "Es un hecho establecido desde hace mucho tiempo que un lector se distraerá",
+    "trustedOperatorTitle": "Operador turístico de confianza con experiencia comprobada",
+    "trustedOperatorDescription": "Alfa Omega Tours es una agencia de viajes confiable conocida por organizar tours seguros, bien planificados y memorables.",
+    "customizedPackagesTitle": "Paquetes de viaje y tours personalizados",
+    "customizedPackagesDescription": "Ofrecemos paquetes turísticos a medida diseñados para adaptarse a su presupuesto, intereses y objetivos de viaje.",
+    "professionalGuidesTitle": "Guías turísticos profesionales y conocedores",
+    "professionalGuidesDescription": "Nuestros guías experimentados brindan conocimientos locales expertos, conocimiento cultural y un servicio excepcional.",
+    "comfortableArrangementsTitle": "Arreglos de viaje cómodos y sin complicaciones",
+    "comfortableArrangementsDescription": "Disfrute de transporte sin problemas, alojamientos de calidad y planificación de viajes sin estrés.",
+    "affordablePackagesTitle": "Paquetes turísticos asequibles con gran valor",
+    "affordablePackagesDescription": "Precios competitivos en tours nacionales e internacionales sin comprometer la calidad.",
+    "excellentSupportTitle": "Excelente atención al cliente y satisfacción",
+    "excellentSupportDescription": "Servicio al cliente dedicado antes, durante y después de su viaje garantiza una experiencia de viaje fluida."
   },
   "banner": {
     "home": "Inicio"
@@ -317,5 +331,13 @@
     "login": "Iniciar Sesión",
     "dontHaveAccount": "¿No tienes una cuenta?",
     "signUp": "Registrarse"
+  },
+  "tourPackages": {
+    "ourTourPackagesTitle": "Nuestros paquetes turísticos tours",
+    "ourTourPackagesDescription": "Nuestros Paquetes Turísticos son diseñados para brindarte la mejor experiencia de viaje. Ofrecemos una amplia gama de paquetes turísticos para satisfacer tus necesidades y presupuesto."
+  },
+  "nileCruises": {
+    "ourNileCruisesTitle": "Nuestros cruceros por el Nilo",
+    "ourNileCruisesDescription": "Nuestros Cruceros por el Nilo son diseñados para brindarte la mejor experiencia de viaje. Ofrecemos una amplia gama de cruceros por el Nilo para satisfacer tus necesidades y presupuesto."
   }
 }

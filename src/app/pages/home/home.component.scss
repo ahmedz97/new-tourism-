@@ -37,10 +37,8 @@
     }
 
     .video-overlay {
-      background: linear-gradient(to bottom,
-          rgba(0, 0, 0, 0.3) 0%,
-          rgba(0, 0, 0, 0.2) 50%,
-          rgba(0, 0, 0, 0.4) 100%);
+      // Dark overlay for better text readability - Luxury Design
+      background: rgba(15, 30, 58, 0.55); // rgba(15,30,58,.55) - Dark Navy overlay
       z-index: 1;
       pointer-events: none;
     }
@@ -238,71 +236,75 @@
       }
 
       // Enhanced input fields styling
-      .bg-secondary {
-        background: linear-gradient(135deg, rgba($secondary-color, 0.05), rgba($primary-color, 0.05)) !important;
-        border: 1px solid rgba($secondary-color, 0.1);
-        transition: all 0.3s ease;
+      // .bg-secondary {
+      //   background: linear-gradient(135deg, rgba($secondary-color, 0.05), rgba($primary-color, 0.05)) !important;
+      //   border: 1px solid rgba($secondary-color, 0.1);
+      //   transition: all 0.3s ease;
 
-        &:hover {
-          background: linear-gradient(135deg, rgba($secondary-color, 0.1), rgba($primary-color, 0.1)) !important;
-          border-color: rgba($secondary-color, 0.3);
-        }
+      //   &:hover {
+      //     background: linear-gradient(135deg, rgba($secondary-color, 0.1), rgba($primary-color, 0.1)) !important;
+      //     border-color: rgba($secondary-color, 0.3);
+      //   }
 
-        label {
-          color: $secondary-color;
-          font-weight: 600;
-          transition: all 0.3s ease;
+      //   label {
+      //     color: $secondary-color;
+      //     font-weight: 600;
+      //     transition: all 0.3s ease;
 
-          i {
-            color: $secondary-color;
-            transition: all 0.3s ease;
-          }
-        }
+      //     i {
+      //       color: $secondary-color;
+      //       transition: all 0.3s ease;
+      //     }
+      //   }
 
-        &:focus-within {
-          border-color: $secondary-color;
-          box-shadow: 0 0 0 3px rgba($secondary-color, 0.1);
+      //   &:focus-within {
+      //     border-color: $secondary-color;
+      //     box-shadow: 0 0 0 3px rgba($secondary-color, 0.1);
 
-          label {
-            color: $secondary-color;
+      //     label {
+      //       color: $secondary-color;
 
-            i {
-              transform: scale(1.1);
-              color: $primary-color;
-            }
-          }
-        }
-      }
+      //       i {
+      //         transform: scale(1.1);
+      //         color: $primary-color;
+      //       }
+      //     }
+      //   }
+      // }
 
       // Enhanced button styling
       .mainBtn {
-        background: linear-gradient(135deg, $secondary-color, $primary-color);
+        // background: linear-gradient(135deg, $secondary-color, $primary-color);
+        background: $secondary-color;
+        box-shadow: $shadow;
+        color: $light-background !important;
         border: none;
         transition: all 0.3s ease;
         position: relative;
         overflow: hidden;
+        i{color: $light-background !important; border-color: $light-background !important; background-color: transparent !important;}
 
-        &::before {
-          content: '';
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          width: 0;
-          height: 0;
-          border-radius: 50%;
-          background: rgba(255, 255, 255, 0.3);
-          transform: translate(-50%, -50%);
-          transition: width 0.6s, height 0.6s;
-        }
+        // &::before {
+        //   content: '';
+        //   position: absolute;
+        //   top: 50%;
+        //   left: 50%;
+        //   width: 0;
+        //   height: 0;
+        //   border-radius: 50%;
+        //   background: rgba(255, 255, 255, 0.3);
+        //   transform: translate(-50%, -50%);
+        //   transition: width 0.6s, height 0.6s;
+        // }
 
         &:hover {
           transform: translateY(-2px);
-          box-shadow: 0 8px 25px rgba($secondary-color, 0.4);
+          background-color: $primary-color;
 
-          &::before {
-            width: 300px;
-            height: 300px;
-          }
+          // &::before {
+          //   width: 300px;
+          //   height: 300px;
+          // }
         }
 
         &:active {
@@ -358,9 +360,9 @@
     }
 
     .mat-mdc-tab.mdc-tab--active {
-      background: linear-gradient(135deg, $secondary-color, $primary-color);
+      background: linear-gradient(135deg, $secondary-color, transparent);
       border-radius: 8px 8px 0 0;
-      box-shadow: 0 4px 15px rgba($secondary-color, 0.3);
+      box-shadow: $shadow;
       transform: translateY(-2px);
       transition: all 0.3s ease;
 

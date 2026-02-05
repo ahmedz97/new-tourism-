@@ -1,3 +1,5 @@
+@import '../../../styles/variables';
+
 .row > div{
     
     @media (min-width: 1200px) {
@@ -22,10 +24,15 @@
 
 .item {
   h4 {
-    -webkit-text-stroke: 1px #090A09;
-    -webkit-text-fill-color: transparent;
+    color: $secondary-color; // Luxury Gold for numbers
     font-size: 60px;
+    font-weight: 700; // Bold numbers for emphasis
+    -webkit-text-stroke: 0; // Remove stroke
+    -webkit-text-fill-color: $secondary-color; // Use gold color
   }
 
-
+  h6 {
+    color: $neutral-text; // Neutral text color
+    font-weight: 500;
+  }
 }

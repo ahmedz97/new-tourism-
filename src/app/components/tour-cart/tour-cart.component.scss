@@ -1,22 +1,26 @@
 @import '../../../styles/variables';
 
 .item{
+    background: #FFFFFF; // White card background
+    border: 1px solid $soft-border; // Soft border
+    border-radius: 16px; // Luxury rounded corners
+    overflow: hidden;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); // Subtle shadow
+
     &:hover{
-        transform: translateY(5px) scale(1.01);
+        transform: translateY(-6px); // Lift effect
+        box-shadow: 0 16px 36px rgba(0, 0, 0, 0.15); // Enhanced shadow on hover
+        border-color: $secondary-color; // Gold border on hover
 
         figure button.mainBtn.Btn {
             background-color: $primary-color;
         }
     }
-    // figure{
-    //     button.mainBtn.Btn i{
-    //         color: white;
-    //     }
 
-    // }
     figcaption{
         h3{
-            color: $secondary-color;
+            color: $neutral-text; // Neutral text color
             height: 50px;
             display: -webkit-box;
             -webkit-line-clamp: 2;
@@ -24,11 +28,38 @@
             overflow: hidden;
             -webkit-box-orient: vertical;
             font-size: 20px;
+            font-weight: 600;
 
             &:hover{
-                color: $primary-color;
+                color: $primary-color; // Brand blue on hover
             }
         }
 
+        // Price styling - Brand Blue
+        .textMainColor {
+            color: $primary-color !important; // #0B3D91 - Brand Blue
+            font-weight: 700;
+            font-size: 20px;
+        }
+
+        // CTA Button styling
+        .secBtn.Btn {
+            background: $secondary-color; // Luxury Gold
+            color: $dark-navy; // Dark Navy text
+            border: 2px solid $secondary-color;
+            border-radius: 8px;
+            padding: 10px 24px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(201, 162, 77, 0.2);
+
+            &:hover {
+                background: $primary-color; // Brand Blue on hover
+                color: #FFFFFF;
+                border-color: $primary-color;
+                box-shadow: 0 8px 24px rgba(11, 61, 145, 0.25);
+                transform: translateY(-2px);
+            }
+        }
     }
 }

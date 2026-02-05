@@ -1,34 +1,72 @@
 @import '../../../styles/variables';
 
 .item{
+    border-radius: 16px; // Luxury rounded corners
+    overflow: hidden;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12); // Elevation shadow
+    transition: all 0.3s ease;
+
     figure {
       height: 350px;
+      position: relative;
+      overflow: hidden;
+
+      // Gradient overlay for better text readability
+      &::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          to top,
+          rgba(0, 0, 0, 0.65),
+          rgba(0, 0, 0, 0)
+        );
+        z-index: 1;
+        pointer-events: none;
+      }
+
+      img {
+        transition: transform 0.5s ease;
+      }
+
+      figcaption {
+        position: relative;
+        z-index: 2; // Above gradient overlay
+
+        h5 {
+          color: #FFFFFF; // White text for visibility
+          font-weight: 700; // Bold title
+          transition: letter-spacing 0.3s ease;
+        }
+      }
+
       & > span{
         transform: translateX(-200%);
-}
-        &:hover{
-          & > span{
-            transform: translateX(0);
-}
+        z-index: 2; // Above gradient
+      }
+
+      &:hover{
+        & > span{
+          transform: translateX(0);
         }
+
+        img{
+          transform: scale(1.2);
+          -webkit-transform: scale(1.2);
+          -moz-transform: scale(1.2);
+          -ms-transform: scale(1.2);
+          -o-transform: scale(1.2);
+        }
+
+        figcaption h5{
+          letter-spacing: 4px;
+        }
+      }
     }
 
     &:hover{
-
-       figure{
-        img{
-           transform: scale(1.2);
-           -webkit-transform: scale(1.2);
-           -moz-transform: scale(1.2);
-           -ms-transform: scale(1.2);
-           -o-transform: scale(1.2);
-}
-          figcaption h5{
-            letter-spacing: 4px;
-          }
-
-}
-       }
-
+      transform: translateY(-6px); // Lift effect
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.15); // Enhanced shadow on hover
     }
+}
 

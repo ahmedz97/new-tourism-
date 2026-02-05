@@ -16,109 +16,139 @@
       <div class="desktop-nav d-none d-lg-flex">
         <div class="nav-links-wrapper">
           <ng-container *ngFor="let link of navigationLinks">
-            <!-- Main Navigation Link -->
-            <a
-              [routerLink]="link.path"
-              routerLinkActive="active"
-              [routerLinkActiveOptions]="{ exact: link.path === '/' }"
-              class="nav-link-item"
-            >
-              <span>{{ link.label | translate }}</span>
-            </a>
-
-            <!-- Tours Dropdown -->
-            <ng-container *ngIf="link.path === '/' && allCategories.length">
-              <div
-                class="nav-link-item dropdown-wrapper"
-                [class.active]="isToursActive()"
+            <!-- Skip Tour Packages and Nile Cruises in normal loop (they're rendered after Home) -->
+            <ng-container *ngIf="link.label !== 'nav.tourPackages' && link.label !== 'nav.nileCruises'">
+              <!-- Main Navigation Link -->
+              <a
+                [routerLink]="link.path"
+                routerLinkActive="active"
+                [routerLinkActiveOptions]="{ exact: link.path === '/' }"
+                class="nav-link-item"
               >
-                <a
-                  routerLink="/tour"
-                  routerLinkActive="active"
-                  class="dropdown-trigger"
-                >
-                  <span>{{ "nav.tours" | translate }}</span>
-                  <i class="fas fa-chevron-down"></i>
-                </a>
-                <div class="dropdown-menu-modern">
-                  <div class="dropdown-content">
-                    <ng-container *ngFor="let cat of allCategories">
-                      <a
-                        class="dropdown-item-modern"
-                        [routerLink]="['/tour']"
-                        routerLinkActive="active"
-                        [queryParams]="{ type: cat.slug }"
-                      >
-                        <i class="fas fa-map-marked-alt"></i>
-                        <span>{{ cat.title | translate }}</span>
-                      </a>
-                    </ng-container>
-                  </div>
-                </div>
-              </div>
-            </ng-container>
+                <span>{{ link.label | translate }}</span>
+              </a>
 
-            <!-- Destinations Dropdown -->
-            <ng-container *ngIf="link.path === '/' && allDestinations.length">
-              <div
-                class="nav-link-item dropdown-wrapper"
-                [class.active]="isDestinationsActive()"
-              >
-                <a
-                  routerLink="/destination"
-                  routerLinkActive="active"
-                  class="dropdown-trigger"
-                >
-                  <span>{{ "nav.destinations" | translate }}</span>
-                  <i class="fas fa-chevron-down"></i>
-                </a>
-                <div class="dropdown-menu-modern destinations-dropdown">
-                  <div class="dropdown-content">
-                    <ng-container *ngFor="let dest of allDestinations">
-                      <!-- Regular Destination -->
-                      <ng-container *ngIf="!isEgypt(dest)">
-                        <a
-                          class="dropdown-item-modern"
-                          [routerLink]="['/destination', dest.slug]"
-                          routerLinkActive="active"
-                        >
-                          <i class="fas fa-globe-americas"></i>
-                          <span>{{ dest.title }}</span>
-                        </a>
-                      </ng-container>
+              <!-- Tour Packages and Nile Cruises (after Home, before dropdowns) -->
+              <ng-container *ngIf="link.path === '/'">
+                <!-- Tour Packages Link -->
+                <ng-container *ngFor="let navLink of navigationLinks">
+                  <a
+                    *ngIf="navLink.label === 'nav.tourPackages'"
+                    [routerLink]="navLink.path"
+                    routerLinkActive="active"
+                    class="nav-link-item"
+                  >
+                    <span>{{ navLink.label | translate }}</span>
+                  </a>
+                </ng-container>
 
-                      <!-- Egypt with Submenu -->
-                      <ng-container *ngIf="isEgypt(dest)">
-                        <div class="dropdown-item-modern has-submenu">
+                <!-- Nile Cruises Link -->
+                <ng-container *ngFor="let navLink of navigationLinks">
+                  <a
+                    *ngIf="navLink.label === 'nav.nileCruises'"
+                    [routerLink]="navLink.path"
+                    routerLinkActive="active"
+                    class="nav-link-item"
+                  >
+                    <span>{{ navLink.label | translate }}</span>
+                  </a>
+                </ng-container>
+
+                <!-- Tours Dropdown -->
+                <ng-container *ngIf="allCategories.length">
+                  <div
+                    class="nav-link-item dropdown-wrapper"
+                    [class.active]="isToursActive()"
+                  >
+                    <a
+                      routerLink="/tour"
+                      routerLinkActive="active"
+                      class="dropdown-trigger"
+                    >
+                      <span>{{ "nav.tours" | translate }}</span>
+                      <i class="fas fa-chevron-down"></i>
+                    </a>
+                    <div class="dropdown-menu-modern">
+                      <div class="dropdown-content">
+                        <ng-container *ngFor="let cat of allCategories">
                           <a
-                            [routerLink]="['/destination', dest.slug]"
-                            class="submenu-trigger"
+                            class="dropdown-item-modern"
+                            [routerLink]="['/tour']"
+                            routerLinkActive="active"
+                            [queryParams]="{ type: cat.slug }"
                           >
-                            <i class="fas fa-globe-americas"></i>
-                            <span>{{ dest.title }}</span>
-                            <i class="fas fa-chevron-right submenu-icon"></i>
+                            <i class="fas fa-map-marked-alt"></i>
+                            <span>{{ cat.title | translate }}</span>
                           </a>
-                          <div class="submenu-modern">
-                            <div class="submenu-content">
-                              <ng-container *ngFor="let cat of egyptCategories">
-                                <a
-                                  class="submenu-item"
-                                  [routerLink]="['/tour']"
-                                  routerLinkActive="active"
-                                  [queryParams]="{ type: cat.slug }"
-                                >
-                                  <i class="fas fa-map-pin"></i>
-                                  <span>{{ cat.title }}</span>
-                                </a>
-                              </ng-container>
-                            </div>
-                          </div>
-                        </div>
-                      </ng-container>
-                    </ng-container>
+                        </ng-container>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
+                </ng-container>
+
+                <!-- Destinations Dropdown -->
+                <ng-container *ngIf="allDestinations.length">
+                  <div
+                    class="nav-link-item dropdown-wrapper"
+                    [class.active]="isDestinationsActive()"
+                  >
+                    <a
+                      routerLink="/destination"
+                      routerLinkActive="active"
+                      class="dropdown-trigger"
+                    >
+                      <span>{{ "nav.destinations" | translate }}</span>
+                      <i class="fas fa-chevron-down"></i>
+                    </a>
+                    <div class="dropdown-menu-modern destinations-dropdown">
+                      <div class="dropdown-content">
+                        <ng-container *ngFor="let dest of allDestinations">
+                          <!-- Regular Destination -->
+                          <ng-container *ngIf="!isEgypt(dest)">
+                            <a
+                              class="dropdown-item-modern"
+                              [routerLink]="['/destination', dest.slug]"
+                              routerLinkActive="active"
+                            >
+                              <i class="fas fa-globe-americas"></i>
+                              <span>{{ dest.title }}</span>
+                            </a>
+                          </ng-container>
+
+                          <!-- Egypt with Submenu -->
+                          <ng-container *ngIf="isEgypt(dest)">
+                            <div class="dropdown-item-modern has-submenu">
+                              <a
+                                [routerLink]="['/destination', dest.slug]"
+                                class="submenu-trigger"
+                              >
+                                <i class="fas fa-globe-americas"></i>
+                                <span>{{ dest.title }}</span>
+                                <i class="fas fa-chevron-right submenu-icon"></i>
+                              </a>
+                              <div class="submenu-modern">
+                                <div class="submenu-content">
+                                  <ng-container *ngFor="let cat of egyptCategories">
+                                    <a
+                                      class="submenu-item"
+                                      [routerLink]="['/tour']"
+                                      routerLinkActive="active"
+                                      [queryParams]="{ type: cat.slug }"
+                                    >
+                                      <i class="fas fa-map-pin"></i>
+                                      <span>{{ cat.title }}</span>
+                                    </a>
+                                  </ng-container>
+                                </div>
+                              </div>
+                            </div>
+                          </ng-container>
+                        </ng-container>
+                      </div>
+                    </div>
+                  </div>
+                </ng-container>
+              </ng-container>
             </ng-container>
           </ng-container>
         </div>
@@ -230,109 +260,143 @@
       <!-- Sidebar Navigation -->
       <div class="sidebar-nav">
         <ng-container *ngFor="let link of navigationLinks">
-          <a
-            [routerLink]="link.path"
-            routerLinkActive="active"
-            [routerLinkActiveOptions]="{ exact: link.path === '/' }"
-            class="sidebar-link"
-            (click)="closeSidebar()"
-          >
-            <i class="fas fa-home" *ngIf="link.path === '/'"></i>
-            <i class="fas fa-info-circle" *ngIf="link.path === '/about'"></i>
-            <i class="fas fa-blog" *ngIf="link.path === '/blog'"></i>
-            <i class="fas fa-envelope" *ngIf="link.path === '/contact'"></i>
-            <span>{{ link.label | translate }}</span>
-          </a>
+          <!-- Skip Tour Packages and Nile Cruises in normal loop (they're rendered after Home) -->
+          <ng-container *ngIf="link.label !== 'nav.tourPackages' && link.label !== 'nav.nileCruises'">
+            <a
+              [routerLink]="link.path"
+              routerLinkActive="active"
+              [routerLinkActiveOptions]="{ exact: link.path === '/' }"
+              class="sidebar-link"
+              (click)="closeSidebar()"
+            >
+              <i class="fas fa-home" *ngIf="link.path === '/'"></i>
+              <i class="fas fa-info-circle" *ngIf="link.path === '/about'"></i>
+              <i class="fas fa-blog" *ngIf="link.path === '/blog'"></i>
+              <i class="fas fa-envelope" *ngIf="link.path === '/contact'"></i>
+              <span>{{ link.label | translate }}</span>
+            </a>
 
-          <!-- Tours Dropdown (Mobile) -->
-          <ng-container *ngIf="link.path === '/' && allCategories.length">
-            <div class="sidebar-dropdown">
-              <div
-                class="sidebar-dropdown-trigger"
-                [class.active]="isDropdownOpen('tours')"
-                (click)="toggleMobileDropdown('tours', $event)"
-              >
-                <i class="fas fa-map-marked-alt"></i>
-                <span>{{ "nav.tours" | translate }}</span>
-                <i class="fas fa-chevron-down"></i>
-              </div>
-              <div
-                class="sidebar-dropdown-content"
-                [class.active]="isDropdownOpen('tours')"
-              >
-                <ng-container *ngFor="let cat of allCategories">
-                  <a
-                    class="sidebar-dropdown-item"
-                    [routerLink]="['/tour']"
-                    routerLinkActive="active"
-                    [queryParams]="{ type: cat.slug }"
-                    (click)="closeSidebar()"
+            <!-- Tour Packages and Nile Cruises (after Home, before dropdowns) -->
+            <ng-container *ngIf="link.path === '/'">
+              <!-- Tour Packages Link -->
+              <ng-container *ngFor="let navLink of navigationLinks">
+                <a
+                  *ngIf="navLink.label === 'nav.tourPackages'"
+                  [routerLink]="navLink.path"
+                  routerLinkActive="active"
+                  class="sidebar-link"
+                  (click)="closeSidebar()"
+                >
+                  <i class="fas fa-suitcase"></i>
+                  <span>{{ navLink.label | translate }}</span>
+                </a>
+              </ng-container>
+
+              <!-- Nile Cruises Link -->
+              <ng-container *ngFor="let navLink of navigationLinks">
+                <a
+                  *ngIf="navLink.label === 'nav.nileCruises'"
+                  [routerLink]="navLink.path"
+                  routerLinkActive="active"
+                  class="sidebar-link"
+                  (click)="closeSidebar()"
+                >
+                  <i class="fas fa-ship"></i>
+                  <span>{{ navLink.label | translate }}</span>
+                </a>
+              </ng-container>
+
+              <!-- Tours Dropdown (Mobile) -->
+              <ng-container *ngIf="allCategories.length">
+                <div class="sidebar-dropdown">
+                  <div
+                    class="sidebar-dropdown-trigger"
+                    [class.active]="isDropdownOpen('tours')"
+                    (click)="toggleMobileDropdown('tours', $event)"
                   >
-                    {{ cat.title }}
-                  </a>
-                </ng-container>
-              </div>
-            </div>
-          </ng-container>
+                    <i class="fas fa-map-marked-alt"></i>
+                    <span>{{ "nav.tours" | translate }}</span>
+                    <i class="fas fa-chevron-down"></i>
+                  </div>
+                  <div
+                    class="sidebar-dropdown-content"
+                    [class.active]="isDropdownOpen('tours')"
+                  >
+                    <ng-container *ngFor="let cat of allCategories">
+                      <a
+                        class="sidebar-dropdown-item"
+                        [routerLink]="['/tour']"
+                        routerLinkActive="active"
+                        [queryParams]="{ type: cat.slug }"
+                        (click)="closeSidebar()"
+                      >
+                        {{ cat.title }}
+                      </a>
+                    </ng-container>
+                  </div>
+                </div>
+              </ng-container>
 
-          <!-- Destinations Dropdown (Mobile) -->
-          <ng-container *ngIf="link.path === '/' && allDestinations.length">
-            <div class="sidebar-dropdown">
-              <div
-                class="sidebar-dropdown-trigger"
-                [class.active]="isDropdownOpen('destinations')"
-                (click)="toggleMobileDropdown('destinations', $event)"
-              >
-                <i class="fas fa-globe-americas"></i>
-                <span>{{ "nav.destinations" | translate }}</span>
-                <i class="fas fa-chevron-down"></i>
-              </div>
-              <div
-                class="sidebar-dropdown-content"
-                [class.active]="isDropdownOpen('destinations')"
-              >
-                <ng-container *ngFor="let dest of allDestinations">
-                  <ng-container *ngIf="!isEgypt(dest)">
-                    <a
-                      class="sidebar-dropdown-item"
-                      [routerLink]="['/destination', dest.slug]"
-                      routerLinkActive="active"
-                      (click)="closeSidebar()"
-                    >
-                      {{ dest.title }}
-                    </a>
-                  </ng-container>
-                  <ng-container *ngIf="isEgypt(dest)">
-                    <div class="sidebar-submenu">
-                      <div
-                        class="sidebar-submenu-trigger"
-                        [class.active]="isDropdownOpen('egypt')"
-                        (click)="toggleMobileDropdown('egypt', $event)"
-                      >
-                        <span>{{ dest.title }}</span>
-                        <i class="fas fa-chevron-right"></i>
-                      </div>
-                      <div
-                        class="sidebar-submenu-content"
-                        [class.active]="isDropdownOpen('egypt')"
-                      >
-                        <ng-container *ngFor="let cat of egyptCategories">
-                          <a
-                            class="sidebar-submenu-item"
-                            [routerLink]="['/tour']"
-                            routerLinkActive="active"
-                            [queryParams]="{ type: cat.slug }"
-                            (click)="closeSidebar()"
+              <!-- Destinations Dropdown (Mobile) -->
+              <ng-container *ngIf="allDestinations.length">
+                <div class="sidebar-dropdown">
+                  <div
+                    class="sidebar-dropdown-trigger"
+                    [class.active]="isDropdownOpen('destinations')"
+                    (click)="toggleMobileDropdown('destinations', $event)"
+                  >
+                    <i class="fas fa-globe-americas"></i>
+                    <span>{{ "nav.destinations" | translate }}</span>
+                    <i class="fas fa-chevron-down"></i>
+                  </div>
+                  <div
+                    class="sidebar-dropdown-content"
+                    [class.active]="isDropdownOpen('destinations')"
+                  >
+                    <ng-container *ngFor="let dest of allDestinations">
+                      <ng-container *ngIf="!isEgypt(dest)">
+                        <a
+                          class="sidebar-dropdown-item"
+                          [routerLink]="['/destination', dest.slug]"
+                          routerLinkActive="active"
+                          (click)="closeSidebar()"
+                        >
+                          {{ dest.title }}
+                        </a>
+                      </ng-container>
+                      <ng-container *ngIf="isEgypt(dest)">
+                        <div class="sidebar-submenu">
+                          <div
+                            class="sidebar-submenu-trigger"
+                            [class.active]="isDropdownOpen('egypt')"
+                            (click)="toggleMobileDropdown('egypt', $event)"
                           >
-                            {{ cat.title }}
-                          </a>
-                        </ng-container>
-                      </div>
-                    </div>
-                  </ng-container>
-                </ng-container>
-              </div>
-            </div>
+                            <span>{{ dest.title }}</span>
+                            <i class="fas fa-chevron-right"></i>
+                          </div>
+                          <div
+                            class="sidebar-submenu-content"
+                            [class.active]="isDropdownOpen('egypt')"
+                          >
+                            <ng-container *ngFor="let cat of egyptCategories">
+                              <a
+                                class="sidebar-submenu-item"
+                                [routerLink]="['/tour']"
+                                routerLinkActive="active"
+                                [queryParams]="{ type: cat.slug }"
+                                (click)="closeSidebar()"
+                              >
+                                {{ cat.title }}
+                              </a>
+                            </ng-container>
+                          </div>
+                        </div>
+                      </ng-container>
+                    </ng-container>
+                  </div>
+                </div>
+              </ng-container>
+            </ng-container>
           </ng-container>
         </ng-container>
       </div>

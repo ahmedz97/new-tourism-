@@ -1,19 +1,24 @@
 // Global SCSS Variables for the entire project
+// Luxury Brand Design System
 
-// $primary-color:  #0060df;
-// $secondary-color: #003eaa;
-$primary-color:  #243D8C;
-$secondary-color: #BB9D53;
+// Color Palette - Luxury Tourism Brand
+$primary-color: #0B3D91;        // Brand Blue (Primary)
+$secondary-color: #C9A24D;      // Luxury Gold (Accent)
+$dark-navy: #0F1E3A;            // Dark Navy
+$light-background: #F7F8FA;     // Light Background
+$neutral-text: #1A1A1A;         // Neutral Text
+$soft-border: #E6E8EC;         // Soft Border
+$footer-text: #F1F5F9;          // Footer Text Light
+$shadow: 0 6px 18px rgba(#000000, 0.15);
+
+// Legacy variables (keeping for backward compatibility)
 $primary-white-color: #0061df56;
 $primary-black-color: #08446A;
-$text-color: #1F2937;
-$border-color: #EEEFEF;
+$text-color: $neutral-text;
+$border-color: $soft-border;
+
+// Typography
 $heading-font: "Laila", serif;
 $accent-font: "Lily Script One", system-ui;
 $bady-font: "Bellota", system-ui;
 $transition: all 0.7s ease-in-out;
-
-
-// #243D8C
-// #BB9D53
-// #E1C877

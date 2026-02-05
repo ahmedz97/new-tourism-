@@ -223,11 +223,17 @@ html{
 
 .mainBtn.Btn{
   border: 1px solid $secondary-color;
-  background-color: $secondary-color;
-  color: white;
+  background-color: $secondary-color; // Luxury Gold
+  color: $light-background; // light background text
+  font-weight: 600;
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25); // Shadow for depth
+  transition: all 0.3s ease;
+
   i{
-    background-color:  white;
-    color:  $secondary-color;
+    background-color: $dark-navy;
+    color: $secondary-color;
+    border-radius: 50%;
   }
 
   &::before , &::after{
@@ -237,41 +243,47 @@ html{
 
   &:hover {
       border-color: $primary-color;
+      transform: translateY(-2px);
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.3); // Enhanced shadow on hover
+
     &::before,&::after{
       width: 100%;
-
     }
     i{
-      color: white;
-      border: 1px solid #fff;
+      color: $secondary-color;
+      border: 1px solid $secondary-color;
       background-color: transparent !important;
     }
   }
 }
 
 .secBtn.Btn{
-    border: 1px solid $primary-color;
-    color:  black;
-    background-color:  white;
+    border: 2px solid #FFFFFF; // White border for secondary CTA
+    color: #FFFFFF; // White text
+    background-color: transparent;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+
     i{
-      color:  $primary-color;
-      border-color:  $primary-color;
-      background-color:  transparent;
+      color: #FFFFFF;
+      border-color: #FFFFFF;
+      background-color: transparent;
     }
     &::before , &::after{
         background-color: $primary-color;
         width: 0%;
     }
       &:hover {
-        color: white;
+        color: #FFFFFF;
         border-color: $secondary-color;
+        background-color: rgba(255, 255, 255, 0.1);
         &::before,&::after{
           width: 100%;
         }
         i{
           color: $secondary-color;
           border: 1px solid $secondary-color;
-          background-color: white !important;
+          background-color: transparent !important;
         }
       }
   }

@@ -52,6 +52,24 @@ export const routes: Routes = [
     title: 'Tour Details',
   },
   {
+    path: 'packages',
+    pathMatch: 'full',
+    loadComponent: () =>
+      import('./components/tour-packages/tour-packages.component').then(
+        (m) => m.TourPackagesComponent
+      ),
+    title: 'Tour Packages',
+  },
+  {
+    path: 'nile_Cruises',
+    pathMatch: 'full',
+    loadComponent: () =>
+      import('./components/nile-cruises/nile-cruises.component').then(
+        (m) => m.NileCruisesComponent
+      ),
+    title: 'Nile Cruises',
+  },
+  {
     path: 'destination',
     loadComponent: () =>
       import('./pages/destination/destination.component').then(

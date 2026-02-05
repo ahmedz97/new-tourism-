@@ -32,7 +32,7 @@ export const appConfig: ApplicationConfig = {
         anchorScrolling: 'enabled',
       })
     ),
-    provideClientHydration(),
+    // provideClientHydration(),
     provideNativeDateAdapter(),
     provideAnimations(),
     provideToastr({

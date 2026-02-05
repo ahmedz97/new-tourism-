@@ -1,10 +1,12 @@
 {
   "nav": {
     "home": "Home",
+    "tourPackages": "Tour Packages",
+    "nileCruises": "Nile Cruises",
     "about": "About",
     "blogs": "Blogs",
     "contact": "Contact",
-    "tours": "Tours",
+    "tours": "Travel Styles",
     "destinations": "Destinations"
   },
   "common": {
@@ -60,7 +62,7 @@
     "ourMostPopularTours": "Our Most Popular Tours",
     "ultimateTravelExperience": "Ultimate Travel Experience",
     "makeYourTour": "Create your tour",
-    "findYourTour": "Create your adventure",
+    "findYourTour": "Choose your tour",
     "haveAnExactTime": "Select an Exact Time slot.",
     "haveAnApproximateTime": "Select an Approximate Time.",
     "myDestination": "My Destination...",
@@ -287,7 +289,19 @@
     "freedomToChange": "Freedom To Change",
     "refundGuarantee": "Refund Guarantee",
     "bestPriceGuarantee": "Best Price Guarantee",
-    "description": "It is a long established fact that a reader will be distracted"
+    "description": "It is a long established fact that a reader will be distracted",
+    "trustedOperatorTitle": "Trusted tour operator with proven experience",
+    "trustedOperatorDescription": "Alfa Omega Tours is a reliable travel agency known for organizing safe, well-planned, and memorable tours.",
+    "customizedPackagesTitle": "Customized travel and tour packages",
+    "customizedPackagesDescription": "We offer tailor-made tour packages designed to match your budget, interests, and travel goals.",
+    "professionalGuidesTitle": "Professional and knowledgeable tour guides",
+    "professionalGuidesDescription": "Our experienced guides provide expert local insights, cultural knowledge, and exceptional service.",
+    "comfortableArrangementsTitle": "Comfortable and hassle-free travel arrangements",
+    "comfortableArrangementsDescription": "Enjoy seamless transportation, quality accommodations, and stress-free travel planning.",
+    "affordablePackagesTitle": "Affordable tour packages with great value",
+    "affordablePackagesDescription": "Competitive pricing on domestic and international tours without compromising quality.",
+    "excellentSupportTitle": "Excellent customer support and satisfaction",
+    "excellentSupportDescription": "Dedicated customer service before, during, and after your trip ensures a smooth travel experience."
   },
   "banner": {
     "home": "Home"
@@ -315,5 +329,13 @@
     "login": "Log In",
     "dontHaveAccount": "Don't have an account?",
     "signUp": "Sign Up"
+  },
+  "tourPackages": {
+    "ourTourPackagesTitle": "Our Tour Packages tour",
+    "ourTourPackagesDescription": "Our Tour Packages are designed to give you the best travel experience. We offer a wide range of tour packages to suit your needs and budget."
+  },
+  "nileCruises": {
+    "ourNileCruisesTitle": "Our Nile Cruises Tours",
+    "ourNileCruisesDescription": "Our Nile Cruises Tours are designed to give you the best travel experience. We offer a wide range of nile cruises tours to suit your needs and budget."
   }
 }

@@ -110,7 +110,7 @@ export class ContactComponent implements OnInit {
         );
         this.userLocation = contactMap?.option_value[0];
 
-        this.userLocation = `https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3285.012336661107!2d31.243393299999997!3d29.979056999999997!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14584797634120ef%3A0x1fd4ccc0df806304!2s38%20Mahfouz%20Abd%20El-Aaty%2C%20Al%20Isaweyah%2C%20Dar%20El%20Salam%2C%20Cairo%20Governorate%204221331!5e1!3m2!1sen!2seg!4v1770035252740!5m2!1sen!2seg`;
+        this.userLocation = `https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d13813.902075600254!2d31.337823000000004!3d30.051901299999997!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14583f1430a6bd61%3A0x99ea32135b3d106a!2sAlfaomega%20Tours!5e0!3m2!1sen!2seg!4v1770291801435!5m2!1sen!2seg`;
         console.log('userLocation', this.userLocation);
       },
       error: (err) => {
@@ -122,12 +122,5 @@ export class ContactComponent implements OnInit {
 
 // iframe map
 /*
-<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3285.012336661107!2d31.
-243393299999997!3d29.979056999999997!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.
-1!3m3!1m2!1s0x14584797634120ef%3A0x1fd4ccc0df806304!2s38%20Mahfouz%20Abd%20El-
-Aaty%2C%20Al%20Isaweyah%2C%20Dar%20El%20Salam%2C%20Cairo%20Governorate%204221331!5e1!3m2!1sen!2seg!4v1770035252740!5m2!1sen!2seg"
-  width="600" height="450"
-  style="border:0;" allowfullscreen=""
-  loading="lazy" referrerpolicy="no-referrer-when-downgrade">
-</iframe>
+<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d13813.902075600254!2d31.337823000000004!3d30.051901299999997!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14583f1430a6bd61%3A0x99ea32135b3d106a!2sAlfaomega%20Tours!5e0!3m2!1sen!2seg!4v1770291801435!5m2!1sen!2seg" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
 */

@@ -9,9 +9,9 @@
   width: 100%;
 }
 
-// Modern Navbar
+// Modern Navbar - Luxury Design
 .modern-navbar {
-  background: rgba(255, 255, 255, 0.95);
+  background: #FFFFFF; // Pure white background
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   box-shadow: 0 2px 20px rgba(0, 0, 0, 0.05);
@@ -19,7 +19,7 @@
   padding: 0;
 
   &.scrolled {
-    background: rgba(255, 255, 255, 0.98);
+    background: #FFFFFF; // Keep white when scrolled
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
     padding: 0;
   }
@@ -92,11 +92,11 @@
     display: flex;
     align-items: center;
     gap: 0.25rem;
-    color: #2c3e50;
+    color: $primary-color; // Brand Blue for links
     font-weight: 600;
     font-size: 0.95rem;
     text-decoration: none;
-    border-radius: 3px;
+    border-radius: 8px; // Updated border-radius
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
     white-space: nowrap;
@@ -107,8 +107,8 @@
     }
 
     &:hover {
-      background-color: $secondary-color;
-      color: white;
+      color: $secondary-color; // Luxury Gold on hover
+      background-color: transparent;
 
       i {
         transform: rotate(180deg);
@@ -116,20 +116,18 @@
     }
 
     &.active {
-      background: $secondary-color;
-      color: white;
-      // box-shadow: 0 4px 15px rgba(167, 193, 168, 0.4);
-      border-radius: 3px;
+      background: $secondary-color; // Luxury Gold background
+      color: $light-background; // light background text
+      border-radius: 8px; // Updated border-radius
     }
   }
 
   // When nav-link-item itself is active (for dropdown-wrapper)
   &.active {
     >.dropdown-trigger {
-      background: $secondary-color;
-      color: white;
-      // box-shadow: 0 4px 15px rgba(167, 193, 168, 0.4);
-      border-radius: 3px;
+      background: $secondary-color; // Luxury Gold background
+      color: $light-background; // light background text
+      border-radius: 8px; // Updated border-radius
     }
   }
 }
@@ -140,7 +138,7 @@
 
   &:hover {
     .dropdown-trigger {
-      color: white !important;
+      color: $secondary-color !important;
     }
 
     .dropdown-menu-modern {
