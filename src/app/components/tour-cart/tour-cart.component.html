@@ -43,9 +43,19 @@
 
   <div [ngClass]="layoutType === 'grid' ? '' : ' col-md-7'" class="p-2">
     <figcaption>
-      <div class="flexBetween mb-2">
-        <div class="my-2 fontsm">
-          <span *ngFor="let filled of getStars(tour.rate)">
+      <div class="mb-2">
+        <div class="my- fontsm">
+          <!-- if getStars is not empty =0 set it to 5 -->
+          @if (getStars(tour.rate).length === 0) {
+            <span *ngFor="let filled of [1, 2, 3, 4, 5]">
+              <i class="fa fa-star text-warning"></i>
+            </span>
+          } @else {
+            <span *ngFor="let filled of getStars(tour.rate)">
+              <i class="fa fa-star text-warning"></i>
+            </span>
+          }
+          <!-- <span *ngFor="let filled of getStars(tour.rate)">
             <i
               [ngClass]="
                 filled
@@ -53,15 +63,15 @@
                   : 'fa-regular fa-star text-warning'
               "
             ></i>
-          </span>
-          <br />
+          </span> -->
+          <!-- <br />
           <span class="textMainColor text-capitalize me-2">{{
             getReviewQualityText()
           }}</span>
-          <span class="textSecondColor"> ({{ getReviewCount() }} Reviews)</span>
+          <span class="textSecondColor"> ({{ getReviewCount() }} Reviews)</span> -->
         </div>
 
-        <p class="mb-0">
+        <p class="flexBetween mb-0">
           <span>{{ "common.perPersonFrom" | translate }}:</span><br />
           <b class="textMainColor fs-5">{{ tour.start_from | currency }}</b>
         </p>
