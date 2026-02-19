@@ -22,6 +22,14 @@ export const routes: Routes = [
       ),
     title: 'Contact',
   },
+  {
+    path: 'terms-and-conditions',
+    loadComponent: () =>
+      import('./pages/terms-condition/terms-condition.component').then(
+        (m) => m.TermsConditionComponent
+      ),
+    title: 'Terms & Conditions',
+  },
   // Data Module Routes (Blog, Tour, Destination) - Direct routes without 'data' prefix
   {
     path: 'blog',

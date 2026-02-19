@@ -13,10 +13,22 @@
               class="logo-img"
             />
           </div>
-          <p class="footer-description">
-            {{ "about.description" | translate }}
-            <!-- Travel Agency likely offers a range of tour activities depending on their location and specialties. Here are some common tour activities that travel agencies might -->
+          <p class="footer-description mb-3">
+            {{ "footer.description1" | translate }}
           </p>
+          <!-- <p class="footer-description mb-3">
+            {{ "footer.description2" | translate }}
+          </p> -->
+
+          <div class="footer-license">
+            <a href="https://www.etaa-egypt.org/SitePages/CompanyDetailsEn.aspx?licc=2472" target="_blank" rel="noopener noreferrer">
+              <img src="../../../assets/image/AC_logo.png" alt="ataa certificate logo" title="ataa certificate logo">
+            </a>
+
+            <a href="https://store.iata.org/ieccacfree?refURL=http%3A%2F%2Fstore.iata.org%2Fieccacfree" target="_blank" rel="noopener noreferrer">
+              <img src="../../../assets/image/IEC_iata_logo_60px.png" alt="iata certificate logo" title="iata certificate logo">
+            </a>
+          </div>
         </div>
 
         <!-- Column 2: Quick Links -->
@@ -118,6 +130,24 @@
                 >{{ userAddress }}</a
               >
             </li>
+            
+          </ul>
+          <ul class="footer-contact list-unstyled mt-4">
+            <h5 class="footer-heading">
+              company contacts
+            </h5>
+            <li class="contact-item">
+              <i class="fa fa-phone me-2"></i>
+              <a href="tel:(20) 2 23829055" class="contact-link"
+                >(20) 2 23829055</a
+              >
+            </li>
+            <li class="contact-item">
+              <i class="fa-brands fa-whatsapp me-2"></i>
+              <a href="https://wa.me/20145542282" target="_blank" rel="noopener noreferrer" title="WhatsApp (20) 1145542282 " class="contact-link"
+                >+20145542282</a
+              >
+            </li>
           </ul>
         </div>
 
@@ -140,9 +170,9 @@
           <div class="col-lg-6 col-md-12">
             <div class="d-flex flex-column gap-2">
               <div class="footer-links-bottom">
-                <a href="#" class="footer-link">Privacy Policy</a>
-                <span class="separator">|</span>
-                <a href="#" class="footer-link">Term & Condition</a>
+                <!-- <a href="#" class="footer-link">Privacy Policy</a>
+                <span class="separator">|</span> -->
+                <a routerLink="/terms-and-conditions" class="footer-link">Terms & Conditions</a>
                 <span class="separator">|</span>
                 <a routerLink="/faq" class="footer-link">FAQ</a>
               </div>
