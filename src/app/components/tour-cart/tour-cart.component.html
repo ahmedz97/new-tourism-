@@ -86,15 +86,17 @@
 
       <div class="text-muted pt-2 border-top text-capitalize">
         <!-- destination - duration -->
-        <div class="fontsm d-flex flex-column">
+        <div class="fontsm flexBetween ">
           <span class="me-2 my-1">
             <i class="fa fa-location-dot me-1 textSecondColor"></i>
             {{ getDestinationText() }}
           </span>
-          <span class="me-2 my-1">
-            <i class="fa fa-calendar-days me-1 textSecondColor"></i>
-            {{ tour.duration }}
-          </span>
+          @if (tour.duration) {
+            <span class="me-2 my-1">
+              <i class="fa fa-calendar-days me-1 textSecondColor"></i>
+              {{ tour.duration }}
+            </span>
+          }
         </div>
 
         <!-- <button

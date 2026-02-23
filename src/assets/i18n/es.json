@@ -3,11 +3,12 @@
     "home": "Inicio",
     "tourPackages": "Paquetes Turísticos",
     "nileCruises": "Cruceros por el Nilo",
-    "about": "Acerca de",
+    "about": "Acerca de Nosotros",
     "blogs": "Blogs",
-    "contact": "Contacto",
+    "contact": "Contactanos",
     "tours": "Tipos de Viaje",
-    "destinations": "Destinos"
+    "destinations": "Destinos",
+    "dayTripsIn": "Viajes de un Día en"
   },
   "common": {
     "seeMore": "Ver Más",
@@ -377,6 +378,7 @@
     "quickLinks": "Enlaces Rápidos",
     "contactUs": "Contáctanos",
     "followUs": "Síguenos",
+    "contactInfoDescription": "Si tienes alguna pregunta, no dudes en contactarnos !!",
     "allRightsReserved": "Todos los Derechos Reservados.",
     "popularTour": "Tour Popular",
     "ourBlog": "Nuestro Blog",
@@ -389,7 +391,9 @@
     "emailUs": "Envíanos un Correo",
     "copyright": "© Copyright 2026",
     "perfectSolution": "Perfect Solution 4u",
-    "description": "Es un hecho establecido desde hace mucho tiempo que un lector se distraerá con el contenido legible de una página al mirar su diseño"
+    "description": "Es un hecho establecido desde hace mucho tiempo que un lector se distraerá con el contenido legible de una página al mirar su diseño",
+    "subscribeNewsletter": "Suscríbete a nuestro newsletter para más actualizaciones y noticias !!",
+    "termsAndConditions": "Términos y Condiciones"
   },
   "aboutSection": {
     "planTripLifetime": "Planifica el Viaje de tu Vida con Facilidad",

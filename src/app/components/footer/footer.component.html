@@ -67,6 +67,11 @@
                 "footer.faqs" | translate
               }}</a>
             </li>
+            <li>
+              <a routerLink="/terms-and-conditions" class="nav-link">{{
+                "footer.termsAndConditions" | translate
+              }}</a>
+            </li>
           </ul>
         </div>
 
@@ -107,7 +112,7 @@
           <h5 class="footer-heading">
             {{ "footer.contactInfo" | translate }}
           </h5>
-          <p class="contact-intro">Feel free to contact and reach us !!</p>
+          <p class="contact-intro">{{ "footer.contactInfoDescription" | translate }}</p>
           <ul class="footer-contact list-unstyled">
             <li class="contact-item">
               <i class="fa fa-phone me-2"></i>
@@ -155,8 +160,8 @@
         <div class="col-lg-3 col-md-6">
           <h5 class="footer-heading">GALLERY</h5>
           <div class="gallery-grid">
-            @for (image of galleryImages.slice(0, 6); track $index) {
-            <div class="gallery-item" (click)="openGallery($index)">
+            @for (image of galleryImages.slice(-6); track $index) {
+            <div class="gallery-item" (click)="openGallery(openGalleryIndex($index))">
               <img [src]="image" [alt]="'Gallery image ' + ($index + 1)" />
             </div>
             }
@@ -168,22 +173,13 @@
       <div class="newsletter-section">
         <div class="row align-items-center">
           <div class="col-lg-6 col-md-12">
-            <div class="d-flex flex-column gap-2">
-              <div class="footer-links-bottom">
-                <!-- <a href="#" class="footer-link">Privacy Policy</a>
-                <span class="separator">|</span> -->
-                <a routerLink="/terms-and-conditions" class="footer-link">Terms & Conditions</a>
-                <span class="separator">|</span>
-                <a routerLink="/faq" class="footer-link">FAQ</a>
-              </div>
-              <div class="social-icons">
-                <app-social></app-social>
-              </div>
+            <div class="social-icons">
+              <app-social></app-social>
             </div>
           </div>
           <div class="col-lg-6 col-md-12">
             <p class="newsletter-text mb-2">
-              Subscribe our newsletter for more update & news !!
+              {{ "footer.subscribeNewsletter" | translate }}
             </p>
             <form class="newsletter-form" (ngSubmit)="subscribeNewsletter()">
               <div class="input-grou w-100 d-flex align-items-center gap-2">
@@ -233,7 +229,7 @@
         <i class="fa fa-times"></i>
       </button>
       <owl-carousel-o [options]="gallerySliderOptions" class="gallery-slider">
-        @for (image of allGalleryImages; track $index) {
+        @for (image of galleryImages; track $index) {
         <ng-template carouselSlide>
           <div class="gallery-slide">
             <img [src]="image" [alt]="'Gallery image ' + ($index + 1)" />

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { SocialComponent } from '../social/social.component';
 import { DataService } from '../../core/services/data.service';
@@ -6,6 +6,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CarouselModule, OwlOptions } from 'ngx-owl-carousel-o';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-footer',
@@ -22,7 +23,10 @@ import { CarouselModule, OwlOptions } from 'ngx-owl-carousel-o';
   styleUrl: './footer.component.scss',
 })
 export class FooterComponent implements OnInit {
-  constructor(private _DataService: DataService) {}
+  constructor(
+    private _DataService: DataService,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   phoneNumber: any;
   userEmail: any;
@@ -33,7 +37,7 @@ export class FooterComponent implements OnInit {
 
   // Gallery
   galleryImages: string[] = [];
-  allGalleryImages: string[] = [];
+  // allGalleryImages: string[] = [];
   showGalleryModal: boolean = false;
   currentImageIndex: number = 0;
   newsletterEmail: string = '';
@@ -52,8 +56,10 @@ export class FooterComponent implements OnInit {
     ],
     items: 1,
     autoplay: false,
-    smartSpeed: 1000,
+    smartSpeed: 2000,
     startPosition: 0,
+    animateIn: 'fadeIn',
+    animateOut: 'fadeOut',
   };
 
   ngOnInit(): void {
@@ -98,39 +104,35 @@ export class FooterComponent implements OnInit {
     });
   }
 
-  getGalleryImages(): void {
     // Get all tours and collect gallery images
-    this._DataService.getTours({ page_limit: 100 }).subscribe({
+  getGalleryImages(): void {
+    this._DataService.getTours({ page_limit: 10 }).subscribe({
       next: (res) => {
         const tours = res?.data?.data || res?.data || [];
         const allImages: string[] = [];
 
         tours.forEach((tour: any) => {
           if (tour.gallery && Array.isArray(tour.gallery)) {
-            tour.gallery.forEach((image: string) => {
-              if (image && !allImages.includes(image)) {
-                allImages.push(image);
-              }
+            tour.gallery.forEach((item: any) => {
+              if (item && !allImages.includes(item)) allImages.push(item);
             });
           }
-          // Also include featured image if available
+          
           if (tour.featured_image && !allImages.includes(tour.featured_image)) {
             allImages.push(tour.featured_image);
           }
         });
 
-        this.allGalleryImages = allImages;
         this.galleryImages = allImages;
+        this.cdr.markForCheck();
       },
-      error: (err) => {
-        // console.log('Error loading gallery images:', err);
-      },
+      error: (_err) => {},
     });
   }
 
   openGallery(index: number): void {
     this.currentImageIndex = index;
-    // Update start position for the slider
+    // Update start position for the slider (full gallery in modal)
     this.gallerySliderOptions = {
       ...this.gallerySliderOptions,
       startPosition: index,
@@ -138,6 +140,12 @@ export class FooterComponent implements OnInit {
     this.showGalleryModal = true;
     document.body.style.overflow = 'hidden'; // Prevent background scrolling
     document.body.classList.add('gallery-open'); // Add class to hide navbar
+  }
+
+  /** Index in full gallery for the item at position 'gridIndex' in the last-6 grid */
+  openGalleryIndex(gridIndex: number): number {
+    const start = Math.max(0, this.galleryImages.length - 6);
+    return start + gridIndex;
   }
 
   closeGallery(): void {

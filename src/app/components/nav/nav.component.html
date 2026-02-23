@@ -55,7 +55,7 @@
                 </ng-container>
 
                 <!-- Tours Dropdown -->
-                <ng-container *ngIf="allCategories.length">
+                <!-- <ng-container *ngIf="allCategories.length">
                   <div
                     class="nav-link-item dropdown-wrapper"
                     [class.active]="isToursActive()"
@@ -84,9 +84,9 @@
                       </div>
                     </div>
                   </div>
-                </ng-container>
+                </ng-container> -->
 
-                <!-- Destinations Dropdown -->
+                <!-- Destinations Dropdown  ==> day trips  -->
                 <ng-container *ngIf="allDestinations.length">
                   <div
                     class="nav-link-item dropdown-wrapper"
@@ -110,8 +110,8 @@
                               [routerLink]="['/destination', dest.slug]"
                               routerLinkActive="active"
                             >
-                              <i class="fas fa-globe-americas"></i>
-                              <span>{{ dest.title }}</span>
+                              <!-- <i class="fas fa-globe-americas"></i> -->
+                              <span> {{ "nav.dayTripsIn" | translate }} {{ dest.title }}</span>
                             </a>
                           </ng-container>
 
@@ -122,8 +122,8 @@
                                 [routerLink]="['/destination', dest.slug]"
                                 class="submenu-trigger"
                               >
-                                <i class="fas fa-globe-americas"></i>
-                                <span>{{ dest.title }}</span>
+                                <!-- <i class="fas fa-globe-americas"></i> -->
+                                <span> {{ dest.title }}</span>
                                 <i class="fas fa-chevron-right submenu-icon"></i>
                               </a>
                               <div class="submenu-modern">
@@ -135,8 +135,8 @@
                                       routerLinkActive="active"
                                       [queryParams]="{ type: cat.slug }"
                                     >
-                                      <i class="fas fa-map-pin"></i>
-                                      <span>{{ cat.title }}</span>
+                                      <!-- <i class="fas fa-map-pin"></i> -->
+                                      <span> {{ "nav.dayTripsIn" | translate }} {{ cat.title }}</span>
                                     </a>
                                   </ng-container>
                                 </div>

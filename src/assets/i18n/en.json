@@ -3,11 +3,12 @@
     "home": "Home",
     "tourPackages": "Tour Packages",
     "nileCruises": "Nile Cruises",
-    "about": "About",
+    "about": "About Us",
     "blogs": "Blogs",
-    "contact": "Contact",
+    "contact": "Contact Us",
     "tours": "Travel Styles",
-    "destinations": "Destinations"
+    "destinations": "Destinations",
+    "dayTripsIn": "Day Trips In"
   },
   "common": {
     "seeMore": "See More",
@@ -375,6 +376,7 @@
     "contactUs": "Contact Us",
     "contactInfo": "Contact Info",
     "followUs": "Follow Us",
+    "contactInfoDescription": "Feel free to contact and reach us !!",
     "popularTour": "Popular Tour",
     "ourBlog": "Our Blog",
     "importantLinks": "Important Links",
@@ -387,7 +389,9 @@
     "copyright": "© Copyright 2026",
     "perfectSolution": "Perfect Solution 4u",
     "allRightsReserved": "All Rights Reserved.",
-    "description": "It is a long established fact thatder will be distracted by the readable content of a page when looking at its layoutpoint"
+    "description": "It is a long established fact thatder will be distracted by the readable content of a page when looking at its layoutpoint",
+    "subscribeNewsletter": "Subscribe our newsletter for more update & news !!",
+    "termsAndConditions": "Terms & Conditions"
   },
   "aboutSection": {
     "planTripLifetime": "Plan The Trip Of A Lifetime With Ease",
