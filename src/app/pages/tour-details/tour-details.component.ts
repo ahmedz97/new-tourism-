@@ -128,7 +128,7 @@ export class TourDetailsComponent implements OnInit {
       next: (response) => {
         // console.log(response.data);
         this.tourData = response.data;
-        this.tourItenary = response.data?.days.reverse();
+        this.tourItenary = response.data?.days;
         this.tourGallery = response.data?.gallery;
         // console.log(this.tourData);
 
