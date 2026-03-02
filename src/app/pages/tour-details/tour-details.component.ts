@@ -130,7 +130,7 @@ export class TourDetailsComponent implements OnInit {
         this.tourData = response.data;
         this.tourItenary = response.data?.days;
         this.tourGallery = response.data?.gallery;
-        // console.log(this.tourData);
+        // console.log('tourItenary', this.tourItenary);
 
         this.bannerTitle = this.tourData?.title || '?';
         // console.log(this.bannerTitle);

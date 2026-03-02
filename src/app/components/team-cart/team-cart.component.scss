@@ -1,1 +1,14 @@
+.item{
+    img{
+        height: 250px;
+        transition: all 0.3s ease-in-out;
+    }
+}
 
+@media screen and (max-width: 575px) {
+    .item{
+        
+        figure{margin-inline: auto; width: 200px !important; height: 200px !important; img{ border-radius: 50% !important; height: 100% !important;}}
+        figcaption{text-align: center;}
+    }
+}

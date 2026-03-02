@@ -9,20 +9,22 @@ import { Component } from '@angular/core';
 })
 export class TeamCartComponent {
   teamData: any[] = [
+    
     {
-      name: 'Maher',
-      jobTitle: 'CEO',
-      src: '../../../assets/image/man1.jpg',
+      name: 'Anita Hasle',
+      jobTitle: 'C0-Founder & Chief Visionary Officer',
+      src: '../../../assets/image/team/anita.webp',
     },
     {
-      name: 'Marwa',
-      jobTitle: 'Operation Manager',
-      src: '../../../assets/image/woman.jpg',
+      name: 'Maher Abdel Wahab ',
+      jobTitle: 'Founder & CEO',
+      src: '../../../assets/image/team/maher.webp',
     },
     {
-      name: 'Maher',
-      jobTitle: 'CEO',
-      src: '../../../assets/image/man2.jpg',
+      name: 'Marwa Attia',
+      jobTitle: 'Tourism Manager',
+      src: '../../../assets/image/team/marwa.webp',
+      phone: '01228258254',
     },
   ];
 }
