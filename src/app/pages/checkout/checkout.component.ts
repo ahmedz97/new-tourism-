@@ -97,10 +97,16 @@ export class CheckoutComponent implements OnInit {
     if (this.checkoutForm.valid) {
       this._BookingService.sendCheckoutData(this.checkoutData).subscribe({
         next: (response) => {
-          // console.log(response);
-          this.toaster.success(response.message);
-          this.getListCart();
-          this._Router.navigate(['/']);
+          if (response.status === true) {
+            console.log(response);
+            this.toaster.success(response.message);
+            this.getListCart();
+            this.checkoutForm.reset();
+            this.toaster.success(response.data.payment.message);
+
+            window.open(response.data.payment.redirect.location, '_blank');
+          }
+          // this._Router.navigate(['/']);
         },
         error: (err) => {
           // console.log(err);

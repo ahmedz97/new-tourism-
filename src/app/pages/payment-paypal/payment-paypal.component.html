@@ -1,0 +1,18 @@
+<section class="py-5">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-6 mx-auto">
+        <div class="card border-0 shadow-sm">
+          <div class="card-body p-4 p-md-5">
+            <h2 class="fw-bold mb-3">Payment PayPal</h2>
+            <p class="mb-2" *ngIf="isLoading">Processing payment...</p>
+            <p class="mb-2 text-success" *ngIf="!isLoading && paymentResponse">
+              {{ paymentResponse?.message || 'Payment request sent successfully.' }}
+            </p>
+            <button routerLink="/" class="mainBtn Btn">Back Home</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

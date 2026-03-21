@@ -1,6 +1,8 @@
 import { Routes } from '@angular/router';
 import { authRoutes } from './modules/auth/auth.routes';
 
+const PAYMENT_CALLBACK_PAYPAL_PATH = 'payment/callback/paypal';
+
 export const routes: Routes = [
   {
     path: '',
@@ -121,6 +123,22 @@ export const routes: Routes = [
         (m) => m.CheckoutComponent
       ),
     title: 'Checkout',
+  },
+  {
+    path: `${PAYMENT_CALLBACK_PAYPAL_PATH}/success`,
+    loadComponent: () =>
+      import('./pages/payment-paypal/payment-paypal.component').then(
+        (m) => m.PaymentPaypalComponent
+      ),
+    title: 'PayPal Payment Success',
+  },
+  {
+    path: `${PAYMENT_CALLBACK_PAYPAL_PATH}/failure`,
+    loadComponent: () =>
+      import('./pages/payment-paypal/payment-paypal.component').then(
+        (m) => m.PaymentPaypalComponent
+      ),
+    title: 'PayPal Payment Failure',
   },
   {
     path: 'cart',

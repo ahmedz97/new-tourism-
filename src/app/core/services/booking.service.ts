@@ -39,4 +39,9 @@ export class BookingService extends BaseService {
   getCountries(): Observable<any> {
     return this.HttpClient.get(`${this.baseUrl}/countries`);
   }
+
+  // payment 
+  getPayment(paymentId: string): Observable<any> {
+    return this.HttpClient.get(`${this.baseUrl}/payments/paypal/capture?invoice_id=${paymentId}`);
+  }
 }

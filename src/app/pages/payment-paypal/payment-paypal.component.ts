@@ -1,0 +1,67 @@
+import { CommonModule } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, RouterLink } from '@angular/router';
+import { BookingService } from '../../core/services/booking.service';
+import { ToastrService } from 'ngx-toastr';
+
+@Component({
+  selector: 'app-payment-paypal',
+  standalone: true,
+  imports: [CommonModule, RouterLink],
+  templateUrl: './payment-paypal.component.html',
+  styleUrl: './payment-paypal.component.scss',
+})
+export class PaymentPaypalComponent implements OnInit {
+  paymentToken: string = '';
+  callbackStatus: 'success' | 'failure' | '' = '';
+  isLoading: boolean = false;
+  paymentResponse: any = null;
+
+  constructor(
+    private route: ActivatedRoute,
+    private bookingService: BookingService,
+    private toaster: ToastrService
+  ) {}
+
+  ngOnInit(): void {
+    this.resolveCallbackStatus();
+    this.route.queryParamMap.subscribe((params) => {
+      this.paymentToken = params.get('token') || '';
+      // console.log(this.paymentToken);
+      if (!this.paymentToken) {
+        this.toaster.error('Missing payment token');
+        return;
+      }
+      this.capturePayment(this.paymentToken);
+    });
+  }
+
+  private resolveCallbackStatus(): void {
+    // success or failure
+    const routePath = this.route.snapshot.routeConfig?.path || '';
+    // console.log(routePath);
+    if (routePath.endsWith('/success')) {
+      this.callbackStatus = 'success';
+      return;
+    }
+    if (routePath.endsWith('/failure')) {
+      this.callbackStatus = 'failure';
+    }
+  }
+
+  private capturePayment(token: string): void {
+    this.isLoading = true;
+    this.bookingService.getPayment(token).subscribe({
+      next: (response) => {
+        this.paymentResponse = response;
+        // console.log(this.paymentResponse);
+        this.isLoading = false;
+        this.toaster.success(response?.message || 'Payment processed');
+      },
+      error: (err) => {
+        this.isLoading = false;
+        this.toaster.error(err?.error?.message || 'Payment processing failed');
+      },
+    });
+  }
+}

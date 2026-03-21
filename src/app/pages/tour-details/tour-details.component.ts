@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { CarouselModule, OwlOptions } from 'ngx-owl-carousel-o';
 import { DataService } from '../../core/services/data.service';
@@ -40,12 +40,13 @@ import { SeoService } from '../../core/services/seo.service';
     MatInputModule,
     BannerComponent,
     MakeTripFormComponent,
-    RouterLink,
+    // RouterLink,
   ],
   templateUrl: './tour-details.component.html',
   styleUrl: './tour-details.component.scss',
 })
 export class TourDetailsComponent implements OnInit {
+  @ViewChild('asideBar') asideBar!: ElementRef;
   constructor(
     private _DataService: DataService,
     private _ActivatedRoute: ActivatedRoute,
@@ -286,6 +287,10 @@ export class TourDetailsComponent implements OnInit {
       this.infantPrice = this.tourData.infant_price;
       // this.totalPrice = this.adultPrice + this.childPrice + this.infantPrice;
     }
+  }
+
+  scrollToAsideBar(): void {
+    this.asideBar.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
   submitBookingForm(): void {
