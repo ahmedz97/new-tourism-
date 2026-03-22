@@ -18,12 +18,10 @@ import { provideClientHydration } from '@angular/platform-browser';
 import { HttpClient } from '@angular/common/http';
 import { routes } from './app.routes';
 import { provideTranslateHttpLoader } from '@ngx-translate/http-loader';
-import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 
 export const appConfig: ApplicationConfig = {
-  providers: [
-    // use hash location strategy for ssr and prerendering to avoid 404 errors
-    { provide: LocationStrategy, useClass: HashLocationStrategy },
+  providers: [    
+    // { provide: LocationStrategy, useClass: HashLocationStrategy },
     provideRouter(
       routes,
       withEnabledBlockingInitialNavigation(),
@@ -54,7 +52,7 @@ export const appConfig: ApplicationConfig = {
       })
     ),
     provideTranslateHttpLoader({
-      prefix: './assets/i18n/',
+      prefix: '/assets/i18n/',
       suffix: '.json',
     }),
     provideNgxCountAnimations({
