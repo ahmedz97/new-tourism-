@@ -66,6 +66,7 @@ export class MakeTripFormComponent implements OnInit {
     'November',
     'December',
   ];
+  today: Date = new Date();
 
   ngOnInit(): void {
     this.getDestination();

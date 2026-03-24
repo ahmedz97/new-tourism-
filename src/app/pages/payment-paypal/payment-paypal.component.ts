@@ -26,12 +26,12 @@ export class PaymentPaypalComponent implements OnInit {
   ngOnInit(): void {
     this.resolveCallbackStatus();
     this.route.queryParamMap.subscribe((params) => {
-      this.paymentToken = params.get('token') || '';
-      // console.log(this.paymentToken);
-      // if (!this.paymentToken) {
-      //   this.toaster.error('Missing payment token');
-      //   return;
-      // }
+      const token = params.get('token')?.trim() || '';
+      if (!token) {
+        return;
+      }
+
+      this.paymentToken = token;
       this.capturePayment(this.paymentToken);
     });
   }
@@ -39,7 +39,7 @@ export class PaymentPaypalComponent implements OnInit {
   private resolveCallbackStatus(): void {
     // success or failure
     const routePath = this.route.snapshot.routeConfig?.path || '';
-    // console.log(routePath);
+    console.log('routePath', routePath);
     if (routePath.endsWith('/success')) {
       this.callbackStatus = 'success';
       return;
@@ -50,19 +50,24 @@ export class PaymentPaypalComponent implements OnInit {
   }
 
   private capturePayment(token: string): void {
+    if (!token) {
+      return;
+    }
+
     this.isLoading = true;
     this.bookingService.getPayment(token).subscribe({
       next: (response) => {
         this.paymentResponse = response;
-        // console.log(this.paymentResponse);
         this.isLoading = false;
+        this.toaster.clear();
         this.toaster.success(response?.message || 'Payment processed');
       },
       error: (err) => {
         this.isLoading = false;
-        this.toaster.error(err?.error?.message || 'Payment processing failed');
-        console.log(err.error.message);
-        
+        this.toaster.clear();
+        this.toaster.error(
+          err?.error?.message || 'Payment processing failed. Please try again.'
+        );
       },
     });
   }

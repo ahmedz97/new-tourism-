@@ -182,6 +182,7 @@
                       formControlName="start_date"
                       matInput
                       [matDatepicker]="StartDatepicker"
+                      [min]="today"
                     />
                     <mat-datepicker-toggle
                       matIconSuffix
@@ -203,6 +204,7 @@
                       formControlName="end_date"
                       matInput
                       [matDatepicker]="EndDatepicker"
+                      [min]="today"
                     />
                     <mat-datepicker-toggle
                       matIconSuffix

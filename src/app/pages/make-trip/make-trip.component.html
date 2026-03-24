@@ -90,6 +90,7 @@
                   <label
                     [for]="destination.id"
                     class="destination-card-label w-100"
+                    (click)="toggleDestination(destination.title, $event)"
                   >
                     <div class="tourDestinationCard w-100">
                       <figure
@@ -104,7 +105,14 @@
                           [title]="destination.title"
                         />
                         <div class="check-icon-wrapper">
-                          <i class="fa fa-check check-icon"></i>
+                          <i
+                            class="fa check-icon"
+                            [ngClass]="
+                              isDestinationSelected(destination.title)
+                                ? 'fa-check'
+                                : 'fa-plus'
+                            "
+                          ></i>
                         </div>
                         <div class="destination-overlay">
                           <i class="fa fa-eye me-2"></i>
@@ -192,6 +200,7 @@
                       <mat-date-range-input
                         [formGroup]="secondFormGroup"
                         [rangePicker]="picker"
+                        [min]="today"
                       >
                         <input
                           matStartDate
@@ -347,7 +356,7 @@
                     >
                       <mat-label>Phone number</mat-label>
                       <input
-                        type="tel"
+                        type="text"
                         matInput
                         formControlName="phone_number"
                         placeholder="01069769249"

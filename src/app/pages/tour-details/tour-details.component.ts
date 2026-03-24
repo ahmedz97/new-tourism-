@@ -82,6 +82,7 @@ export class TourDetailsComponent implements OnInit {
   totalPrice: number = 0;
 
   faqsList: any[] = [{}];
+  today: Date = new Date();
 
   bookingFormData!: FormGroup;
 

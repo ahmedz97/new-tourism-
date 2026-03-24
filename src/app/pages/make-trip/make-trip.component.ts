@@ -147,6 +147,7 @@ export class MakeTripComponent implements OnInit, AfterViewInit {
     'November',
     'December',
   ];
+  today: Date = new Date();
 
   makeTripForm: any = {};
   countriesList: any[] = [];
@@ -302,7 +303,7 @@ export class MakeTripComponent implements OnInit, AfterViewInit {
       last_name: new FormControl(''),
       email: new FormControl(''),
       nationality: new FormControl(''),
-      phone_number: new FormControl(''),
+      phone_number: new FormControl<string>(''),
       adults: new FormControl(0),
       children: new FormControl(0),
       infants: new FormControl(0),
@@ -402,6 +403,20 @@ export class MakeTripComponent implements OnInit, AfterViewInit {
     this.firstFormGroup.patchValue({ destination: event.target.value });
   }
 
+  toggleDestination(destinationTitle: string, event: MouseEvent): void {
+    event.preventDefault();
+    const current = this.firstFormGroup.get('destination')?.value;
+    this.firstFormGroup.patchValue({
+      destination: current === destinationTitle ? '' : destinationTitle,
+    });
+    this.firstFormGroup.markAsTouched();
+    this.firstFormGroup.updateValueAndValidity();
+  }
+
+  isDestinationSelected(destinationTitle: string): boolean {
+    return this.firstFormGroup.get('destination')?.value === destinationTitle;
+  }
+
   submitForm() {
     if (this.submitFormGroup.status == 'VALID') {
       // Get form values
@@ -418,6 +433,7 @@ export class MakeTripComponent implements OnInit, AfterViewInit {
         month: secondFormValue.month,
         days: secondFormValue.days,
         ...submitFormValue,
+        phone_number: String(submitFormValue.phone_number ?? '').trim(),
       };
 
       this._MaketripService.sendDataTrip(this.makeTripForm).subscribe({

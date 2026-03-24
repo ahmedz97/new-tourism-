@@ -151,6 +151,7 @@ export class HomeComponent implements OnInit {
     'November',
     'December',
   ];
+  today: Date = new Date();
 
   ngOnInit(): void {
     // Get settings and update SEO from API, with fallback to defaults
