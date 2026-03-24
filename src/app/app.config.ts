@@ -18,10 +18,12 @@ import { provideClientHydration } from '@angular/platform-browser';
 import { HttpClient } from '@angular/common/http';
 import { routes } from './app.routes';
 import { provideTranslateHttpLoader } from '@ngx-translate/http-loader';
+import { LocationStrategy } from '@angular/common';
+import { HashLocationStrategy } from '@angular/common';
 
 export const appConfig: ApplicationConfig = {
   providers: [    
-    // { provide: LocationStrategy, useClass: HashLocationStrategy },
+    { provide: LocationStrategy, useClass: HashLocationStrategy },
     provideRouter(
       routes,
       withEnabledBlockingInitialNavigation(),
