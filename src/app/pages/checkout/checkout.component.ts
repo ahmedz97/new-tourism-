@@ -104,7 +104,7 @@ export class CheckoutComponent implements OnInit {
             this.checkoutForm.reset();
             this.toaster.success(response.data.payment.message);
 
-            window.open(response.data.payment.redirect.location, '_blank');
+            window.open(response.data.payment.redirect.location, '_self');
           }
           // this._Router.navigate(['/']);
         },
