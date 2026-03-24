@@ -28,10 +28,10 @@ export class PaymentPaypalComponent implements OnInit {
     this.route.queryParamMap.subscribe((params) => {
       this.paymentToken = params.get('token') || '';
       // console.log(this.paymentToken);
-      if (!this.paymentToken) {
-        this.toaster.error('Missing payment token');
-        return;
-      }
+      // if (!this.paymentToken) {
+      //   this.toaster.error('Missing payment token');
+      //   return;
+      // }
       this.capturePayment(this.paymentToken);
     });
   }
@@ -61,6 +61,8 @@ export class PaymentPaypalComponent implements OnInit {
       error: (err) => {
         this.isLoading = false;
         this.toaster.error(err?.error?.message || 'Payment processing failed');
+        console.log(err.error.message);
+        
       },
     });
   }
