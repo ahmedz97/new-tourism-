@@ -38,21 +38,21 @@ export class SocialComponent implements OnInit {
   getIconClass(type: string): string {
     switch (type) {
       case 'facebook':
-        return 'fa-facebook-f';
+        return ' fa-brands fa-facebook-f';
       case 'twitter':
-        return 'fa-twitter';
+        return ' fa-brands fa-x-twitter';
       case 'instagram':
-        return 'fa-instagram';
-      case 'linkedin':
-        return 'fa-linkedin-in';
+        return ' fa-brands fa-instagram';
+      case 'linked-in':
+        return ' fa-brands fa-linkedin-in';
       case 'youtube':
-        return 'fa-youtube';
+        return ' fa-brands fa-youtube';
       case 'pinterest':
-        return 'fa-pinterest';
+        return ' fa-brands fa-pinterest';
       case 'google-plus':
-        return 'fa-google-plus-g';
+        return ' fa-brands fa-google-plus-g';
       case 'tripadvisor':
-        return 'fa-tripadvisor';
+        return ' fa fa-';
       default:
         return '';
     }

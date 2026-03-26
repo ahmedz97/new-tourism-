@@ -3,13 +3,25 @@
     *ngFor="let link of socialLinks"
     class="flexCenter rounded-2 me-2 cPointer flex-shrink-0"
   >
+  @if(link.type === 'tripadvisor') {
+    <a
+      class="text-decoration-none "
+      [href]="link.url"
+      target="_blank"
+      rel="noopener"
+    >
+      <img src="../../../assets/image/tripadvisor.webp" alt="tripadvisor logo" width="22px" height="22px" >
+    </a>
+  }
+  @else {
     <a
       class="text-decoration-none"
       [href]="link.url"
       target="_blank"
       rel="noopener"
     >
-      <i class="fa-brands" [ngClass]="getIconClass(link.type)"></i>
-    </a>
+        <i [ngClass]="getIconClass(link.type)"></i>
+      </a>
+    }
   </li>
 </ul>
