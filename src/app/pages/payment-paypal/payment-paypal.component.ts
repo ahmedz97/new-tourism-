@@ -59,12 +59,15 @@ export class PaymentPaypalComponent implements OnInit {
       next: (response) => {
         this.paymentResponse = response;
         this.isLoading = false;
+        this.callbackStatus = 'success';
         this.toaster.clear();
         this.toaster.success(response?.message || 'Payment processed');
       },
       error: (err) => {
+        this.paymentResponse = err?.error;
         this.isLoading = false;
         this.toaster.clear();
+        this.callbackStatus = 'failure';
         this.toaster.error(
           err?.error?.message || 'Payment processing failed. Please try again.'
         );

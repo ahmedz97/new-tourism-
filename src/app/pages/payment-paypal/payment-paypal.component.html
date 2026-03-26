@@ -3,13 +3,31 @@
     <div class="row">
       <div class="col-lg-6 mx-auto">
         <div class="card border-0 shadow-sm">
-          <div class="card-body p-4 p-md-5">
+          <div class="card-body p-4 pt-3 text-capitalize text-center">
             <h2 class="fw-bold mb-3">Payment PayPal</h2>
-            <p class="mb-2" *ngIf="isLoading">Processing payment...</p>
-            <p class="mb-2 text-success" *ngIf="!isLoading && paymentResponse">
-              {{ paymentResponse?.message || 'Payment request sent successfully.' }}
-            </p>
-            <button routerLink="/" class="mainBtn Btn">Back Home</button>
+            <p class="mb-2 fs-4" *ngIf="isLoading">Processing payment...</p>
+
+            @if(!isLoading && paymentResponse && callbackStatus === 'success') {
+              <div class="text-center">
+                <p class="mb-2 text-success fs-4">
+                  {{ paymentResponse?.message || 'Payment request sent successfully.' }}
+                </p>
+
+                <img src="../../../assets/image/Revenue.gif" alt="payment success" height="350" class="w-100">
+              </div>
+            }
+
+            @if(!isLoading && paymentResponse && callbackStatus === 'failure') {
+              <div class="text-center">
+                <p class="mb-2 text-danger fs-4">
+                  {{ paymentResponse?.message || 'Payment request failed.' }}
+                </p>
+
+                <img src="../../../assets/image/Pay-attention.gif" alt="payment failure" height="350" class="w-100">
+              </div>
+            }
+
+            <button routerLink="/" class="mainBtn Btn mt-3">Back Home</button>
           </div>
         </div>
       </div>
