@@ -66,33 +66,156 @@ export class CheckoutComponent implements OnInit {
       next: (response) => {
         // console.log(response.data);
         this.countries = response.data;
+        this.applyPhoneValidationByCountry();
       },
+    });
+
+    // rebuild phone validators when country selection changes
+    this.checkoutForm.get('country')?.valueChanges.subscribe(() => {
+      this.applyPhoneValidationByCountry();
     });
     this.getListCart();
   }
 
   // must start with 0 and must be 10 digits
   phonePattern = '^01[0-2][0-9]{8}$';
+
+  // used to show validation border after submit click
+  submitted = false;
+
+  // used for input maxlength (phone digits only)
+  phoneMaxLength = 15;
+  phoneMinLength = 7;
+
   checkoutForm: FormGroup = new FormGroup({
-    first_name: new FormControl(''),
-    last_name: new FormControl(''),
-    phone: new FormControl('', [Validators.pattern(this.phonePattern)]),
-    email: new FormControl('', [Validators.email]),
-    // start_date: new FormControl(''),
-    country: new FormControl(''),
-    // state: new FormControl(''),
-    // street_addres: new FormControl(''),
-    payment_method: new FormControl(''),
+    first_name: new FormControl('', [
+      Validators.required,
+      Validators.minLength(2),
+    ]),
+    last_name: new FormControl('', [
+      Validators.required,
+      Validators.minLength(2),
+    ]),
+    phone: new FormControl('', [
+      Validators.required,
+      Validators.pattern(/^[0-9]+$/),
+      Validators.minLength(this.phoneMinLength),
+      Validators.maxLength(this.phoneMaxLength),
+    ]),
+    email: new FormControl('', [
+      Validators.required,
+      Validators.email,
+    ]),
+    country: new FormControl('', [Validators.required]),
+    payment_method: new FormControl('', [Validators.required]),
     notes: new FormControl(''),
     currency_id: new FormControl(1),
     coupon_id: new FormControl(''),
   });
 
-  getCheckoutData(): void {
-    this.checkoutData = this.checkoutForm.value;
-    // console.log(this.checkoutData);
-    // console.log(this.checkoutForm.get('coupon_id')?.value);
+  private applyPhoneValidationByCountry(): void {
+    const phoneCtrl = this.checkoutForm.get('phone');
+    if (!phoneCtrl) return;
 
+    const selectedCountryName = this.checkoutForm.get('country')?.value;
+    const selectedCountry =
+      this.countries?.find((c: any) => c?.name === selectedCountryName) ?? null;
+
+    // Base rules: digits only + length bounds
+    let nextMin = 7;
+    let nextMax = 15;
+    const validators = [Validators.required, Validators.pattern(/^[0-9]+$/)];
+
+    if (selectedCountry) {
+      // If API includes phone regex, use it.
+      const phoneRegexStr =
+        selectedCountry.phone_regex ??
+        selectedCountry.phoneRegex ??
+        selectedCountry.phone_pattern ??
+        selectedCountry.phonePattern;
+
+      if (typeof phoneRegexStr === 'string' && phoneRegexStr.trim() !== '') {
+        try {
+          validators.push(Validators.pattern(new RegExp(phoneRegexStr)));
+        } catch {
+          // ignore invalid regex from backend
+        }
+      }
+
+      // Common length fields (fallback to generic bounds if not provided)
+      const minLen =
+        selectedCountry.phone_min_length ??
+        selectedCountry.phoneMinLength ??
+        selectedCountry.phone_min_length_digits ??
+        selectedCountry.phoneMinLen;
+      const maxLen =
+        selectedCountry.phone_length ??
+        selectedCountry.phoneMaxLength ??
+        selectedCountry.phone_max_length ??
+        selectedCountry.phoneMaxLen;
+
+      const minNum = minLen != null ? Number(minLen) : NaN;
+      const maxNum = maxLen != null ? Number(maxLen) : NaN;
+      if (!Number.isNaN(minNum) && minNum > 0) nextMin = minNum;
+      if (!Number.isNaN(maxNum) && maxNum > 0) nextMax = maxNum;
+
+      // Egypt special-case: if calling code indicates +20 use your local Egypt rule.
+      const callingCodeRaw =
+        selectedCountry.calling_code ??
+        selectedCountry.callingCode ??
+        selectedCountry.dial_code ??
+        selectedCountry.dialCode ??
+        selectedCountry.phone_code ??
+        selectedCountry.phoneCode;
+      const callingCode = String(callingCodeRaw ?? '').replace('+', '');
+
+      if (callingCode.includes('20')) {
+        nextMin = 10;
+        nextMax = 10;
+        validators.push(Validators.pattern(this.phonePattern));
+      }
+    }
+
+    this.phoneMinLength = nextMin;
+    this.phoneMaxLength = nextMax;
+
+    validators.push(Validators.minLength(this.phoneMinLength));
+    validators.push(Validators.maxLength(this.phoneMaxLength));
+
+    phoneCtrl.setValidators(validators);
+    phoneCtrl.updateValueAndValidity({ emitEvent: false });
+  }
+
+  isFieldInvalid(fieldName: string): boolean {
+    const ctrl = this.checkoutForm.get(fieldName);
+    if (!ctrl) return false;
+    return ctrl.invalid && (ctrl.touched || ctrl.dirty || this.submitted);
+  }
+
+  onPhoneInput(event: Event): void {
+    const phoneCtrl = this.checkoutForm.get('phone');
+    if (!phoneCtrl) return;
+
+    const input = event.target as HTMLInputElement;
+    const digitsOnly = (input.value ?? '').replace(/\D/g, '');
+    const limited = digitsOnly.slice(0, this.phoneMaxLength);
+
+    // keep UI value in sync with the sanitized value
+    if (input.value !== limited) input.value = limited;
+
+    const currentValue = phoneCtrl.value ?? '';
+    if (String(currentValue) !== limited) {
+      phoneCtrl.setValue(limited);
+    }
+  }
+
+  getCheckoutData(): void {
+    this.submitted = true;
+    this.checkoutForm.markAllAsTouched();
+
+    if (this.checkoutForm.invalid) return;
+
+    this.checkoutData = this.checkoutForm.value;
     // if form is valid === true
     if (this.checkoutForm.valid) {
       this._BookingService.sendCheckoutData(this.checkoutData).subscribe({

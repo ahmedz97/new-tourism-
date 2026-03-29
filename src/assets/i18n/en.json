@@ -169,7 +169,8 @@
     "cartIsEmpty": "Cart is empty",
     "applyCoupon": "Apply",
     "discount": "Discount",
-    "finalTotal": "Final Total"
+    "finalTotal": "Final Total",
+    "fillForm": "Fill Form"
   },
   "about": {
     "aboutUs": "About Us",

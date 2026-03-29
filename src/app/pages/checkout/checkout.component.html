@@ -7,7 +7,7 @@
     <!--  -->
     <form
       [formGroup]="checkoutForm"
-      (ngSubmit)="(checkoutForm)"
+      (ngSubmit)="getCheckoutData()"
       class="row g-3"
     >
       <div class="col-lg-8">
@@ -30,6 +30,7 @@
                     formControlName="first_name"
                     placeholder="{{ 'checkout.firstName' | translate }}"
                     class="form-control p-2 ps-5 rounded-3"
+                    [ngClass]="{ 'border border-danger': isFieldInvalid('first_name') }"
                   />
                   <i class="fa-regular fa-user textMainColor"></i>
                 </div>
@@ -49,11 +50,41 @@
                     formControlName="last_name"
                     placeholder="{{ 'checkout.lastName' | translate }}"
                     class="form-control p-2 ps-5 rounded-3"
+                    [ngClass]="{ 'border border-danger': isFieldInvalid('last_name') }"
                   />
                   <i class="fa-regular fa-user textMainColor"></i>
                 </div>
               </div>
             </div>
+
+            <!-- country -->
+            <div class="col-md-12">
+              <div>
+                <label
+                  for="country"
+                  class="textSecondColor text-capitalize fw-bold mb-2"
+                  >{{ "checkout.country" | translate }}</label
+                >
+                <div class="item position-relative">
+                  <select
+                    id="country"
+                    formControlName="country"
+                    class="form-control p-2 ps-5 rounded-3"
+                    [ngClass]="{ 'border border-danger': isFieldInvalid('country') }"
+                  >
+                  <option value="" disabled selected>
+                    {{ "checkout.selectCountry" | translate }}
+                  </option>
+                    @for (item of countries; track $index) {
+
+                    <option [value]="item.name">{{ item.name }}</option>
+                    }
+                  </select>
+                  <i class="fa fa-globe textMainColor"></i>
+                </div>
+              </div>
+            </div>
+
             <div class="col-md-6">
               <div>
                 <label
@@ -68,6 +99,12 @@
                     formControlName="phone"
                     placeholder="{{ 'contact.yourPhone' | translate }}"
                     class="form-control p-2 ps-5 rounded-3"
+                    inputmode="numeric"
+                    pattern="[0-9]*"
+                    autocomplete="tel"
+                    [attr.maxlength]="phoneMaxLength"
+                    (input)="onPhoneInput($event)"
+                    [ngClass]="{ 'border border-danger': isFieldInvalid('phone') }"
                   />
                   <i class="fa fa-phone textMainColor"></i>
                 </div>
@@ -87,37 +124,13 @@
                     formControlName="email"
                     placeholder="{{ 'contact.yourEmail' | translate }}"
                     class="form-control p-2 ps-5 rounded-3"
+                    [ngClass]="{ 'border border-danger': isFieldInvalid('email') }"
                   />
                   <i class="fa-regular fa-envelope textMainColor"></i>
                 </div>
               </div>
             </div>
 
-            <div class="col-md-12">
-              <div>
-                <label
-                  for="country"
-                  class="textSecondColor text-capitalize fw-bold mb-2"
-                  >{{ "checkout.country" | translate }}</label
-                >
-                <div class="item position-relative">
-                  <select
-                    id="country"
-                    formControlName="country"
-                    class="form-control p-2 ps-5 rounded-3"
-                  >
-                  <option value="" disabled selected>
-                    {{ "checkout.selectCountry" | translate }}
-                  </option>
-                    @for (item of countries; track $index) {
-
-                    <option [value]="item.name">{{ item.name }}</option>
-                    }
-                  </select>
-                  <i class="fa fa-globe textMainColor"></i>
-                </div>
-              </div>
-            </div>
 
             <!-- <div class="col-md-6">
               <div>
@@ -170,6 +183,7 @@
             <mat-radio-group
               aria-label="payment_method"
               formControlName="payment_method"
+              [ngClass]="{ 'border border-danger rounded-3 p-2': isFieldInvalid('payment_method') }"
             >
               <mat-radio-button value="cash">{{
                 "checkout.cash" | translate
@@ -182,12 +196,13 @@
               }}</mat-radio-button>
             </mat-radio-group>
             <!-- -->
-            <button
-              (click)="getCheckoutData()"
+            <button [disabled]="checkoutForm.invalid"
               type="submit"
               class="mainBtn Btn w-100 mt-2"
+              [ngClass]="{ 'cursor-not-allowed': !checkoutForm.valid }"
+              [attr.disabled]="!checkoutForm.valid"
             >
-              {{ "checkout.placeOrder" | translate }}
+              {{ checkoutForm.valid ? ("checkout.placeOrder" | translate) : ("checkout.fillForm" | translate) }}
             </button>
           </div>
         </div>

@@ -171,7 +171,8 @@
     "cartIsEmpty": "El carrito está vacío",
     "applyCoupon": "Aplicar",
     "discount": "Descuento",
-    "finalTotal": "Total Final"
+    "finalTotal": "Total Final",
+    "fillForm": "Rellenar Formulario"
   },
   "about": {
     "aboutUs": "Acerca de Nosotros",
