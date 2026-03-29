@@ -23,7 +23,7 @@ import { HashLocationStrategy } from '@angular/common';
 
 export const appConfig: ApplicationConfig = {
   providers: [    
-    { provide: LocationStrategy, useClass: HashLocationStrategy },
+    // { provide: LocationStrategy, useClass: HashLocationStrategy },
     provideRouter(
       routes,
       withEnabledBlockingInitialNavigation(),

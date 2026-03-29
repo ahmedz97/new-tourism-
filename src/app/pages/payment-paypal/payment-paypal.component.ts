@@ -68,9 +68,9 @@ export class PaymentPaypalComponent implements OnInit {
         this.isLoading = false;
         this.toaster.clear();
         this.callbackStatus = 'failure';
-        this.toaster.error(
-          err?.error?.message || 'Payment processing failed. Please try again.'
-        );
+        // this.toaster.error(
+        //   err?.error?.message || 'Payment processing failed. Please try again.'
+        // );
       },
     });
   }

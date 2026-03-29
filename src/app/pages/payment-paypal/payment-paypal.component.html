@@ -20,7 +20,7 @@
             @if(!isLoading && paymentResponse && callbackStatus === 'failure') {
               <div class="text-center">
                 <p class="mb-2 text-danger fs-4">
-                  {{ paymentResponse?.message || 'Payment request failed.' }}
+                  payment failure, please try again later
                 </p>
 
                 <img src="../../../assets/image/Pay-attention.gif" alt="payment failure" height="350" class="w-100">

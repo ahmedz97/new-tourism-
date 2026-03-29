@@ -1,0 +1,14 @@
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+
+  # Serve index.html as-is
+  RewriteRule ^index\.html$ - [L]
+
+  # Existing files and directories (JS, CSS, images, etc.)
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+
+  # All other routes → Angular (client-side routing)
+  RewriteRule . /index.html [L]
+</IfModule>
