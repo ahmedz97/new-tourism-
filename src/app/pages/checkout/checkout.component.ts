@@ -152,7 +152,7 @@ export class CheckoutComponent implements OnInit {
     if (this.checkoutForm.invalid) return;
 
     this.checkoutData = this.checkoutForm.value;
-    // console.log(this.checkoutForm.value);
+    console.log('checkoutData', this.checkoutData);
     // if form is valid === true
     if (this.checkoutForm.valid) {
       this._BookingService.sendCheckoutData(this.checkoutData).subscribe({
@@ -161,18 +161,24 @@ export class CheckoutComponent implements OnInit {
             // console.log(response);
             this.toaster.success(response.message);
             this.getListCart();
-            this.checkoutForm.reset();
+            
             this.toaster.success(response.data.payment.message);
 
+            // console.log(this.checkoutData);
+            // console.log(this.checkoutData.['payment_method']);
+            
             // if payment method is cash
             if (this.checkoutForm.get('payment_method')?.value === 'cash') {
               this._Router.navigate(['/']);
             }
-
+            
             // if payment method is paypal
             if (this.checkoutForm.get('payment_method')?.value === 'paypal') {
               window.open(response.data.payment.redirect.location, '_self');
+              console.log(response.data.payment.redirect.location);
             }
+
+            this.checkoutForm.reset();
           }
         },
         error: (err) => {
