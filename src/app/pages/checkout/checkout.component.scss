@@ -5,6 +5,13 @@
         left: 15px;
     }
 
+    .submitBtn{
+      &:disabled{
+          cursor: not-allowed !important;
+          opacity: 0.5;
+      }
+  }
+
     /* hide native date text until focus or value */
 input[type="date"]::-webkit-datetime-edit { color: transparent; }
 input[type="date"]:focus::-webkit-datetime-edit,

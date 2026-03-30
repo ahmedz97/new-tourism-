@@ -77,15 +77,11 @@ export class CheckoutComponent implements OnInit {
     this.getListCart();
   }
 
-  // must start with 0 and must be 10 digits
-  phonePattern = '^01[0-2][0-9]{8}$';
-
   // used to show validation border after submit click
   submitted = false;
 
-  // used for input maxlength (phone digits only)
-  phoneMaxLength = 15;
-  phoneMinLength = 7;
+  // used for phone validation (digits only, open max length)
+  phoneMinLength = 3;
 
   checkoutForm: FormGroup = new FormGroup({
     first_name: new FormControl('', [
@@ -100,7 +96,6 @@ export class CheckoutComponent implements OnInit {
       Validators.required,
       Validators.pattern(/^[0-9]+$/),
       Validators.minLength(this.phoneMinLength),
-      Validators.maxLength(this.phoneMaxLength),
     ]),
     email: new FormControl('', [
       Validators.required,
@@ -117,72 +112,13 @@ export class CheckoutComponent implements OnInit {
     const phoneCtrl = this.checkoutForm.get('phone');
     if (!phoneCtrl) return;
 
-    const selectedCountryName = this.checkoutForm.get('country')?.value;
-    const selectedCountry =
-      this.countries?.find((c: any) => c?.name === selectedCountryName) ?? null;
-
-    // Base rules: digits only + length bounds
-    let nextMin = 7;
-    let nextMax = 15;
-    const validators = [Validators.required, Validators.pattern(/^[0-9]+$/)];
-
-    if (selectedCountry) {
-      // If API includes phone regex, use it.
-      const phoneRegexStr =
-        selectedCountry.phone_regex ??
-        selectedCountry.phoneRegex ??
-        selectedCountry.phone_pattern ??
-        selectedCountry.phonePattern;
-
-      if (typeof phoneRegexStr === 'string' && phoneRegexStr.trim() !== '') {
-        try {
-          validators.push(Validators.pattern(new RegExp(phoneRegexStr)));
-        } catch {
-          // ignore invalid regex from backend
-        }
-      }
-
-      // Common length fields (fallback to generic bounds if not provided)
-      const minLen =
-        selectedCountry.phone_min_length ??
-        selectedCountry.phoneMinLength ??
-        selectedCountry.phone_min_length_digits ??
-        selectedCountry.phoneMinLen;
-      const maxLen =
-        selectedCountry.phone_length ??
-        selectedCountry.phoneMaxLength ??
-        selectedCountry.phone_max_length ??
-        selectedCountry.phoneMaxLen;
-
-      const minNum = minLen != null ? Number(minLen) : NaN;
-      const maxNum = maxLen != null ? Number(maxLen) : NaN;
-      if (!Number.isNaN(minNum) && minNum > 0) nextMin = minNum;
-      if (!Number.isNaN(maxNum) && maxNum > 0) nextMax = maxNum;
-
-      // Egypt special-case: if calling code indicates +20 use your local Egypt rule.
-      const callingCodeRaw =
-        selectedCountry.calling_code ??
-        selectedCountry.callingCode ??
-        selectedCountry.dial_code ??
-        selectedCountry.dialCode ??
-        selectedCountry.phone_code ??
-        selectedCountry.phoneCode;
-      const callingCode = String(callingCodeRaw ?? '').replace('+', '');
-
-      if (callingCode.includes('20')) {
-        nextMin = 10;
-        nextMax = 10;
-        validators.push(Validators.pattern(this.phonePattern));
-      }
-    }
-
-    this.phoneMinLength = nextMin;
-    this.phoneMaxLength = nextMax;
-
-    validators.push(Validators.minLength(this.phoneMinLength));
-    validators.push(Validators.maxLength(this.phoneMaxLength));
-
-    phoneCtrl.setValidators(validators);
+    // Global phone rules: numbers only, min length 3, no max length.
+    this.phoneMinLength = 3;
+    phoneCtrl.setValidators([
+      Validators.required,
+      Validators.pattern(/^[0-9]+$/),
+      Validators.minLength(this.phoneMinLength),
+    ]);
     phoneCtrl.updateValueAndValidity({ emitEvent: false });
   }
 
@@ -198,14 +134,13 @@ export class CheckoutComponent implements OnInit {
 
     const input = event.target as HTMLInputElement;
     const digitsOnly = (input.value ?? '').replace(/\D/g, '');
-    const limited = digitsOnly.slice(0, this.phoneMaxLength);
 
     // keep UI value in sync with the sanitized value
-    if (input.value !== limited) input.value = limited;
+    if (input.value !== digitsOnly) input.value = digitsOnly;
 
     const currentValue = phoneCtrl.value ?? '';
-    if (String(currentValue) !== limited) {
-      phoneCtrl.setValue(limited);
+    if (String(currentValue) !== digitsOnly) {
+      phoneCtrl.setValue(digitsOnly);
     }
   }
 
@@ -213,23 +148,32 @@ export class CheckoutComponent implements OnInit {
     this.submitted = true;
     this.checkoutForm.markAllAsTouched();
 
+    // console.log(this.checkoutForm);
     if (this.checkoutForm.invalid) return;
 
     this.checkoutData = this.checkoutForm.value;
+    // console.log(this.checkoutForm.value);
     // if form is valid === true
     if (this.checkoutForm.valid) {
       this._BookingService.sendCheckoutData(this.checkoutData).subscribe({
         next: (response) => {
           if (response.status === true) {
-            console.log(response);
+            // console.log(response);
             this.toaster.success(response.message);
             this.getListCart();
             this.checkoutForm.reset();
             this.toaster.success(response.data.payment.message);
 
-            window.open(response.data.payment.redirect.location, '_self');
+            // if payment method is cash
+            if (this.checkoutForm.get('payment_method')?.value === 'cash') {
+              this._Router.navigate(['/']);
+            }
+
+            // if payment method is paypal
+            if (this.checkoutForm.get('payment_method')?.value === 'paypal') {
+              window.open(response.data.payment.redirect.location, '_self');
+            }
           }
-          // this._Router.navigate(['/']);
         },
         error: (err) => {
           // console.log(err);
@@ -358,4 +302,6 @@ export class CheckoutComponent implements OnInit {
     nav: false,
     smartSpeed: 1500,
   };
+
+
 }
