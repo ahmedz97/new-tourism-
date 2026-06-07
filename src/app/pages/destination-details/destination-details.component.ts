@@ -123,57 +123,24 @@ export class DestinationDetailsComponent implements OnInit {
   }
 
   updateDestinationSEO(destination: any): void {
-    // Extract SEO data from API if available
-    const seoData: any = {};
-    if (destination.seo) {
-      if (destination.seo.meta_title)
-        seoData.meta_title = destination.seo.meta_title;
-      if (destination.seo.meta_description)
-        seoData.meta_description = destination.seo.meta_description;
-      if (destination.seo.meta_keywords)
-        seoData.meta_keywords = destination.seo.meta_keywords;
-      if (destination.seo.og_title) seoData.og_title = destination.seo.og_title;
-      if (destination.seo.og_description)
-        seoData.og_description = destination.seo.og_description;
-      if (destination.seo.og_image) seoData.og_image = destination.seo.og_image;
-      if (destination.seo.og_type) seoData.og_type = destination.seo.og_type;
-      if (destination.seo.twitter_title)
-        seoData.twitter_title = destination.seo.twitter_title;
-      if (destination.seo.twitter_description)
-        seoData.twitter_description = destination.seo.twitter_description;
-      if (destination.seo.twitter_card)
-        seoData.twitter_card = destination.seo.twitter_card;
-      if (destination.seo.twitter_image)
-        seoData.twitter_image = destination.seo.twitter_image;
-      if (destination.seo.canonical)
-        seoData.canonical = destination.seo.canonical;
-      if (destination.seo.robots) seoData.robots = destination.seo.robots;
-      if (destination.seo.structure_schema)
-        seoData.structure_schema = destination.seo.structure_schema;
-    }
-
-    const destImage =
-      destination.seo?.og_image ||
-      destination.image ||
-      '/assets/image/alfa omega logo .webp';
-    const destDescription =
-      destination.seo?.meta_description ||
-      destination.seo?.og_description ||
-      destination.description ||
-      destination.short_description ||
-      `Explore ${destination.title} with Alfa Omega Tours. Discover amazing tours and experiences.`;
-
-    const fallbackTitle =
-      destination.seo?.meta_title ||
-      destination.seo?.og_title ||
-      `Alfa Omega Tours - ${destination.title}`;
-
-    this.seoService.updateSeoData(
-      seoData,
-      fallbackTitle,
-      destDescription.substring(0, 160),
-      destImage
-    );
+    const destSeo = destination?.seo;
+    this.seoService.applyEntitySeo(destSeo, {
+      title:
+        destSeo?.meta_title ||
+        destSeo?.og_title ||
+        `Alfa Omega Tours - ${destination.title}`,
+      description:
+        destSeo?.meta_description ||
+        destSeo?.og_description ||
+        destination.description ||
+        destination.short_description ||
+        `Explore ${destination.title} with Alfa Omega Tours. Discover amazing tours and experiences.`,
+      image: destSeo?.og_image || destSeo?.twitter_image || destination.image,
+      keywords: destSeo?.meta_keywords || '',
+      canonical: destSeo?.canonical || '',
+      robots: destSeo?.robots || '',
+      structure_schema: destSeo?.structure_schema || '',
+    });
   }
 
   galleryOptions: OwlOptions = {

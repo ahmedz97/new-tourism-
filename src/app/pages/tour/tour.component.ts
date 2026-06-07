@@ -84,13 +84,11 @@ export class TourComponent implements OnInit {
   isDestinationCollapsed: boolean = true;
 
   ngOnInit(): void {
-    // 1. Update SEO
-    this.seoService.updateSeoData(
-      {},
-      'Alfa Omega Tours - Tours',
-      'Explore our wide range of premium tours and travel packages with Alfa Omega Tours. Find your perfect adventure today.',
-      '../../../assets/image/alfa omega versions/Artboard 1 copy 3@4x.png'
-    );
+    this.seoService.applySettingsSeo({
+      title: 'Alfa Omega Tours - Tours',
+      description:
+        'Explore our wide range of premium Egypt tours and travel packages with Alfa Omega Tours. Find your perfect adventure today.',
+    });
 
     // 2. Fetch base data
     // this.getAllTours();

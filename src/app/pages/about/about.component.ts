@@ -36,11 +36,10 @@ export class AboutComponent implements OnInit {
   bannerTitle = 'about us';
 
   ngOnInit(): void {
-    this.seoService.updateSeoData(
-      {},
-      'Alfa Omega Tours - About us',
-      'Learn more about Alfa Omega Tours, your trusted travel partner for premium tours and exceptional travel experiences.',
-      '/assets/image/alfa omega logo .webp'
-    );
+    this.seoService.applyPageSeoByRoute('about', {
+      title: 'Alfa Omega Tours - About Us',
+      description:
+        'Learn more about Alfa Omega Tours, your trusted travel partner for premium Egypt tours and exceptional travel experiences.',
+    });
   }
 }

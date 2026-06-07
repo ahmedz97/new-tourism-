@@ -33,12 +33,11 @@ export class DestinationComponent implements OnInit {
   bannerTitle: string = 'destination';
 
   ngOnInit(): void {
-    this.seoService.updateSeoData(
-      {},
-      'Alfa Omega Tours - Destinations',
-      'Explore amazing destinations around the world with Alfa Omega Tours. Discover your next travel adventure.',
-      '../../../assets/image/alfa omega versions/Artboard 1 copy 3@4x.png'
-    );
+    this.seoService.applySettingsSeo({
+      title: 'Alfa Omega Tours - Destinations',
+      description:
+        'Explore amazing destinations across Egypt with Alfa Omega Tours. Discover Cairo, Luxor, Aswan, and more.',
+    });
     this.getDestination();
   }
 

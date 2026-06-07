@@ -14,11 +14,11 @@ export class NotFoundComponent implements OnInit {
   constructor(private seoService: SeoService) {}
 
   ngOnInit(): void {
-    this.seoService.updateSeoData(
-      {},
-      'Alfa Omega Tours - Page Not Found',
-      'The page you are looking for could not be found. Return to Alfa Omega Tours homepage.',
-      '../../../assets/image/alfa omega versions/Artboard 1 copy 3@4x.png'
-    );
+    this.seoService.applySettingsSeo({
+      title: 'Alfa Omega Tours - Page Not Found',
+      description:
+        'The page you are looking for could not be found. Return to Alfa Omega Tours homepage.',
+      robots: 'noindex, nofollow',
+    });
   }
 }

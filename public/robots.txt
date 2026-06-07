@@ -1,0 +1,14 @@
+User-agent: *
+Allow: /
+
+Disallow: /auth/login
+Disallow: /auth/signup
+Disallow: /auth/forget-password
+Disallow: /login
+Disallow: /signup
+Disallow: /forgetPassword
+Disallow: /profile
+Disallow: /cart
+Disallow: /checkout
+
+Sitemap: https://alfaomegatours.com/sitemap.xml

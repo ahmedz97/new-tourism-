@@ -38,12 +38,11 @@ export class BlogComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.seoService.updateSeoData(
-      {},
-      'Alfa Omega Tours - Blog',
-      'Read our latest travel blogs, tips, and guides from Alfa Omega Tours. Discover travel insights and inspiration for your next adventure.',
-      '../../../assets/image/alfa omega versions/Artboard 1 copy 3@4x.png'
-    );
+    this.seoService.applyPageSeoByRoute('blog', {
+      title: 'Alfa Omega Tours - Blog',
+      description:
+        'Read our latest travel blogs, tips, and guides from Alfa Omega Tours. Discover travel insights and inspiration for your next adventure.',
+    });
     this._DataService.getBlogs().subscribe({
       next: (res) => {
         this.allBlogs = res?.data?.data ?? res ?? [];

@@ -154,8 +154,11 @@ export class HomeComponent implements OnInit {
   today: Date = new Date();
 
   ngOnInit(): void {
-    // Get settings and update SEO from API, with fallback to defaults
-    this.getSettingsAndUpdateSeo();
+    this.seoService.applyHomeSeo({
+      title: 'Alfa Omega Tours - Home',
+      description:
+        'Discover Egypt tours, Nile cruises, and travel packages with Alfa Omega Tours. Book unforgettable journeys to Cairo, Luxor, Aswan and beyond.',
+    });
     this.getDestination();
     this.getCategory();
     this.getDurations();
@@ -166,64 +169,6 @@ export class HomeComponent implements OnInit {
       location: new FormControl('', Validators.required),
       type: new FormControl('', Validators.required),
       duration: new FormControl(''),
-    });
-  }
-
-  getSettingsAndUpdateSeo(): void {
-    this._DataService.getSetting().subscribe({
-      next: (res) => {
-        if (res.data && Array.isArray(res.data)) {
-          // Get current language or default to 'en'
-          const currentLang = isPlatformBrowser(this.platformId)
-            ? localStorage.getItem('language') || 'en'
-            : 'en';
-          // console.log(res.data);
-
-          // Extract SEO data from settings
-          const seoData = this.seoService.extractSeoFromSettings(
-            res.data,
-            currentLang
-          );
-
-          // Always add "test" to title in home page
-          const baseTitle =
-            seoData.meta_title || seoData.og_title || 'Alfa Omega Tours - Home';
-          const titleWithTest = ` ${baseTitle}`;
-
-          // Update SEO with test in title
-          this.seoService.updateSeoData(
-            { ...seoData, meta_title: titleWithTest, og_title: titleWithTest },
-            titleWithTest,
-            seoData.meta_description ||
-              seoData.og_description ||
-              'Discover amazing tours and travel experiences with Alfa Omega Tours. Book your dream vacation today.',
-            seoData.og_image || '/assets/image/alfa omega logo .webp'
-          );
-        } else {
-          // If settings API fails, use defaults with test
-          this.seoService.updateSeoData(
-            {
-              meta_title: 'Alfa Omega Tours - Home',
-              og_title: 'Alfa Omega Tours - Home',
-            },
-            'Alfa Omega Tours - Home',
-            'Discover amazing tours and travel experiences with Alfa Omega Tours. Book your dream vacation today.',
-            '/assets/image/alfa omega logo .webp'
-          );
-        }
-      },
-      error: (err) => {
-        // If settings API fails, use defaults with test
-        this.seoService.updateSeoData(
-          {
-            meta_title: 'Alfa Omega Tours - Home',
-            og_title: 'Alfa Omega Tours - Home',
-          },
-          'Alfa Omega Tours - Home',
-          'Discover amazing tours and travel experiences with Alfa Omega Tours. Book your dream vacation today.',
-          '/assets/image/alfa omega logo .webp'
-        );
-      },
     });
   }
 

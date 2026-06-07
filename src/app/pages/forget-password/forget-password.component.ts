@@ -63,12 +63,11 @@ export class ForgetPasswordComponent implements OnInit {
   });
 
   ngOnInit(): void {
-    this.seoService.updateSeoData(
-      {},
-      'Alfa Omega Tours - Forget Password',
-      'Reset your Alfa Omega Tours account password. Recover access to your travel account securely.',
-      '../../../assets/image/alfa omega versions/Artboard 1 copy 3@4x.png'
-    );
+    this.seoService.applySettingsSeo({
+      title: 'Alfa Omega Tours - Forget Password',
+      description:
+        'Reset your Alfa Omega Tours account password. Recover access to your travel account securely.',
+    });
     this.getSettings();
     this.getCountries();
   }

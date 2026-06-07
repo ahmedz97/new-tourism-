@@ -167,51 +167,23 @@ export class BlogDetailsComponent implements OnInit {
   }
 
   updateBlogSEO(blog: any): void {
-    // Extract SEO data from API if available
-    const seoData: any = {};
-    if (blog.seo) {
-      if (blog.seo.meta_title) seoData.meta_title = blog.seo.meta_title;
-      if (blog.seo.meta_description)
-        seoData.meta_description = blog.seo.meta_description;
-      if (blog.seo.meta_keywords)
-        seoData.meta_keywords = blog.seo.meta_keywords;
-      if (blog.seo.og_title) seoData.og_title = blog.seo.og_title;
-      if (blog.seo.og_description)
-        seoData.og_description = blog.seo.og_description;
-      if (blog.seo.og_image) seoData.og_image = blog.seo.og_image;
-      if (blog.seo.og_type) seoData.og_type = blog.seo.og_type;
-      if (blog.seo.twitter_title)
-        seoData.twitter_title = blog.seo.twitter_title;
-      if (blog.seo.twitter_description)
-        seoData.twitter_description = blog.seo.twitter_description;
-      if (blog.seo.twitter_card) seoData.twitter_card = blog.seo.twitter_card;
-      if (blog.seo.twitter_image)
-        seoData.twitter_image = blog.seo.twitter_image;
-      if (blog.seo.canonical) seoData.canonical = blog.seo.canonical;
-      if (blog.seo.robots) seoData.robots = blog.seo.robots;
-      if (blog.seo.structure_schema)
-        seoData.structure_schema = blog.seo.structure_schema;
-    }
-
-    const blogImage =
-      blog.seo?.og_image || blog.image || '/assets/image/alfa omega logo .webp';
-    const blogDescription =
-      blog.seo?.meta_description ||
-      blog.seo?.og_description ||
-      blog.short_description ||
-      blog.description ||
-      `Read ${blog.title} on Alfa Omega Tours blog. Travel tips, guides, and insights.`;
-
-    const fallbackTitle =
-      blog.seo?.meta_title ||
-      blog.seo?.og_title ||
-      `Alfa Omega Tours - ${blog.title}`;
-
-    this.seoService.updateSeoData(
-      seoData,
-      fallbackTitle,
-      blogDescription.substring(0, 160),
-      blogImage
-    );
+    const blogSeo = blog?.seo;
+    this.seoService.applyEntitySeo(blogSeo, {
+      title:
+        blogSeo?.meta_title ||
+        blogSeo?.og_title ||
+        `Alfa Omega Tours - ${blog.title}`,
+      description:
+        blogSeo?.meta_description ||
+        blogSeo?.og_description ||
+        blog.short_description ||
+        blog.description ||
+        `Read ${blog.title} on Alfa Omega Tours blog. Travel tips, guides, and insights.`,
+      image: blogSeo?.og_image || blogSeo?.twitter_image || blog.image,
+      keywords: blogSeo?.meta_keywords || '',
+      canonical: blogSeo?.canonical || '',
+      robots: blogSeo?.robots || '',
+      structure_schema: blogSeo?.structure_schema || '',
+    });
   }
 }

@@ -41,12 +41,11 @@ export class ContactComponent implements OnInit {
   userLocation: any;
 
   ngOnInit(): void {
-    this.seoService.updateSeoData(
-      {},
-      'Alfa Omega Tours - Contact us',
-      'Get in touch with Alfa Omega Tours. Contact us for inquiries, bookings, and exceptional travel experiences.',
-      '../../../assets/image/alfa omega versions/Artboard 1 copy 3@4x.png'
-    );
+    this.seoService.applyPageSeoByRoute('contact', {
+      title: 'Alfa Omega Tours - Contact Us',
+      description:
+        'Get in touch with Alfa Omega Tours. Contact us for inquiries, bookings, and exceptional travel experiences in Egypt.',
+    });
     this.getCountries();
     this.getSettings();
   }

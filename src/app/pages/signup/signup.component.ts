@@ -68,12 +68,11 @@ export class SignupComponent implements OnInit {
   });
 
   ngOnInit(): void {
-    this.seoService.updateSeoData(
-      {},
-      'Alfa Omega Tours - Sign Up',
-      'Create your Alfa Omega Tours account to access exclusive travel deals, manage bookings, and enjoy premium travel experiences.',
-      '../../../assets/image/alfa omega versions/Artboard 1 copy 3@4x.png'
-    );
+    this.seoService.applySettingsSeo({
+      title: 'Alfa Omega Tours - Sign Up',
+      description:
+        'Create your Alfa Omega Tours account to access exclusive travel deals, manage bookings, and enjoy premium travel experiences.',
+    });
     this.getSettings();
     this.getCountries();
   }

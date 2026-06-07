@@ -177,12 +177,11 @@ export class ProfileComponent implements OnInit {
   selectedTab: string = 'dashboard';
 
   ngOnInit(): void {
-    this.seoService.updateSeoData(
-      {},
-      'Alfa Omega Tours - My Account',
-      'Manage your profile, bookings, and preferences with Alfa Omega Tours. Access your account dashboard.',
-      '../../../assets/image/alfa omega versions/Artboard 1 copy 3@4x.png'
-    );
+    this.seoService.applySettingsSeo({
+      title: 'Alfa Omega Tours - My Account',
+      description:
+        'Manage your profile, bookings, and preferences with Alfa Omega Tours. Access your account dashboard.',
+    });
     if (this._AuthService.getToken()) {
       // console.log('done', this._AuthService.getToken());
 

@@ -56,12 +56,11 @@ export class CheckoutComponent implements OnInit {
   couponData: any = null;
 
   ngOnInit(): void {
-    this.seoService.updateSeoData(
-      {},
-      'Alfa Omega Tours - Checkout',
-      'Complete your booking with Alfa Omega Tours. Secure checkout for your travel reservations.',
-      '../../../assets/image/alfa omega versions/Artboard 1 copy 3@4x.png'
-    );
+    this.seoService.applySettingsSeo({
+      title: 'Alfa Omega Tours - Checkout',
+      description:
+        'Complete your booking with Alfa Omega Tours. Secure checkout for your travel reservations.',
+    });
     this._BookingService.getCountries().subscribe({
       next: (response) => {
         // console.log(response.data);

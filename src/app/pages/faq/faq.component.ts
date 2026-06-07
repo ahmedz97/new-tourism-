@@ -23,11 +23,10 @@ export class FaqComponent implements OnInit {
   constructor(private seoService: SeoService) {}
 
   ngOnInit(): void {
-    this.seoService.updateSeoData(
-      {},
-      'Alfa Omega Tours - FAQ',
-      'Find answers to frequently asked questions about Alfa Omega Tours. Get information about bookings, tours, and travel services.',
-      '/assets/image/alfa omega logo .webp'
-    );
+    this.seoService.applyPageSeoByRoute('faq', {
+      title: 'Alfa Omega Tours - FAQ',
+      description:
+        'Find answers to frequently asked questions about Alfa Omega Tours. Get information about bookings, tours, and travel services.',
+    });
   }
 }

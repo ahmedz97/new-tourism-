@@ -6,6 +6,7 @@ import { TourCartComponent } from "../tour-cart/tour-cart.component";
 import { CommonModule } from '@angular/common';
 import { CarouselModule, OwlOptions } from 'ngx-owl-carousel-o';
 import { TranslateModule } from '@ngx-translate/core';
+import { SeoService } from '../../core/services/seo.service';
 
 @Component({
   selector: 'app-tour-packages',
@@ -17,6 +18,7 @@ import { TranslateModule } from '@ngx-translate/core';
 export class TourPackagesComponent implements OnInit {
   constructor(
     private _DataService: DataService,
+    private seoService: SeoService,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {}
 
@@ -25,6 +27,12 @@ export class TourPackagesComponent implements OnInit {
   currentItems: number = 1;
 
   ngOnInit(): void {
+    this.seoService.applySettingsSeo({
+      title: 'Alfa Omega Tours - Tour Packages',
+      description:
+        'Browse Egypt travel packages with Alfa Omega Tours. Multi-day tours, Nile cruises, and curated holiday packages.',
+    });
+
     this._DataService.getTours({ category_slug: 'packages' }).subscribe({
       next: (res: any) => {
         console.log('res', res);

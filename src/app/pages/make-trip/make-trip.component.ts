@@ -157,12 +157,11 @@ export class MakeTripComponent implements OnInit, AfterViewInit {
   private prefilledData: TripPayload | null = null;
 
   ngOnInit() {
-    this.seoService.updateSeoData(
-      {},
-      'Alfa Omega Tours - Make Your Trip',
-      'Create your custom travel itinerary with Alfa Omega Tours. Plan your perfect trip tailored to your preferences.',
-      '../../../assets/image/alfa omega versions/Artboard 1 copy 3@4x.png'
-    );
+    this.seoService.applySettingsSeo({
+      title: 'Alfa Omega Tours - Make Your Trip',
+      description:
+        'Create your custom travel itinerary with Alfa Omega Tours. Plan your perfect trip tailored to your preferences.',
+    });
     this.showCountries();
     this.buildForms();
 

@@ -29,12 +29,11 @@ export class CartComponent implements OnInit {
   totalPrice: number = 0;
 
   ngOnInit(): void {
-    this.seoService.updateSeoData(
-      {},
-      'Alfa Omega Tours - Cart',
-      'Review your selected tours in your cart. Complete your booking with Alfa Omega Tours.',
-      '../../../assets/image/alfa omega versions/Artboard 1 copy 3@4x.png'
-    );
+    this.seoService.applySettingsSeo({
+      title: 'Alfa Omega Tours - Cart',
+      description:
+        'Review your selected tours in your cart. Complete your booking with Alfa Omega Tours.',
+    });
     this.getListCart();
   }
 

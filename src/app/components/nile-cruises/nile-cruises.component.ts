@@ -6,6 +6,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { CarouselModule, OwlOptions } from 'ngx-owl-carousel-o';
 import { DataService } from '../../core/services/data.service';
 import { TourCartComponent } from "../tour-cart/tour-cart.component";
+import { SeoService } from '../../core/services/seo.service';
 
 @Component({
   selector: 'app-nile-cruises',
@@ -21,10 +22,17 @@ export class NileCruisesComponent implements OnInit {
 
   constructor(
     private _DataService: DataService,
+    private seoService: SeoService,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {}
 
   ngOnInit(): void {
+    this.seoService.applySettingsSeo({
+      title: 'Alfa Omega Tours - Nile Cruises',
+      description:
+        'Discover luxury Nile cruises with Alfa Omega Tours. Sail between Luxor and Aswan on unforgettable Egypt river journeys.',
+    });
+
     this._DataService.getTours({ category_slug: 'nile-cruises' }).subscribe({
       next: (res: any) => {
         console.log('res', res);

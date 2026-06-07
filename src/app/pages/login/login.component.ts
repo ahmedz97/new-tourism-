@@ -64,12 +64,11 @@ export class LoginComponent implements OnInit {
   });
 
   ngOnInit(): void {
-    this.seoService.updateSeoData(
-      {},
-      'Alfa Omega Tours - Login',
-      'Login to your Alfa Omega Tours account to access your bookings, profile, and exclusive travel offers.',
-      '../../../assets/image/alfa omega versions/Artboard 1 copy 3@4x.png'
-    );
+    this.seoService.applySettingsSeo({
+      title: 'Alfa Omega Tours - Login',
+      description:
+        'Login to your Alfa Omega Tours account to access your bookings, profile, and exclusive travel offers.',
+    });
     this.getSettings();
     this.getCountries();
   }
