@@ -14,6 +14,12 @@ import { BannerComponent } from '../../components/banner/banner.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { SeoService } from '../../core/services/seo.service';
+import { TranslateService } from '@ngx-translate/core';
+import {
+  phoneInputHandler,
+  phoneValidators,
+  PHONE_MAX_LENGTH,
+} from '../../core/utils/form.utils';
 
 @Component({
   selector: 'app-signup',
@@ -48,21 +54,25 @@ export class SignupComponent implements OnInit {
     private _AuthService: AuthService,
     private toastr: ToastrService,
     private _Router: Router,
-    private seoService: SeoService
+    private seoService: SeoService,
+    private translate: TranslateService
   ) {}
 
-  bannerTitle = 'sign up';
+  bannerTitle = 'signup.bannerTitle';
   logo!: any;
   siteTitle!: any;
   isLoading = false;
   countryList: any[] = [];
 
+  phoneMaxLength = PHONE_MAX_LENGTH;
+  submitted = false;
+
   registerForm: FormGroup = new FormGroup({
     name: new FormControl('', [Validators.required]),
-    email: new FormControl('', [Validators.required]),
+    email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', [Validators.required]),
     password_confirmation: new FormControl('', [Validators.required]),
-    phone: new FormControl('', [Validators.required]),
+    phone: new FormControl('', phoneValidators(true)),
     birthdate: new FormControl('', [Validators.required]),
     nationality: new FormControl('', [Validators.required]),
   });
@@ -108,30 +118,31 @@ export class SignupComponent implements OnInit {
     });
   }
 
+  onPhoneInput(event: Event): void {
+    phoneInputHandler(event, this.registerForm.get('phone'));
+  }
+
   handleRegisterForm(): void {
+    this.submitted = true;
+    this.registerForm.markAllAsTouched();
+
     if (this.registerForm.valid) {
-      // console.log(this.registerForm.value);
       this.isLoading = true;
       this._AuthService.setRegister(this.registerForm.value).subscribe({
         next: (response) => {
-          // console.log(response);
           if (response.status == true) {
-            // console.log('true');
             this.isLoading = false;
             this.toastr.success(response.message);
-
-            // navigate to login
             this._Router.navigate(['/login']);
           }
         },
         error: (err) => {
-          // console.log(err);
           this.isLoading = false;
-          this.toastr.error(err.error.message);
+          this.toastr.error(err.error?.message || this.translate.instant('signup.errors.registrationFailed'));
         },
       });
     } else {
-      this.toastr.error('Your Data is Not valid');
+      this.toastr.error(this.translate.instant('common.errors.fillRequiredFields'));
     }
   }
 }

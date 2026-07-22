@@ -32,7 +32,7 @@
           <ng-container *ngIf="!(categoryName || categorySlug) || !tourName">
             <li class="breadcrumb-item active" aria-current="page">
               <span class="breadcrumb-separator">/</span>
-              <span class="breadcrumb-current">{{ bannerTitle }}</span>
+              <span class="breadcrumb-current">{{ bannerTitle | translate }}</span>
             </li>
           </ng-container>
         </ol>
@@ -41,7 +41,7 @@
       <!-- Main Title -->
       <div class="banner-title-wrapper">
         <h1 class="banner-title">
-          <span class="title-line">{{ bannerTitle }}</span>
+          <span class="title-line">{{ bannerTitle | translate }}</span>
         </h1>
         <div class="title-underline"></div>
       </div>

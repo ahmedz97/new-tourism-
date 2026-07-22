@@ -14,6 +14,7 @@ import { ToastrService } from 'ngx-toastr';
 import { MakeTripFormComponent } from '../../components/make-trip-form/make-trip-form.component';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { SeoService } from '../../core/services/seo.service';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-blog-details',
@@ -26,6 +27,7 @@ import { SeoService } from '../../core/services/seo.service';
     RouterLink,
     ReactiveFormsModule,
     MakeTripFormComponent,
+    TranslateModule,
   ],
   templateUrl: './blog-details.component.html',
   styleUrl: './blog-details.component.scss',

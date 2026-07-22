@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { DataService } from '../../core/services/data.service';
 import { SafeUrlPipe } from '../../core/pipes/safe-url.pipe';
@@ -9,6 +9,13 @@ import { BannerComponent } from '../../components/banner/banner.component';
 import { MakeTripFormComponent } from '../../components/make-trip-form/make-trip-form.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { SeoService } from '../../core/services/seo.service';
+import { TranslateService } from '@ngx-translate/core';
+import {
+  isControlInvalid,
+  phoneInputHandler,
+  phoneValidators,
+  PHONE_MAX_LENGTH,
+} from '../../core/utils/form.utils';
 
 @Component({
   selector: 'app-contact',
@@ -29,16 +36,19 @@ export class ContactComponent implements OnInit {
   constructor(
     private _DataService: DataService,
     private toaster: ToastrService,
-    private seoService: SeoService
+    private seoService: SeoService,
+    private translate: TranslateService
   ) {}
 
-  bannerTitle: string = 'contact';
+  bannerTitle: string = 'contact.bannerTitle';
 
   countryList: any[] = [];
   phoneNumber: any;
   userEmail: any;
   userAddress: any;
   userLocation: any;
+  submitted = false;
+  phoneMaxLength = PHONE_MAX_LENGTH;
 
   ngOnInit(): void {
     this.seoService.applyPageSeoByRoute('contact', {
@@ -51,28 +61,43 @@ export class ContactComponent implements OnInit {
   }
 
   contactForm: FormGroup = new FormGroup({
-    name: new FormControl(''),
-    email: new FormControl(''),
-    phone: new FormControl(''),
-    country: new FormControl(''),
-    subject: new FormControl(''),
-    message: new FormControl(''),
+    name: new FormControl('', [Validators.required]),
+    email: new FormControl('', [Validators.required, Validators.email]),
+    phone: new FormControl('', phoneValidators(true)),
+    country: new FormControl('', [Validators.required]),
+    subject: new FormControl('', [Validators.required]),
+    message: new FormControl('', [Validators.required]),
   });
 
+  isFieldInvalid(fieldName: string): boolean {
+    return isControlInvalid(this.contactForm.get(fieldName), this.submitted);
+  }
+
+  onPhoneInput(event: Event): void {
+    phoneInputHandler(event, this.contactForm.get('phone'));
+  }
+
   getContactData(): void {
-    // console.log(this.contactForm.value);
+    this.submitted = true;
+    this.contactForm.markAllAsTouched();
+
+    if (this.contactForm.invalid) {
+      this.toaster.error(this.translate.instant('common.errors.fillRequiredFields'));
+      return;
+    }
 
     this._DataService.contactData(this.contactForm.value).subscribe({
       next: (response) => {
-        // console.log(response);
         this.toaster.success(response.message);
+        this.contactForm.reset();
+        this.submitted = false;
       },
       error: (err) => {
-        // console.log(err.error);
-        this.toaster.error(err.error.message);
+        this.toaster.error(
+          err.error?.message || this.translate.instant('contact.errors.sendFailed')
+        );
       },
     });
-    this.contactForm.reset();
   }
 
   getCountries() {

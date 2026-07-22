@@ -101,7 +101,7 @@
                       selected
                       class="bg-secondary text-white"
                     >
-                      when you go to?
+                      {{ "home.whenYouGo" | translate }}
                     </option>
                     @for (time of allDurations; track $index) {
 
@@ -230,7 +230,7 @@
                       <mat-option
                         *ngFor="let month of monthList; let i = index"
                         [value]="i + 1"
-                        >{{ month }}</mat-option
+                        >{{ month | translate }}</mat-option
                       >
                     </mat-select>
                   </mat-form-field>
@@ -371,9 +371,9 @@
           ><i class="fa fa-plane me-2 ps-1"></i
         ></span>
 
-        our blog
+        {{ "home.ourBlog" | translate }}
       </span>
-      <h2 class="my-3 textSecondColor fw-bold">Our Latest Blog & News</h2>
+      <h2 class="my-3 textSecondColor fw-bold">{{ "home.latestBlogNews" | translate }}</h2>
     </div>
 
     <!-- This fetches blogs and stores them -->

@@ -11,7 +11,7 @@ import { SeoService } from '../../core/services/seo.service';
   styleUrl: './terms-condition.component.scss',
 })
 export class TermsConditionComponent implements OnInit {
-  bannerTitle: string = 'Terms & Conditions';
+  bannerTitle: string = 'termsCondition.bannerTitle';
 
   constructor(private seoService: SeoService) {}
 

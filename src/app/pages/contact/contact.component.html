@@ -112,7 +112,11 @@
                   formControlName="name"
                   class="form-control p-2 rounded-3"
                   placeholder="{{ 'contact.yourName' | translate }}"
+                  [ngClass]="{ 'border border-danger': isFieldInvalid('name') }"
                 />
+                @if (isFieldInvalid('name')) {
+                <div class="text-danger fontsm mt-1">{{ "contact.errors.nameRequired" | translate }}</div>
+                }
               </div>
             </div>
             <div class="col-md-6">
@@ -122,7 +126,17 @@
                   formControlName="email"
                   class="form-control p-2 rounded-3"
                   placeholder="{{ 'contact.yourEmail' | translate }}"
+                  [ngClass]="{ 'border border-danger': isFieldInvalid('email') }"
                 />
+                @if (isFieldInvalid('email')) {
+                <div class="text-danger fontsm mt-1">
+                  @if (contactForm.get('email')?.errors?.['required']) {
+                  {{ "contact.errors.emailRequired" | translate }}
+                  } @else {
+                  {{ "contact.errors.emailInvalid" | translate }}
+                  }
+                </div>
+                }
               </div>
             </div>
             <div class="col-md-6">
@@ -132,7 +146,20 @@
                   formControlName="phone"
                   class="form-control p-2 rounded-3"
                   placeholder="{{ 'contact.yourPhone' | translate }}"
+                  maxlength="28"
+                  inputmode="numeric"
+                  (input)="onPhoneInput($event)"
+                  [ngClass]="{ 'border border-danger': isFieldInvalid('phone') }"
                 />
+                @if (isFieldInvalid('phone')) {
+                <div class="text-danger fontsm mt-1">
+                  @if (contactForm.get('phone')?.errors?.['required']) {
+                  {{ "contact.errors.phoneRequired" | translate }}
+                  } @else {
+                  {{ "contact.errors.phoneInvalid" | translate }}
+                  }
+                </div>
+                }
               </div>
             </div>
             <div class="col-md-6">
@@ -142,7 +169,11 @@
                   formControlName="subject"
                   class="form-control p-2 rounded-3"
                   placeholder="{{ 'contact.yourSubject' | translate }}"
+                  [ngClass]="{ 'border border-danger': isFieldInvalid('subject') }"
                 />
+                @if (isFieldInvalid('subject')) {
+                <div class="text-danger fontsm mt-1">{{ "contact.errors.subjectRequired" | translate }}</div>
+                }
               </div>
             </div>
             <div class="col-12">
@@ -150,6 +181,7 @@
                 <select
                   formControlName="country"
                   class="form-control p-2 rounded-3"
+                  [ngClass]="{ 'border border-danger': isFieldInvalid('country') }"
                 >
                   <option value="" class="bg-dark" disabled>
                     {{ "contact.selectCountry" | translate }}
@@ -158,6 +190,9 @@
                     {{ item.name }}
                   </option>
                 </select>
+                @if (isFieldInvalid('country')) {
+                <div class="text-danger fontsm mt-1">{{ "contact.errors.countryRequired" | translate }}</div>
+                }
               </div>
             </div>
             <div class="col-12">
@@ -167,7 +202,11 @@
                   formControlName="message"
                   class="form-control p-2 rounded-3"
                   placeholder="{{ 'contact.writeMessage' | translate }}"
+                  [ngClass]="{ 'border border-danger': isFieldInvalid('message') }"
                 ></textarea>
+                @if (isFieldInvalid('message')) {
+                <div class="text-danger fontsm mt-1">{{ "contact.errors.messageRequired" | translate }}</div>
+                }
               </div>
             </div>
 

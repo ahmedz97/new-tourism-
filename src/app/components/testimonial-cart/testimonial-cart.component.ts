@@ -2,11 +2,12 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { DataService } from '../../core/services/data.service';
 import { CarouselModule, OwlOptions } from 'ngx-owl-carousel-o';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-testimonial-cart',
   standalone: true,
-  imports: [CommonModule, CarouselModule],
+  imports: [CommonModule, CarouselModule, TranslateModule],
   templateUrl: './testimonial-cart.component.html',
   styleUrl: './testimonial-cart.component.scss',
 })

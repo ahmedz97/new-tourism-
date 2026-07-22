@@ -45,7 +45,7 @@ export class TourComponent implements OnInit {
     private seoService: SeoService
   ) {}
 
-  bannerTitle: string = 'tour search';
+  bannerTitle: string = 'tour.bannerTitle';
 
   // Pagination variables
   itemsPerPage: number = 15;

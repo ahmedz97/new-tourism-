@@ -18,6 +18,13 @@ import { BannerComponent } from '../../components/banner/banner.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { SeoService } from '../../core/services/seo.service';
 import { Router } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
+import {
+  isControlInvalid,
+  phoneInputHandler,
+  phoneValidators,
+  PHONE_MAX_LENGTH,
+} from '../../core/utils/form.utils';
 
 @Component({
   selector: 'app-checkout',
@@ -42,10 +49,11 @@ export class CheckoutComponent implements OnInit {
     private _BookingService: BookingService,
     private toaster: ToastrService,
     private _Router: Router,
-    private seoService: SeoService
+    private seoService: SeoService,
+    private translate: TranslateService
   ) {}
 
-  bannerTitle: string = 'checkout';
+  bannerTitle: string = 'checkout.bannerTitle';
 
   checkoutData: object = {};
   countries: any[] = [];
@@ -79,8 +87,7 @@ export class CheckoutComponent implements OnInit {
   // used to show validation border after submit click
   submitted = false;
 
-  // used for phone validation (digits only, open max length)
-  phoneMinLength = 3;
+  phoneMaxLength = PHONE_MAX_LENGTH;
 
   checkoutForm: FormGroup = new FormGroup({
     first_name: new FormControl('', [
@@ -91,11 +98,7 @@ export class CheckoutComponent implements OnInit {
       Validators.required,
       Validators.minLength(2),
     ]),
-    phone: new FormControl('', [
-      Validators.required,
-      Validators.pattern(/^[0-9]+$/),
-      Validators.minLength(this.phoneMinLength),
-    ]),
+    phone: new FormControl('', phoneValidators(true)),
     email: new FormControl('', [
       Validators.required,
       Validators.email,
@@ -111,36 +114,16 @@ export class CheckoutComponent implements OnInit {
     const phoneCtrl = this.checkoutForm.get('phone');
     if (!phoneCtrl) return;
 
-    // Global phone rules: numbers only, min length 3, no max length.
-    this.phoneMinLength = 3;
-    phoneCtrl.setValidators([
-      Validators.required,
-      Validators.pattern(/^[0-9]+$/),
-      Validators.minLength(this.phoneMinLength),
-    ]);
+    phoneCtrl.setValidators(phoneValidators(true));
     phoneCtrl.updateValueAndValidity({ emitEvent: false });
   }
 
   isFieldInvalid(fieldName: string): boolean {
-    const ctrl = this.checkoutForm.get(fieldName);
-    if (!ctrl) return false;
-    return ctrl.invalid && (ctrl.touched || ctrl.dirty || this.submitted);
+    return isControlInvalid(this.checkoutForm.get(fieldName), this.submitted);
   }
 
   onPhoneInput(event: Event): void {
-    const phoneCtrl = this.checkoutForm.get('phone');
-    if (!phoneCtrl) return;
-
-    const input = event.target as HTMLInputElement;
-    const digitsOnly = (input.value ?? '').replace(/\D/g, '');
-
-    // keep UI value in sync with the sanitized value
-    if (input.value !== digitsOnly) input.value = digitsOnly;
-
-    const currentValue = phoneCtrl.value ?? '';
-    if (String(currentValue) !== digitsOnly) {
-      phoneCtrl.setValue(digitsOnly);
-    }
+    phoneInputHandler(event, this.checkoutForm.get('phone'));
   }
 
   getCheckoutData(): void {
@@ -249,42 +232,58 @@ export class CheckoutComponent implements OnInit {
   applyCoupon(): void {
     const couponCode = this.checkoutForm.get('coupon_id')?.value;
 
-    if (!couponCode || couponCode.trim() === '') {
-      this.toaster.error('Please enter a coupon code');
+    if (!couponCode || String(couponCode).trim() === '') {
+      this.toaster.error(this.translate.instant('checkout.errors.couponRequired'));
       return;
     }
 
-    this._BookingService.getCoupon(couponCode).subscribe({
+    this._BookingService.getCoupon(String(couponCode).trim()).subscribe({
       next: (cResponse) => {
-        // console.log(cResponse);
         this.couponApplied = true;
         this.couponData = cResponse.data;
-
-        // Calculate discount based on coupon type (percentage or fixed amount)
-        const totalPrice = this.getTotalPrice();
-        if (this.couponData.type === 'percentage') {
-          this.couponDiscount = (totalPrice * this.couponData.value) / 100;
-        } else {
-          this.couponDiscount = this.couponData.value;
-        }
+        this.couponDiscount = this.calculateCouponDiscount(
+          this.getTotalPrice(),
+          this.couponData
+        );
 
         this.toaster.success(
-          cResponse.message || 'Coupon applied successfully!'
+          cResponse.message || this.translate.instant('checkout.couponAppliedSuccess')
         );
       },
       error: (cError) => {
-        // console.log(cError);
         this.couponApplied = false;
         this.couponDiscount = 0;
         this.couponData = null;
-        this.toaster.error(cError.error.message || 'Invalid coupon code');
+        this.toaster.error(
+          cError.error?.message || this.translate.instant('checkout.errors.invalidCoupon')
+        );
       },
     });
-
-    this.checkoutForm.get('coupon_id')?.reset();
   }
 
-  getTotalPriceAfterCouponCode(): number {
+  /** fixed → subtract value; percentage → convert % to amount then subtract */
+  calculateCouponDiscount(totalPrice: number, coupon: any): number {
+    if (!coupon) return 0;
+
+    const value = Number(coupon.value) || 0;
+    const type = String(
+      coupon.discount_type || coupon.type || ''
+    ).toLowerCase();
+
+    if (
+      type === 'percentage' ||
+      type === 'percage' ||
+      type === 'percent' ||
+      type === '%'
+    ) {
+      return (totalPrice * value) / 100;
+    }
+
+    // fixed (default)
+    return value;
+  }
+
+  getTotalPriceAfterDiscount(): number {
     const totalPrice = this.getTotalPrice();
 
     if (this.couponApplied && this.couponDiscount > 0) {
@@ -293,6 +292,11 @@ export class CheckoutComponent implements OnInit {
     }
 
     return totalPrice;
+  }
+
+  /** @deprecated use getTotalPriceAfterDiscount */
+  getTotalPriceAfterCouponCode(): number {
+    return this.getTotalPriceAfterDiscount();
   }
 
   ordersOptions: OwlOptions = {

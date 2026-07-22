@@ -5,7 +5,7 @@ import {
   OnInit,
   signal,
 } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink, Router } from '@angular/router';
 import {
   NgxDropzoneComponent,
@@ -31,6 +31,13 @@ import {
   stagger,
 } from '@angular/animations';
 import { SeoService } from '../../core/services/seo.service';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import {
+  isControlInvalid,
+  phoneInputHandler,
+  phoneValidators,
+  PHONE_MAX_LENGTH,
+} from '../../core/utils/form.utils';
 
 @Component({
   selector: 'app-profile',
@@ -45,6 +52,7 @@ import { SeoService } from '../../core/services/seo.service';
     TourCartComponent,
     BannerComponent,
     MakeTripFormComponent,
+    TranslateModule,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   animations: [
@@ -161,9 +169,10 @@ export class ProfileComponent implements OnInit {
     private _Router: Router,
     private toaster: ToastrService,
     private _AuthService: AuthService,
-    private seoService: SeoService
+    private seoService: SeoService,
+    private translate: TranslateService
   ) {}
-  bannerTitle: string = 'my profile';
+  bannerTitle: string = 'profile.bannerTitle';
   updateProfile!: FormGroup;
   updateImage!: FormGroup;
   countriesList: any[] = [];
@@ -175,6 +184,8 @@ export class ProfileComponent implements OnInit {
   files = signal<File[]>([]);
 
   selectedTab: string = 'dashboard';
+  submitted = false;
+  phoneMaxLength = PHONE_MAX_LENGTH;
 
   ngOnInit(): void {
     this.seoService.applySettingsSeo({
@@ -191,7 +202,7 @@ export class ProfileComponent implements OnInit {
         name: new FormControl(''),
         password: new FormControl(''),
         password_confirmation: new FormControl(''),
-        phone: new FormControl(''),
+        phone: new FormControl('', phoneValidators(false)),
         // email: new FormControl(''),
         nationality: new FormControl(''),
       });
@@ -203,7 +214,7 @@ export class ProfileComponent implements OnInit {
       this.getFav();
     } else {
       this._Router.navigate(['/login']);
-      this.toaster.warning('Please Login First');
+      this.toaster.warning(this.translate.instant('profile.errors.loginRequired'));
     }
   }
 
@@ -241,11 +252,16 @@ export class ProfileComponent implements OnInit {
           // نظّف ملفات الـ preview
           this.files.set([]);
         }
-        this.toaster.success('Profile image updated');
+        this.toaster.success(
+          this.translate.instant('profile.imageUpdatedSuccess')
+        );
       },
       error: (err) => {
         console.error('Upload error ❌', err);
-        this.toaster.error(err?.error?.message || 'Upload failed');
+        this.toaster.error(
+          err?.error?.message ||
+            this.translate.instant('profile.errors.uploadFailed')
+        );
         // في حالة فشل الرفع رجّع البريفيو كما كان
         this.files.set([]);
         this.profileMe(); // رجّع صورة السيرفر (لو كانت موجودة)
@@ -294,22 +310,39 @@ export class ProfileComponent implements OnInit {
   }
 
   submitProfileData(): void {
+    this.submitted = true;
+    this.updateProfile.markAllAsTouched();
+
     if (this.updateProfile.valid) {
       const profileData = this.updateProfile.value;
-      // console.log(profileData);
       this._ProfileService.updateProfile(profileData).subscribe({
         next: (response) => {
-          // console.log(response);
-          this.toaster.success(response.error.message);
+          this.toaster.success(
+            response.error?.message ||
+              response.message ||
+              this.translate.instant('profile.updateSuccess')
+          );
         },
         error: (err) => {
-          // console.log(err);
-          this.toaster.error(err.error.message);
+          this.toaster.error(
+            err.error?.message ||
+              this.translate.instant('profile.errors.updateFailed')
+          );
         },
       });
     } else {
-      // console.log('nooooo');
+      this.toaster.error(
+        this.translate.instant('profile.errors.fixFormErrors')
+      );
     }
+  }
+
+  isFieldInvalid(fieldName: string): boolean {
+    return isControlInvalid(this.updateProfile?.get(fieldName), this.submitted);
+  }
+
+  onPhoneInput(event: Event): void {
+    phoneInputHandler(event, this.updateProfile.get('phone'));
   }
 
   profileMe(): void {

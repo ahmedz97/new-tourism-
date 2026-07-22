@@ -42,6 +42,10 @@ import { CounterComponent } from '../../components/counter/counter.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { AboutCategoryComponent } from '../../components/about-category/about-category.component';
 import { SeoService } from '../../core/services/seo.service';
+import {
+  formatLocalDateYmd,
+  startOfToday,
+} from '../../core/utils/form.utils';
 
 interface DestinationPriceMap {
   [title: string]: number;
@@ -138,20 +142,20 @@ export class HomeComponent implements OnInit {
 
   MarkTime: string = 'exact';
   monthList = [
-    'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-    'July',
-    'August',
-    'September',
-    'October',
-    'November',
-    'December',
+    'common.months.january',
+    'common.months.february',
+    'common.months.march',
+    'common.months.april',
+    'common.months.may',
+    'common.months.june',
+    'common.months.july',
+    'common.months.august',
+    'common.months.september',
+    'common.months.october',
+    'common.months.november',
+    'common.months.december',
   ];
-  today: Date = new Date();
+  today: Date = startOfToday();
 
   ngOnInit(): void {
     this.seoService.applyHomeSeo({
@@ -619,10 +623,6 @@ export class HomeComponent implements OnInit {
   };
 
   private formatDateForQuery(date: Date): string {
-    // Format date as YYYY-MM-DD without timezone conversion
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-    return `${year}-${month}-${day}`;
+    return formatLocalDateYmd(date) ?? '';
   }
 }

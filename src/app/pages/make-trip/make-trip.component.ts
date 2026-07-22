@@ -36,12 +36,23 @@ import {
   stagger,
 } from '@angular/animations';
 import { SeoService } from '../../core/services/seo.service';
+import {
+  formatLocalDateYmd,
+  isControlInvalid,
+  phoneInputHandler,
+  phoneValidators,
+  PHONE_MAX_LENGTH,
+  startOfToday,
+} from '../../core/utils/form.utils';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-make-trip',
   standalone: true,
   imports: [
     MatRadioModule,
+    MatCheckboxModule,
     MatSelectModule,
     MatSliderModule,
     MatDatepickerModule,
@@ -51,6 +62,7 @@ import { SeoService } from '../../core/services/seo.service';
     CommonModule,
     ReactiveFormsModule,
     BannerComponent,
+    TranslateModule,
   ],
   templateUrl: './make-trip.component.html',
   styleUrl: './make-trip.component.scss',
@@ -121,12 +133,13 @@ export class MakeTripComponent implements OnInit, AfterViewInit {
     private _Router: Router,
     private seoService: SeoService,
     private _ActivatedRoute: ActivatedRoute,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private translate: TranslateService
   ) {}
 
   currentStep: number = 0;
 
-  bannerTitle: string = 'make Your trip';
+  bannerTitle: string = 'makeTrip.bannerTitle';
 
   firstFormGroup!: FormGroup;
   secondFormGroup!: FormGroup;
@@ -134,20 +147,23 @@ export class MakeTripComponent implements OnInit, AfterViewInit {
   prefilled = false; // لو في داتا من Home
 
   monthList = [
-    'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-    'July',
-    'August',
-    'September',
-    'October',
-    'November',
-    'December',
+    'common.months.january',
+    'common.months.february',
+    'common.months.march',
+    'common.months.april',
+    'common.months.may',
+    'common.months.june',
+    'common.months.july',
+    'common.months.august',
+    'common.months.september',
+    'common.months.october',
+    'common.months.november',
+    'common.months.december',
   ];
-  today: Date = new Date();
+  today: Date = startOfToday();
+  phoneMaxLength = PHONE_MAX_LENGTH;
+  submitted = false;
+  selectedDestinations: string[] = [];
 
   makeTripForm: any = {};
   countriesList: any[] = [];
@@ -274,7 +290,7 @@ export class MakeTripComponent implements OnInit, AfterViewInit {
 
   isStepCompleted(stepIndex: number): boolean {
     if (stepIndex === 0) {
-      return this.prefilled && !!this.firstFormGroup.get('destination')?.value;
+      return this.prefilled && !!this.getDestinationString();
     }
     if (stepIndex === 1) {
       return this.prefilled && (!!this.secondFormGroup.get('start_date')?.value || 
@@ -286,7 +302,7 @@ export class MakeTripComponent implements OnInit, AfterViewInit {
 
   private buildForms() {
     this.firstFormGroup = new FormGroup({
-      destination: new FormControl(''),
+      destination: new FormControl('', [Validators.required]),
     });
 
     this.secondFormGroup = new FormGroup({
@@ -298,11 +314,11 @@ export class MakeTripComponent implements OnInit, AfterViewInit {
     });
 
     this.submitFormGroup = new FormGroup({
-      first_name: new FormControl(''),
-      last_name: new FormControl(''),
-      email: new FormControl(''),
-      nationality: new FormControl(''),
-      phone_number: new FormControl<string>(''),
+      first_name: new FormControl('', [Validators.required]),
+      last_name: new FormControl('', [Validators.required]),
+      email: new FormControl('', [Validators.required, Validators.email]),
+      nationality: new FormControl('', [Validators.required]),
+      phone_number: new FormControl<string>('', phoneValidators(true)),
       adults: new FormControl(0),
       children: new FormControl(0),
       infants: new FormControl(0),
@@ -355,25 +371,35 @@ export class MakeTripComponent implements OnInit, AfterViewInit {
     const toDate = this.toDate(data.ToDuration ?? null);
     const approx = data.appro ?? null;
 
-    // Convert slug to title for the form (form uses title as value)
-    let destinationTitle = '';
+    // Convert slug/title to destination titles for checkboxes
+    let destinationTitles: string[] = [];
     if (destinationSlug && this.destinationList.length > 0) {
-      const foundDestination = this.destinationList.find(
-        (dest) => dest.slug === destinationSlug
-      );
-      if (foundDestination) {
-        destinationTitle = foundDestination.title;
+      const parts = String(destinationSlug)
+        .split(',')
+        .map((p) => p.trim())
+        .filter(Boolean);
+
+      for (const part of parts) {
+        const found = this.destinationList.find(
+          (dest) => dest.slug === part || dest.title === part
+        );
+        if (found) {
+          destinationTitles.push(found.title);
+        } else {
+          destinationTitles.push(part);
+        }
       }
     }
 
-    // Patch the form value
-    if (destinationTitle) {
-      this.firstFormGroup.patchValue({ destination: destinationTitle });
-      this.firstFormGroup.markAsTouched();
-      this.firstFormGroup.updateValueAndValidity();
+    if (destinationTitles.length) {
+      this.selectedDestinations = destinationTitles;
+      this.syncDestinationControl();
     } else if (destinationSlug) {
-      // If destinationList not loaded yet, store slug and will apply later
-      this.firstFormGroup.patchValue({ destination: destinationSlug });
+      this.selectedDestinations = String(destinationSlug)
+        .split(',')
+        .map((p) => p.trim())
+        .filter(Boolean);
+      this.syncDestinationControl();
     }
 
     if (approx) {
@@ -398,90 +424,105 @@ export class MakeTripComponent implements OnInit, AfterViewInit {
     return this.secondFormGroup.get('type')?.value === value;
   }
 
-  onToursChange(event: any) {
-    this.firstFormGroup.patchValue({ destination: event.target.value });
+  getDestinationString(): string {
+    return this.selectedDestinations.filter(Boolean).join(', ');
   }
 
-  toggleDestination(destinationTitle: string, event: MouseEvent): void {
-    event.preventDefault();
-    const current = this.firstFormGroup.get('destination')?.value;
-    this.firstFormGroup.patchValue({
-      destination: current === destinationTitle ? '' : destinationTitle,
-    });
-    this.firstFormGroup.markAsTouched();
-    this.firstFormGroup.updateValueAndValidity();
+  private syncDestinationControl(): void {
+    const value = this.getDestinationString();
+    this.firstFormGroup.patchValue({ destination: value });
+    this.firstFormGroup.get('destination')?.markAsTouched();
+    this.firstFormGroup.get('destination')?.updateValueAndValidity();
+  }
+
+  toggleDestination(destinationTitle: string, event?: Event): void {
+    event?.preventDefault();
+    event?.stopPropagation();
+
+    const idx = this.selectedDestinations.indexOf(destinationTitle);
+    if (idx >= 0) {
+      this.selectedDestinations = this.selectedDestinations.filter(
+        (t) => t !== destinationTitle
+      );
+    } else {
+      this.selectedDestinations = [
+        ...this.selectedDestinations,
+        destinationTitle,
+      ];
+    }
+    this.syncDestinationControl();
   }
 
   isDestinationSelected(destinationTitle: string): boolean {
-    return this.firstFormGroup.get('destination')?.value === destinationTitle;
+    return this.selectedDestinations.includes(destinationTitle);
+  }
+
+  isFieldInvalid(form: FormGroup, fieldName: string): boolean {
+    return isControlInvalid(form.get(fieldName), this.submitted);
+  }
+
+  onPhoneInput(event: Event): void {
+    phoneInputHandler(event, this.submitFormGroup.get('phone_number'));
   }
 
   submitForm() {
-    if (this.submitFormGroup.status == 'VALID') {
-      // Get form values
-      const firstFormValue = this.firstFormGroup.value;
-      const secondFormValue = this.secondFormGroup.value;
-      const submitFormValue = this.submitFormGroup.value;
+    this.submitted = true;
+    this.firstFormGroup.markAllAsTouched();
+    this.secondFormGroup.markAllAsTouched();
+    this.submitFormGroup.markAllAsTouched();
 
-      // Format dates to YYYY-MM-DD format
-      this.makeTripForm = {
-        ...firstFormValue,
-        start_date: this.formatDateForSubmission(secondFormValue.start_date),
-        end_date: this.formatDateForSubmission(secondFormValue.end_date),
-        type: secondFormValue.type,
-        month: secondFormValue.month,
-        days: secondFormValue.days,
-        ...submitFormValue,
-        phone_number: String(submitFormValue.phone_number ?? '').trim(),
-      };
-
-      this._MaketripService.sendDataTrip(this.makeTripForm).subscribe({
-        next: (response) => {
-          this.toaster.success(response.message);
-          this._Router.navigate(['/']); //go to home page
-        },
-        error: (err) => {
-          this.toaster.error(err.error.message);
-        },
-      });
+    const destination = this.getDestinationString();
+    if (!destination) {
+      this.toaster.error(
+        this.translate.instant('makeTrip.errors.destinationRequired')
+      );
+      this.currentStep = 0;
+      return;
     }
+
+    // Ensure destination is always a non-empty string for the API
+    this.firstFormGroup.patchValue({ destination: String(destination) });
+
+    if (this.submitFormGroup.invalid) {
+      this.toaster.error(
+        this.translate.instant('common.errors.fillRequiredFields')
+      );
+      return;
+    }
+
+    const firstFormValue = this.firstFormGroup.value;
+    const secondFormValue = this.secondFormGroup.value;
+    const submitFormValue = this.submitFormGroup.value;
+
+    this.makeTripForm = {
+      ...firstFormValue,
+      destination: String(destination),
+      start_date: formatLocalDateYmd(secondFormValue.start_date),
+      end_date: formatLocalDateYmd(secondFormValue.end_date),
+      type: secondFormValue.type,
+      month: secondFormValue.month,
+      days: secondFormValue.days,
+      ...submitFormValue,
+      phone_number: String(submitFormValue.phone_number ?? '').trim(),
+      flight_offer: submitFormValue.flight_offer ? 1 : 0,
+    };
+
+    this._MaketripService.sendDataTrip(this.makeTripForm).subscribe({
+      next: (response) => {
+        this.toaster.success(response.message);
+        this._Router.navigate(['/']);
+      },
+      error: (err) => {
+        this.toaster.error(
+          err.error?.message ||
+            this.translate.instant('common.errors.somethingWentWrong')
+        );
+      },
+    });
   }
 
   private formatDateForSubmission(date: any): string | null {
-    if (!date) return null;
-    
-    // If it's already a Date object
-    if (date instanceof Date) {
-      const year = date.getFullYear();
-      const month = String(date.getMonth() + 1).padStart(2, '0');
-      const day = String(date.getDate()).padStart(2, '0');
-      return `${year}-${month}-${day}`;
-    }
-    
-    // If it's a string (ISO format or date-only)
-    if (typeof date === 'string') {
-      // If it's already in YYYY-MM-DD format, return as is
-      if (/^\d{4}-\d{2}-\d{2}$/.test(date)) {
-        return date;
-      }
-      
-      // If it's an ISO string, extract date part
-      const dateMatch = date.match(/^(\d{4})-(\d{2})-(\d{2})/);
-      if (dateMatch) {
-        return dateMatch[0]; // Returns YYYY-MM-DD
-      }
-      
-      // Try to parse as Date
-      const parsedDate = new Date(date);
-      if (!isNaN(parsedDate.getTime())) {
-        const year = parsedDate.getFullYear();
-        const month = String(parsedDate.getMonth() + 1).padStart(2, '0');
-        const day = String(parsedDate.getDate()).padStart(2, '0');
-        return `${year}-${month}-${day}`;
-      }
-    }
-    
-    return null;
+    return formatLocalDateYmd(date);
   }
 
   onBudgetChange() {
@@ -515,9 +556,18 @@ export class MakeTripComponent implements OnInit, AfterViewInit {
     this.currentStep = 0;
     this.prefilled = false;
     this.prefilledData = null;
+    this.selectedDestinations = [];
+    this.submitted = false;
     this.firstFormGroup.reset();
-    this.secondFormGroup.reset();
-    this.submitFormGroup.reset();
+    this.secondFormGroup.reset({ type: 'exact_time' });
+    this.submitFormGroup.reset({
+      adults: 0,
+      children: 0,
+      infants: 0,
+      min_person_budget: 5000,
+      max_person_budget: 20000,
+      flight_offer: 0,
+    });
     this._MaketripService.setMakeTripSteps(null as any);
     this.cdr.detectChanges();
   }

@@ -2,7 +2,7 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { SocialComponent } from '../social/social.component';
 import { DataService } from '../../core/services/data.service';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CarouselModule, OwlOptions } from 'ngx-owl-carousel-o';
@@ -25,7 +25,8 @@ import { environment } from '../../../environments/environment';
 export class FooterComponent implements OnInit {
   constructor(
     private _DataService: DataService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private translate: TranslateService
   ) {}
 
   phoneNumber: any;
@@ -160,7 +161,7 @@ export class FooterComponent implements OnInit {
       // console.log('Newsletter subscription:', this.newsletterEmail);
       // You can add API call here when backend is ready
       // this._DataService.subscribeNewsletter(this.newsletterEmail).subscribe(...)
-      alert('Thank you for subscribing!');
+      alert(this.translate.instant('footer.subscribeSuccess'));
       this.newsletterEmail = '';
     }
   }

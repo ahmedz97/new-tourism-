@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { CarouselModule, OwlOptions } from 'ngx-owl-carousel-o';
 import { DataService } from '../../core/services/data.service';
@@ -23,6 +24,10 @@ import { BannerComponent } from '../../components/banner/banner.component';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { MakeTripFormComponent } from '../../components/make-trip-form/make-trip-form.component';
 import { SeoService } from '../../core/services/seo.service';
+import {
+  formatLocalDateYmd,
+  startOfToday,
+} from '../../core/utils/form.utils';
 
 @Component({
   selector: 'app-tour-details',
@@ -40,6 +45,7 @@ import { SeoService } from '../../core/services/seo.service';
     MatInputModule,
     BannerComponent,
     MakeTripFormComponent,
+    TranslateModule,
     // RouterLink,
   ],
   templateUrl: './tour-details.component.html',
@@ -54,7 +60,8 @@ export class TourDetailsComponent implements OnInit {
     private toaster: ToastrService,
     private _BookingService: BookingService,
     private sanitizer: DomSanitizer,
-    private seoService: SeoService
+    private seoService: SeoService,
+    private translate: TranslateService
   ) {}
 
   getSanitizedHtml(content: string): SafeHtml {
@@ -82,7 +89,7 @@ export class TourDetailsComponent implements OnInit {
   totalPrice: number = 0;
 
   faqsList: any[] = [{}];
-  today: Date = new Date();
+  today: Date = startOfToday();
 
   bookingFormData!: FormGroup;
 
@@ -106,7 +113,7 @@ export class TourDetailsComponent implements OnInit {
     });
 
     this.bookingFormData = new FormGroup({
-      start_date: new FormControl(),
+      start_date: new FormControl(null, [Validators.required]),
       adults: new FormControl(1),
       children: new FormControl(0),
       infants: new FormControl(0),
@@ -185,13 +192,7 @@ export class TourDetailsComponent implements OnInit {
 
   // Helper method to format date as YYYY-MM-DD (local time, no timezone conversion)
   formatDateForSubmission(date: Date | null): string | null {
-    if (!date) return null;
-
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-
-    return `${year}-${month}-${day}`;
+    return formatLocalDateYmd(date);
   }
 
   updateTourSEO(tour: any): void {
@@ -219,7 +220,7 @@ export class TourDetailsComponent implements OnInit {
   // check pricing
   getTourPricing(adultNum: number) {
     if (!this.tourData) {
-      this.toaster.error('No data available.');
+      this.toaster.error(this.translate.instant('tourDetails.errors.noData'));
       // console.log('No data available.');
       return;
     }
@@ -265,38 +266,39 @@ export class TourDetailsComponent implements OnInit {
   }
 
   submitBookingForm(): void {
+    this.bookingFormData.markAllAsTouched();
+
     if (this.bookingFormData.valid) {
-      // console.log(this.bookingFormData.value);
+      const formValue = { ...this.bookingFormData.value };
+      formValue.start_date = formatLocalDateYmd(formValue.start_date);
 
-      // Format the date for submission
-      const formValue = this.bookingFormData.value;
-      const selectedDate = formValue.start_date;
-
-      if (selectedDate instanceof Date) {
-        formValue.start_date = this.formatDateForSubmission(selectedDate);
+      if (!formValue.start_date) {
+        this.toaster.error(
+          this.translate.instant('tourDetails.errors.chooseStartDate')
+        );
+        return;
       }
 
       this._BookingService
-        // ,localStorage.getItem('accessToken')
-        .appendBookingData(this.bookingFormData.value)
+        .appendBookingData(formValue)
         .subscribe({
           next: (response) => {
-            // console.log(response);
             if (response.status == true) {
-              // console.log(response.status);
-              // console.log(this.bookingFormData.value);
-              // console.log(localStorage.getItem('accessToken'));
-
               this.toaster.success(response.message);
               this._Router.navigate(['/cart']);
             }
           },
           error: (err) => {
-            this.toaster.error(err.error.message);
+            this.toaster.error(
+              err.error?.message ||
+                this.translate.instant('tourDetails.errors.bookingFailed')
+            );
           },
         });
     } else {
-      this.toaster.error('Form is not valid , must choose start data');
+      this.toaster.error(
+        this.translate.instant('tourDetails.errors.formInvalid')
+      );
     }
   }
 
@@ -317,7 +319,10 @@ export class TourDetailsComponent implements OnInit {
             }
           },
           error: (err) => {
-            this.toaster.error(err.error.message || 'Error submitting review');
+            this.toaster.error(
+              err.error.message ||
+                this.translate.instant('tourDetails.errors.reviewSubmitFailed')
+            );
             this.isLoading = false;
           },
         });
@@ -406,24 +411,23 @@ export class TourDetailsComponent implements OnInit {
       this.tourReviews.length || this.tourData?.reviews_number || 0;
 
     if (reviewCount === 0) {
-      return 'New Tour';
+      return this.translate.instant('tourDetails.reviewQuality.newTour');
     }
 
-    // Calculate average rating from actual reviews if available
     const averageRating = this.getAverageRating();
 
     if (averageRating >= 4.5) {
-      return 'Excellent Quality';
+      return this.translate.instant('tourDetails.reviewQuality.excellent');
     } else if (averageRating >= 4.0) {
-      return 'Very Good Quality';
+      return this.translate.instant('tourDetails.reviewQuality.veryGood');
     } else if (averageRating >= 3.5) {
-      return 'Good Quality';
+      return this.translate.instant('tourDetails.reviewQuality.good');
     } else if (averageRating >= 3.0) {
-      return 'Average Quality';
+      return this.translate.instant('tourDetails.reviewQuality.average');
     } else if (averageRating > 0) {
-      return 'Below Average Quality';
+      return this.translate.instant('tourDetails.reviewQuality.belowAverage');
     } else {
-      return 'No Rating Available';
+      return this.translate.instant('tourDetails.reviewQuality.noRating');
     }
   }
 

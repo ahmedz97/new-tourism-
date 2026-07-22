@@ -48,7 +48,7 @@
                   >({{
                     tourReviews.length || tourData?.reviews_number || 0
                   }}
-                  reviews)</span
+                  {{ "tourDetails.reviews" | translate }})</span
                 >
               </div>
             </div>
@@ -61,7 +61,9 @@
               >
                 <div>
                   <i class="fa fa-clock-four fs-3 mb-1"></i>
-                  <h5 class="textSecondColor fw-bold mb-1">duration</h5>
+                  <h5 class="textSecondColor fw-bold mb-1">
+                    {{ "tourDetails.duration" | translate }}
+                  </h5>
                   <span>{{ tourData?.duration }}</span>
                 </div>
               </div>
@@ -72,7 +74,9 @@
               >
                 <div>
                   <i class="fa fa-calendar-days fs-3"></i>
-                  <h5 class="textSecondColor h6 fw-bold">time</h5>
+                  <h5 class="textSecondColor h6 fw-bold">
+                    {{ "tourDetails.time" | translate }}
+                  </h5>
                   <span>{{ tourData?.pickup_time }}</span>
                 </div>
               </div>
@@ -83,7 +87,9 @@
               >
                 <div>
                   <i class="fa fa-user-group fs-3"></i>
-                  <h5 class="textSecondColor h6 fw-bold">avability</h5>
+                  <h5 class="textSecondColor h6 fw-bold">
+                    {{ "tourDetails.availability" | translate }}
+                  </h5>
                   <span>{{ tourData?.run }}</span>
                 </div>
               </div>
@@ -94,7 +100,9 @@
               >
                 <div>
                   <i class="fa fa-grid-horizontal fs-3"></i>
-                  <h5 class="textSecondColor h6 fw-bold">Tour Type</h5>
+                  <h5 class="textSecondColor h6 fw-bold">
+                    {{ "tourDetails.tourType" | translate }}
+                  </h5>
                   <span>{{ tourData?.type }}</span>
                 </div>
               </div>
@@ -103,11 +111,13 @@
 
           <!-- description & highlights -->
           <div>
-            <h5 class="fw-bold textSecondColor text-capitalize">description</h5>
+            <h5 class="fw-bold textSecondColor text-capitalize">
+              {{ "tourDetails.description" | translate }}
+            </h5>
             <div [innerHTML]="getSanitizedHtml(tourData?.overview!)"></div>
             <div class="mt-4">
               <h5 class="fw-bold textSecondColor text-capitalize">
-                highlights
+                {{ "tourDetails.highlights" | translate }}
               </h5>
               <div [innerHTML]="getSanitizedHtml(tourData?.highlights!)"></div>
             </div>
@@ -119,7 +129,7 @@
               <h5
                 class="fw-bold pb-3 border-bottom textSecondColor text-capitalize"
               >
-                included
+                {{ "tourDetails.included" | translate }}
               </h5>
               <div class="" *ngFor="let item of tourIncluded">
                 <div class="text-capitalize d-flex">
@@ -132,7 +142,7 @@
               <h5
                 class="fw-bold pb-3 border-bottom textSecondColor text-capitalize"
               >
-                not included
+                {{ "tourDetails.notIncluded" | translate }}
               </h5>
               <div class="" *ngFor="let item of tourExcluded">
                 <div class="text-capitalize d-flex">
@@ -146,7 +156,7 @@
           <!-- itinerary -->
           <div class="mb-4 pb-3 border-bottom">
             <h5 class="fw-bold textSecondColor text-capitalize mb-3a">
-              itinerary
+              {{ "tourDetails.itinerary" | translate }}
             </h5>
 
             <mat-accordion multi>
@@ -186,13 +196,15 @@
           <!-- location map -->
           <div class="mb-4 pb-3 border-bottom">
             <h5 class="fw-bold textSecondColor text-capitalize mb-3a">
-              location map
+              {{ "tourDetails.locationMap" | translate }}
             </h5>
           </div>
 
           <!-- faqs -->
           <div class="mb-4 pb-3 border-bottom">
-            <h5 class="fw-bold textSecondColor text-capitalize mb-3a">faq's</h5>
+            <h5 class="fw-bold textSecondColor text-capitalize mb-3a">
+              {{ "tourDetails.faqs" | translate }}
+            </h5>
 
             <app-faq-content></app-faq-content>
           </div>
@@ -200,7 +212,7 @@
           <!-- reviews -->
           <div class="pb-3 border-bottom">
             <h5 class="fw-bold textSecondColor text-capitalize mb-3a">
-              reviews
+              {{ "tourDetails.reviewsTitle" | translate }}
             </h5>
 
             <div class="text-center">
@@ -220,9 +232,14 @@
                 {{ tourData?.type }}
               </h6>
               <p class="">
-                Base On
-                {{ tourReviews.length || tourData?.reviews_number || 0 }}
-                Verified Reviews
+                {{
+                  "tourDetails.basedOnVerifiedReviews"
+                    | translate
+                      : {
+                          count:
+                            tourReviews.length || tourData?.reviews_number || 0
+                        }
+                }}
               </p>
             </div>
 
@@ -230,7 +247,11 @@
             <div class="comments my-5">
               <h5 class="text-capitalize pb-3 border-bottom mb-0 mt-3">
                 <i class="fa fa-comments me-2 textSecondColor"></i>
-                <span>Clients Reviews ({{ tourReviews.length }})</span>
+                <span
+                  >{{ "tourDetails.clientReviews" | translate }} ({{
+                    tourReviews.length
+                  }})</span
+                >
               </h5>
 
               <!-- No reviews message -->
@@ -240,7 +261,7 @@
                   style="font-size: 3rem"
                 ></i>
                 <p class="text-muted mt-3">
-                  No reviews yet. Be the first to review this tour!
+                  {{ "tourDetails.noReviews" | translate }}
                 </p>
               </div>
 
@@ -295,13 +316,9 @@
             <div class="border p-4 rounded-3 mt-4 text-capitalize">
               <h5 class="text-capitalize pb-3 border-bottom mb-0 mt-3">
                 <i class="fa fa-comments me-2 textSecondColor"></i>
-                <span>Leave A Review</span>
+                <span>{{ "tourDetails.leaveReview" | translate }}</span>
               </h5>
 
-              <!-- <span
-                >Don’t Be Afraid you're all information are be secure not be
-                published</span
-              > -->
               <form
                 [formGroup]="writeReview"
                 (ngSubmit)="getWriteReview()"
@@ -312,7 +329,7 @@
                   <input
                     type="text"
                     formControlName="reviewer_name"
-                    placeholder="Name..."
+                    [placeholder]="'tourDetails.reviewNamePlaceholder' | translate"
                     class="form-control ps-3"
                   />
                 </div>
@@ -320,7 +337,7 @@
                   <input
                     type="number"
                     formControlName="rate"
-                    placeholder="Rate of Star ..."
+                    [placeholder]="'tourDetails.reviewRatePlaceholder' | translate"
                     class="form-control ps-3"
                     max="5"
                     min="0"
@@ -340,12 +357,12 @@
                       for="confirmData"
                       class="text-capitalize ms-2 fw-light"
                     >
-                      Save your name, rate for the next time review
+                      {{ "tourDetails.saveForNextReview" | translate }}
                     </label>
                   </div>
 
                   <textarea
-                    placeholder="Write a Comment...."
+                    [placeholder]="'tourDetails.reviewCommentPlaceholder' | translate"
                     formControlName="content"
                     id="comment"
                     cols="30"
@@ -361,7 +378,7 @@
                       *ngIf="isLoading"
                       class="fa-solid fa-spinner fa-spin me-1"
                     ></i>
-                    Leave A Review
+                    {{ "tourDetails.leaveReview" | translate }}
                   </button>
                 </div>
               </form>
@@ -373,10 +390,10 @@
         <div #asideBar class="AsideBar bg-white">
           <div class="border p-3 rounded-4 mb-4">
             <h4 class="text-capitalize textSecondColor fw-bold mb-3">
-              book this tour
+              {{ "tourDetails.bookThisTour" | translate }}
             </h4>
             <h6>
-              From
+              {{ "tourDetails.from" | translate }}
               <b class="textMainColor fs-5 ms-2">{{
                 bookingFormData.get("infants")?.value * infantPrice +
                   bookingFormData.get("adults")?.value * adultPrice +
@@ -385,7 +402,9 @@
             </h6>
             <form [formGroup]="bookingFormData">
               <mat-form-field class="w-100">
-                <mat-label class="textSecondColor">Choose a date</mat-label>
+                <mat-label class="textSecondColor">{{
+                  "tourDetails.chooseDate" | translate
+                }}</mat-label>
                 <input
                   formControlName="start_date"
                   required
@@ -399,6 +418,9 @@
                   [for]="picker"
                 ></mat-datepicker-toggle>
                 <mat-datepicker #picker></mat-datepicker>
+                <mat-error *ngIf="bookingFormData.get('start_date')?.hasError('required')">
+                  {{ "tourDetails.errors.startDateRequired" | translate }}
+                </mat-error>
               </mat-form-field>
 
               <div class="tickets text-capitalize textSecondColor mb-3">
@@ -409,7 +431,7 @@
                         bookingFormData.get("adults")?.value +
                         bookingFormData.get("children")?.value
                     }}
-                    guests</label
+                    {{ "tourDetails.guests" | translate }}</label
                   >
                 </div>
                 <div class=" ">
@@ -418,7 +440,7 @@
                   >
                     <label for="adults">
                       <p class="pe-2 mb-1">
-                        Adults <br />
+                        {{ "tourDetails.adults" | translate }} <br />
                         (+12years)
                       </p>
                     </label>
@@ -454,7 +476,7 @@
                   >
                     <label for="children">
                       <p class="pe-2 mb-1">
-                        Children <br />
+                        {{ "tourDetails.children" | translate }} <br />
                         (2-12years)
                       </p>
                     </label>
@@ -494,7 +516,7 @@
                   >
                     <label for="infants">
                       <p class="pe-2 mb-1">
-                        infants <br />
+                        {{ "tourDetails.infants" | translate }} <br />
                         (0-2years)
                       </p>
                     </label>
@@ -537,66 +559,10 @@
                 type="submit"
                 class="mainBtn Btn text-capitalize w-100 p-2"
               >
-                booking now
+                {{ "tourDetails.bookingNow" | translate }}
               </button>
             </form>
           </div>
-
-          <!-- <div class="border p-3 rounded-3 mb-4">
-            <h4 class="text-capitalize textSecondColor fw-bold mb-3">
-              Why Book With Us?
-            </h4>
-            <ul class="list-unstyled">
-              <li class="d-flex align-items-center mb-2">
-                <div class="iconBox specialBorder flex-shrink-0 me-3">
-                  <i class="fa fa-dollar-sign text-white"></i>
-                </div>
-                <span>Best Price Guarantee</span>
-              </li>
-              <li class="d-flex align-items-center mb-2">
-                <div class="iconBox specialBorder flex-shrink-0 me-3">
-                  <i class="fa fa-headphones text-white"></i>
-                </div>
-                <span>24/7 Customer Care</span>
-              </li>
-              <li class="d-flex align-items-center mb-2">
-                <div class="iconBox specialBorder flex-shrink-0 me-3">
-                  <i class="fa fa-globe text-white"></i>
-                </div>
-                <span>Hand Picked Tours & Activities</span>
-              </li>
-              <li class="d-flex align-items-center mb-2">
-                <div class="iconBox specialBorder flex-shrink-0 me-3">
-                  <i class="fa fa-flag text-white"></i>
-                </div>
-                <span>Free Travel Insureance</span>
-              </li>
-            </ul>
-          </div>
-
-          <div class="border p-3 rounded-3 mb-4">
-            <h4 class="text-capitalize textSecondColor fw-bold mb-3">
-              Get A Question?
-            </h4>
-            <p class="my-3">
-              It is a long established fact that a reader will be distracted by
-              the readable content layout.
-            </p>
-            <ul class="list-unstyled">
-              <li class="d-flex align-items-center mb-2">
-                <div class="iconBox specialBorder flex-shrink-0 me-3">
-                  <i class="fa fa-phone text-white"></i>
-                </div>
-                <a href="tel:{{ phoneNumber }}">{{ phoneNumber }}</a>
-              </li>
-              <li class="d-flex align-items-center mb-2">
-                <div class="iconBox specialBorder flex-shrink-0 me-3">
-                  <i class="fa fa-envelope text-white"></i>
-                </div>
-                <a href="mailTo:{{ userEmail }}">{{ userEmail }}</a>
-              </li>
-            </ul>
-          </div> -->
         </div>
       </div>
     </div>
@@ -611,7 +577,7 @@
 >
   <div class="flexBetween py-3 px-2">
     <h6>
-      From
+      {{ "tourDetails.from" | translate }}
       <b class="textMainColor fs-5 ms-2">{{
         bookingFormData.get("infants")?.value * infantPrice +
           bookingFormData.get("adults")?.value * adultPrice +
@@ -619,7 +585,8 @@
       }}</b>
     </h6>
 
-    <!-- when click on go to AsideBar and submit the form -->
-    <button (click)="scrollToAsideBar()" id="asideBarButton" class="mainBtn Btn">book now</button>
+    <button (click)="scrollToAsideBar()" id="asideBarButton" class="mainBtn Btn">
+      {{ "tourDetails.bookNow" | translate }}
+    </button>
   </div>
 </div>

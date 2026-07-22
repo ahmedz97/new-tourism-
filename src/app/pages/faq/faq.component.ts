@@ -18,7 +18,7 @@ import { SeoService } from '../../core/services/seo.service';
   styleUrl: './faq.component.scss',
 })
 export class FaqComponent implements OnInit {
-  bannerTitle: string = 'FAQ';
+  bannerTitle: string = 'faq.bannerTitle';
 
   constructor(private seoService: SeoService) {}
 

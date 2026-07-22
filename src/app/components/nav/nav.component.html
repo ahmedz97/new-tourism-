@@ -177,7 +177,7 @@
                 class="action-item"
               >
                 <i class="fas fa-user-plus"></i>
-                <span>Sign Up</span>
+                <span>{{ "common.signup" | translate }}</span>
               </a>
               <a
                 routerLink="/cart"
@@ -185,7 +185,7 @@
                 class="action-item"
               >
                 <i class="fas fa-shopping-cart"></i>
-                <span>Cart</span>
+                <span>{{ "nav.cart" | translate }}</span>
               </a>
               <a
                 routerLink="/profile"
@@ -193,7 +193,7 @@
                 class="action-item"
               >
                 <i class="fas fa-user-circle"></i>
-                <span>Profile</span>
+                <span>{{ "common.profile" | translate }}</span>
               </a>
             </div>
             <div class="settings-divider"></div>
@@ -226,7 +226,7 @@
           class="mobile-menu-btn d-lg-none"
           (click)="toggleSidebar()"
           type="button"
-          aria-label="Toggle menu"
+          [attr.aria-label]="'nav.toggleMenu' | translate"
         >
           <span class="hamburger" [class.active]="isSidebarOpen">
             <span></span>

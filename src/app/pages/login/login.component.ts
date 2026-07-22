@@ -15,6 +15,7 @@ import { BannerComponent } from '../../components/banner/banner.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { SeoService } from '../../core/services/seo.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-login',
@@ -49,10 +50,11 @@ export class LoginComponent implements OnInit {
     private _AuthService: AuthService,
     private toastr: ToastrService,
     private _Router: Router,
-    private seoService: SeoService
+    private seoService: SeoService,
+    private translate: TranslateService
   ) {}
 
-  bannerTitle = 'login';
+  bannerTitle = 'login.bannerTitle';
   logo!: any;
   siteTitle!: any;
   isLoading = false;
@@ -106,26 +108,31 @@ export class LoginComponent implements OnInit {
   }
 
   handleLoginForm(): void {
-    if (this.loginForm.valid) {
-      // console.log(this.loginForm.value);
-      this.isLoading = true;
-      this._AuthService.setlogin(this.loginForm.value).subscribe({
-        next: (response) => {
-          if (response.status === true) {
-            // console.log(response);
-
-            this._AuthService.saveToken(response.data.accessToken);
-            this.toastr.success(response.message);
-            this._Router.navigate(['']);
-          } else {
-            this.toastr.error('Login failed');
-          }
-        },
-        error: (err) => {
-          this.toastr.error(err?.error?.message ?? 'Login error');
-        },
-      });
+    this.loginForm.markAllAsTouched();
+    if (this.loginForm.invalid) {
+      this.toastr.error(this.translate.instant('common.errors.fillRequiredFields'));
+      return;
     }
+
+    this.isLoading = true;
+    this._AuthService.setlogin(this.loginForm.value).subscribe({
+      next: (response) => {
+        this.isLoading = false;
+        if (response.status === true) {
+          this._AuthService.saveToken(response.data.accessToken);
+          this.toastr.success(response.message);
+          this._Router.navigate(['']);
+        } else {
+          this.toastr.error(this.translate.instant('login.errors.loginFailed'));
+        }
+      },
+      error: (err) => {
+        this.isLoading = false;
+        this.toastr.error(
+          err?.error?.message ?? this.translate.instant('login.errors.loginError')
+        );
+      },
+    });
   }
 
   handleForgetPass(email: any): void {

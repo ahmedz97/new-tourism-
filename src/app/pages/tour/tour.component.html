@@ -153,7 +153,8 @@
           >
             <div class="d-flex align-items-center gap-3">
               <h6 class="textSecondColor fw-bold mb-0">
-                {{ filteredTours.length }} {{ "tour.resultsFound" | translate }} (of {{ totalItems }})
+                {{ filteredTours.length }} {{ "tour.resultsFound" | translate }}
+                ({{ "tour.resultsOf" | translate : { count: totalItems } }})
               </h6>
               @if (selectedTripType !== null || selectedDestination !== null ||
               selectedDuration !== null || minBudget > 0 || maxBudget < 5000) {

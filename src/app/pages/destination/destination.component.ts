@@ -8,6 +8,7 @@ import { PartnerSliderComponent } from '../../components/partner-slider/partner-
 import { BannerComponent } from '../../components/banner/banner.component';
 import { MakeTripFormComponent } from '../../components/make-trip-form/make-trip-form.component';
 import { SeoService } from '../../core/services/seo.service';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-destination',
@@ -19,6 +20,7 @@ import { SeoService } from '../../core/services/seo.service';
     PartnerSliderComponent,
     BannerComponent,
     MakeTripFormComponent,
+    TranslateModule,
   ],
   templateUrl: './destination.component.html',
   styleUrl: './destination.component.scss',
@@ -30,7 +32,7 @@ export class DestinationComponent implements OnInit {
   ) {}
   allDestinations: any[] = [];
 
-  bannerTitle: string = 'destination';
+  bannerTitle: string = 'destination.bannerTitle';
 
   ngOnInit(): void {
     this.seoService.applySettingsSeo({

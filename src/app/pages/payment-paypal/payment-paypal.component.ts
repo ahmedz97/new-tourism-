@@ -3,11 +3,12 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { BookingService } from '../../core/services/booking.service';
 import { ToastrService } from 'ngx-toastr';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-payment-paypal',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, TranslateModule],
   templateUrl: './payment-paypal.component.html',
   styleUrl: './payment-paypal.component.scss',
 })
@@ -20,7 +21,8 @@ export class PaymentPaypalComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private bookingService: BookingService,
-    private toaster: ToastrService
+    private toaster: ToastrService,
+    private translate: TranslateService
   ) {}
 
   ngOnInit(): void {
@@ -37,9 +39,7 @@ export class PaymentPaypalComponent implements OnInit {
   }
 
   private resolveCallbackStatus(): void {
-    // success or failure
     const routePath = this.route.snapshot.routeConfig?.path || '';
-    console.log('routePath', routePath);
     if (routePath.endsWith('/success')) {
       this.callbackStatus = 'success';
       return;
@@ -61,16 +61,16 @@ export class PaymentPaypalComponent implements OnInit {
         this.isLoading = false;
         this.callbackStatus = 'success';
         this.toaster.clear();
-        this.toaster.success(response?.message || 'Payment processed');
+        this.toaster.success(
+          response?.message ||
+            this.translate.instant('paymentPaypal.processedSuccess')
+        );
       },
       error: (err) => {
         this.paymentResponse = err?.error;
         this.isLoading = false;
         this.toaster.clear();
         this.callbackStatus = 'failure';
-        // this.toaster.error(
-        //   err?.error?.message || 'Payment processing failed. Please try again.'
-        // );
       },
     });
   }

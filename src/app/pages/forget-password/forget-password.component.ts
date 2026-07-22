@@ -11,7 +11,7 @@ import {
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { BannerComponent } from '../../components/banner/banner.component';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { SeoService } from '../../core/services/seo.service';
 
@@ -48,10 +48,11 @@ export class ForgetPasswordComponent implements OnInit {
     private _AuthService: AuthService,
     private toastr: ToastrService,
     private _Router: Router,
-    private seoService: SeoService
+    private seoService: SeoService,
+    private translate: TranslateService
   ) {}
 
-  bannerTitle = 'forget password';
+  bannerTitle = 'forgetPassword.bannerTitle';
   logo!: any;
   siteTitle!: any;
   isLoading = false;
@@ -117,7 +118,10 @@ export class ForgetPasswordComponent implements OnInit {
         },
         error: (err) => {
           console.error(err);
-          this.toastr.error(err.error.message, 'Enter the correct otp code');
+          this.toastr.error(
+            err.error.message,
+            this.translate.instant('forgetPassword.errors.invalidOtp')
+          );
         },
       });
     }

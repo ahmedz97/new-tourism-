@@ -21,7 +21,7 @@
             </div>
             <div class="step-label">
               <!-- <i class="fa fa-map-marker-alt me-2"></i> -->
-              Choose Your Destinations
+              {{ 'makeTrip.steps.chooseDestinations' | translate }}
             </div>
           </div>
 
@@ -39,7 +39,7 @@
             </div>
             <div class="step-label">
               <!-- <i class="fa fa-calendar-alt me-2"></i> -->
-              Pickup Travel Dates
+              {{ 'makeTrip.steps.pickupTravelDates' | translate }}
             </div>
           </div>
 
@@ -55,7 +55,7 @@
             </div>
             <div class="step-label">
               <!-- <i class="fa fa-user-edit me-2"></i> -->
-              Complete Your Information
+              {{ 'makeTrip.steps.completeInformation' | translate }}
             </div>
           </div>
         </div>
@@ -65,9 +65,9 @@
           <form [formGroup]="firstFormGroup">
             <div class="step-content" @fadeInUp>
               <div class="step-header">
-                <h2 class="step-title">Where would you like to go?</h2>
+                <h2 class="step-title">{{ 'makeTrip.step1.title' | translate }}</h2>
                 <p class="step-subtitle">
-                  Select your dream destination from our amazing collection
+                  {{ 'makeTrip.step1.subtitle' | translate }}
                 </p>
               </div>
 
@@ -79,16 +79,13 @@
                   [style.animation-delay]="i * 0.1 + 's'"
                 >
                   <input
-                    type="radio"
+                    type="checkbox"
                     hidden
-                    [id]="destination.id"
-                    [value]="destination.title"
-                    formControlName="destination"
-                    (check)="onToursChange($event)"
-                    required
+                    [id]="'dest-' + destination.id"
+                    [checked]="isDestinationSelected(destination.title)"
                   />
                   <label
-                    [for]="destination.id"
+                    [for]="'dest-' + destination.id"
                     class="destination-card-label w-100"
                     (click)="toggleDestination(destination.title, $event)"
                   >
@@ -116,7 +113,7 @@
                         </div>
                         <div class="destination-overlay">
                           <i class="fa fa-eye me-2"></i>
-                          View Details
+                          {{ 'makeTrip.viewDetails' | translate }}
                         </div>
                       </figure>
                       <figcaption class="card_data text-center">
@@ -130,14 +127,21 @@
                 </div>
               </div>
 
+              <div
+                class="text-danger mb-2"
+                *ngIf="isFieldInvalid(firstFormGroup, 'destination')"
+              >
+                {{ 'makeTrip.errors.destinationRequired' | translate }}
+              </div>
+
               <div class="step-actions" @fadeInUp>
                 <button
                   type="button"
                   class="modern-btn btn-primary"
                   (click)="nextStep()"
-                  [disabled]="!firstFormGroup.get('destination')?.value"
+                  [disabled]="!getDestinationString()"
                 >
-                  <span>Continue</span>
+                  <span>{{ 'common.continue' | translate }}</span>
                   <i class="fa fa-arrow-right ms-2"></i>
                 </button>
               </div>
@@ -150,14 +154,14 @@
           <form [formGroup]="secondFormGroup">
             <div class="step-content" @fadeInUp>
               <div class="step-header">
-                <h2 class="step-title">When do you want to travel?</h2>
-                <p class="step-subtitle">Choose your preferred travel dates</p>
+                <h2 class="step-title">{{ 'makeTrip.step2.title' | translate }}</h2>
+                <p class="step-subtitle">{{ 'makeTrip.step2.subtitle' | translate }}</p>
               </div>
 
               <div class="row g-4 my-4">
                 <div class="col-lg-5" @slideInLeft>
                   <div class="date-type-card">
-                    <h4 class="date-type-title">Select Date Type</h4>
+                    <h4 class="date-type-title">{{ 'makeTrip.dateType.title' | translate }}</h4>
                     <mat-radio-group
                       class="date-radio-group d-flex flex-column"
                       aria-label="Pickup Travel Dates"
@@ -169,14 +173,14 @@
                         value="exact_time"
                       >
                         <i class="fa fa-calendar-check me-2"></i>
-                        I know the exact dates
+                        {{ 'makeTrip.dateType.exact' | translate }}
                       </mat-radio-button>
                       <mat-radio-button
                         class="date-radio-option"
                         value="approx_time"
                       >
                         <i class="fa fa-calendar-week me-2"></i>
-                        I have approximate dates
+                        {{ 'makeTrip.dateType.approximate' | translate }}
                       </mat-radio-button>
                     </mat-radio-group>
                   </div>
@@ -190,13 +194,13 @@
                   <div class="date-picker-card">
                     <h4 class="date-picker-title">
                       <i class="fa fa-calendar me-2"></i>
-                      Select Date Range
+                      {{ 'makeTrip.dateRange.title' | translate }}
                     </h4>
                     <mat-form-field
                       appearance="outline"
                       class="w-100 date-range-field"
                     >
-                      <mat-label>Select a date range</mat-label>
+                      <mat-label>{{ 'makeTrip.dateRange.label' | translate }}</mat-label>
                       <mat-date-range-input
                         [formGroup]="secondFormGroup"
                         [rangePicker]="picker"
@@ -206,14 +210,14 @@
                           matStartDate
                           matInput
                           formControlName="start_date"
-                          placeholder="Start date"
+                          [placeholder]="'makeTrip.dateRange.startDate' | translate"
                           class="date-input"
                         />
                         <input
                           matEndDate
                           matInput
                           formControlName="end_date"
-                          placeholder="End date"
+                          [placeholder]="'makeTrip.dateRange.endDate' | translate"
                           class="date-input"
                         />
                       </mat-date-range-input>
@@ -235,16 +239,16 @@
                   <div class="date-picker-card">
                     <h4 class="date-picker-title">
                       <i class="fa fa-calendar-week me-2"></i>
-                      Select Month
+                      {{ 'makeTrip.selectMonth' | translate }}
                     </h4>
                     <mat-form-field appearance="outline" class="w-100">
-                      <mat-label>Select Month</mat-label>
+                      <mat-label>{{ 'makeTrip.selectMonth' | translate }}</mat-label>
                       <mat-select formControlName="month">
                         <mat-option
                           *ngFor="let month of monthList; index as i"
                           [value]="i + 1"
                         >
-                          {{ month }}
+                          {{ month | translate }}
                         </mat-option>
                       </mat-select>
                     </mat-form-field>
@@ -259,14 +263,14 @@
                   (click)="previousStep()"
                 >
                   <i class="fa fa-arrow-left me-2"></i>
-                  <span>Back</span>
+                  <span>{{ 'common.back' | translate }}</span>
                 </button>
                 <button
                   type="button"
                   class="modern-btn btn-primary"
                   (click)="nextStep()"
                 >
-                  <span>Continue</span>
+                  <span>{{ 'common.continue' | translate }}</span>
                   <i class="fa fa-arrow-right ms-2"></i>
                 </button>
               </div>
@@ -279,16 +283,16 @@
           <form [formGroup]="submitFormGroup">
             <div class="step-content" @fadeInUp>
               <div class="step-header">
-                <h2 class="step-title">Tell us about yourself</h2>
+                <h2 class="step-title">{{ 'makeTrip.step3.title' | translate }}</h2>
                 <p class="step-subtitle">
-                  Fill in your details to complete your trip inquiry
+                  {{ 'makeTrip.step3.subtitle' | translate }}
                 </p>
               </div>
 
               <div class="form-section">
                 <h4 class="section-title">
                   <i class="fa fa-user me-2"></i>
-                  Personal Information
+                  {{ 'makeTrip.personalInfo.title' | translate }}
                 </h4>
                 <div class="row g-4">
                   <div class="col-md-4" @fadeInUp>
@@ -296,13 +300,16 @@
                       appearance="outline"
                       class="w-100 modern-form-field"
                     >
-                      <mat-label>First name</mat-label>
+                      <mat-label>{{ 'makeTrip.personalInfo.firstName' | translate }}</mat-label>
                       <input
                         type="text"
                         matInput
                         formControlName="first_name"
-                        placeholder="Ahmed"
+                        [placeholder]="'makeTrip.personalInfo.firstNamePlaceholder' | translate"
                       />
+                      <mat-error *ngIf="submitFormGroup.get('first_name')?.hasError('required')">
+                        {{ 'makeTrip.errors.firstNameRequired' | translate }}
+                      </mat-error>
                     </mat-form-field>
                   </div>
                   <div class="col-md-4" @fadeInUp>
@@ -310,13 +317,16 @@
                       appearance="outline"
                       class="w-100 modern-form-field"
                     >
-                      <mat-label>Last name</mat-label>
+                      <mat-label>{{ 'makeTrip.personalInfo.lastName' | translate }}</mat-label>
                       <input
                         type="text"
                         matInput
                         formControlName="last_name"
-                        placeholder="Zenger"
+                        [placeholder]="'makeTrip.personalInfo.lastNamePlaceholder' | translate"
                       />
+                      <mat-error *ngIf="submitFormGroup.get('last_name')?.hasError('required')">
+                        {{ 'makeTrip.errors.lastNameRequired' | translate }}
+                      </mat-error>
                     </mat-form-field>
                   </div>
                   <div class="col-md-4" @fadeInUp>
@@ -324,13 +334,19 @@
                       appearance="outline"
                       class="w-100 modern-form-field"
                     >
-                      <mat-label>Email</mat-label>
+                      <mat-label>{{ 'common.email' | translate }}</mat-label>
                       <input
                         type="email"
                         matInput
                         formControlName="email"
-                        placeholder="ahmed@gmail.com"
+                        [placeholder]="'makeTrip.personalInfo.emailPlaceholder' | translate"
                       />
+                      <mat-error *ngIf="submitFormGroup.get('email')?.hasError('required')">
+                        {{ 'common.errors.emailRequired' | translate }}
+                      </mat-error>
+                      <mat-error *ngIf="submitFormGroup.get('email')?.hasError('email')">
+                        {{ 'common.errors.emailInvalid' | translate }}
+                      </mat-error>
                     </mat-form-field>
                   </div>
                   <div class="col-md-6" @fadeInUp>
@@ -338,7 +354,7 @@
                       appearance="outline"
                       class="w-100 modern-form-field"
                     >
-                      <mat-label>Nationality</mat-label>
+                      <mat-label>{{ 'makeTrip.personalInfo.nationality' | translate }}</mat-label>
                       <mat-select formControlName="nationality">
                         <mat-option
                           *ngFor="let item of countriesList"
@@ -347,6 +363,9 @@
                           {{ item.name }}
                         </mat-option>
                       </mat-select>
+                      <mat-error *ngIf="submitFormGroup.get('nationality')?.hasError('required')">
+                        {{ 'makeTrip.errors.nationalityRequired' | translate }}
+                      </mat-error>
                     </mat-form-field>
                   </div>
                   <div class="col-md-6" @fadeInUp>
@@ -354,13 +373,27 @@
                       appearance="outline"
                       class="w-100 modern-form-field"
                     >
-                      <mat-label>Phone number</mat-label>
+                      <mat-label>{{ 'makeTrip.personalInfo.phone' | translate }}</mat-label>
                       <input
-                        type="text"
+                        type="tel"
                         matInput
                         formControlName="phone_number"
-                        placeholder="01069769249"
+                        [placeholder]="'makeTrip.personalInfo.phonePlaceholder' | translate"
+                        maxlength="28"
+                        inputmode="numeric"
+                        (input)="onPhoneInput($event)"
                       />
+                      <mat-error *ngIf="submitFormGroup.get('phone_number')?.hasError('required')">
+                        {{ 'common.errors.phoneRequired' | translate }}
+                      </mat-error>
+                      <mat-error
+                        *ngIf="
+                          submitFormGroup.get('phone_number')?.hasError('pattern') ||
+                          submitFormGroup.get('phone_number')?.hasError('maxlength')
+                        "
+                      >
+                        {{ 'common.errors.phoneInvalid' | translate }}
+                      </mat-error>
                     </mat-form-field>
                   </div>
                 </div>
@@ -369,7 +402,7 @@
               <div class="form-section">
                 <h4 class="section-title">
                   <i class="fa fa-dollar-sign me-2"></i>
-                  Budget & Preferences
+                  {{ 'makeTrip.budget.title' | translate }}
                 </h4>
                 <div class="row g-4">
                   <div class="col-md-6" @fadeInUp>
@@ -377,7 +410,7 @@
                       appearance="outline"
                       class="w-100 modern-form-field"
                     >
-                      <mat-label>Min Budget</mat-label>
+                      <mat-label>{{ 'makeTrip.budget.min' | translate }}</mat-label>
                       <input
                         matInput
                         type="number"
@@ -391,7 +424,7 @@
                       appearance="outline"
                       class="w-100 modern-form-field"
                     >
-                      <mat-label>Max Budget</mat-label>
+                      <mat-label>{{ 'makeTrip.budget.max' | translate }}</mat-label>
                       <input
                         matInput
                         type="number"
@@ -410,7 +443,7 @@
                       />
                       <label for="flight_offer" class="checkbox-label">
                         <i class="fa fa-plane me-2"></i>
-                        Add flight offer to my trip
+                        {{ 'makeTrip.budget.flightOffer' | translate }}
                       </label>
                     </div>
                   </div>
@@ -420,14 +453,14 @@
               <div class="form-section">
                 <h4 class="section-title">
                   <i class="fa fa-users me-2"></i>
-                  Travelers
+                  {{ 'makeTrip.travelers.title' | translate }}
                 </h4>
                 <div class="row g-4">
                   <div class="col-md-4" @fadeInUp>
                     <div class="traveler-counter-card">
                       <label class="traveler-label">
                         <i class="fa fa-user-tie me-2"></i>
-                        Adults ( +12 )
+                        {{ 'makeTrip.travelers.adults' | translate }}
                       </label>
                       <div class="counter-wrapper">
                         <button
@@ -459,7 +492,7 @@
                     <div class="traveler-counter-card">
                       <label class="traveler-label">
                         <i class="fa fa-child me-2"></i>
-                        Children ( 2 to 11 )
+                        {{ 'makeTrip.travelers.children' | translate }}
                       </label>
                       <div class="counter-wrapper">
                         <button
@@ -491,7 +524,7 @@
                     <div class="traveler-counter-card">
                       <label class="traveler-label">
                         <i class="fa fa-baby me-2"></i>
-                        Infants ( 0 to 2 )
+                        {{ 'makeTrip.travelers.infants' | translate }}
                       </label>
                       <div class="counter-wrapper">
                         <button
@@ -525,18 +558,18 @@
               <div class="form-section" @fadeInUp>
                 <h4 class="section-title">
                   <i class="fa fa-sticky-note me-2"></i>
-                  Additional Notes
+                  {{ 'makeTrip.notes.title' | translate }}
                 </h4>
                 <mat-form-field
                   appearance="outline"
                   class="w-100 modern-form-field"
                 >
-                  <mat-label>Notes</mat-label>
+                  <mat-label>{{ 'makeTrip.notes.label' | translate }}</mat-label>
                   <textarea
                     matInput
                     formControlName="additional_notes"
                     rows="4"
-                    placeholder="Add any special requests or notes here..."
+                    [placeholder]="'makeTrip.notes.placeholder' | translate"
                   ></textarea>
                 </mat-form-field>
               </div>
@@ -549,7 +582,7 @@
                   *ngIf="!prefilled"
                 >
                   <i class="fa fa-arrow-left me-2"></i>
-                  <span>Back</span>
+                  <span>{{ 'common.back' | translate }}</span>
                 </button>
                 <button
                   type="button"
@@ -557,7 +590,7 @@
                   class="modern-btn btn-success"
                 >
                   <i class="fa fa-paper-plane me-2"></i>
-                  <span>Submit Inquiry</span>
+                  <span>{{ 'makeTrip.submitInquiry' | translate }}</span>
                 </button>
                 <button
                   type="button"
@@ -565,7 +598,7 @@
                   (click)="resetStepper()"
                 >
                   <i class="fa fa-redo me-2"></i>
-                  <span>Reset</span>
+                  <span>{{ 'common.reset' | translate }}</span>
                 </button>
               </div>
             </div>

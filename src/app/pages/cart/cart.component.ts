@@ -21,7 +21,7 @@ export class CartComponent implements OnInit {
     private seoService: SeoService
   ) {}
 
-  bannerTitle: string = 'cart';
+  bannerTitle: string = 'cart.bannerTitle';
 
   tourCart: any[] = [];
   haveData: boolean = false;

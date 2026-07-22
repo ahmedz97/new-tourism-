@@ -33,7 +33,7 @@ import { SeoService } from '../../core/services/seo.service';
 })
 export class AboutComponent implements OnInit {
   constructor(private seoService: SeoService) {}
-  bannerTitle = 'about us';
+  bannerTitle = 'about.bannerTitle';
 
   ngOnInit(): void {
     this.seoService.applyPageSeoByRoute('about', {

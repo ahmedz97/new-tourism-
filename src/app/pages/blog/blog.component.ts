@@ -7,6 +7,7 @@ import { PaginationComponent } from '../../components/pagination/pagination.comp
 import { CommonModule } from '@angular/common';
 import { MakeTripFormComponent } from '../../components/make-trip-form/make-trip-form.component';
 import { SeoService } from '../../core/services/seo.service';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-blog',
@@ -18,12 +19,13 @@ import { SeoService } from '../../core/services/seo.service';
     PaginationComponent,
     NgxPaginationModule,
     MakeTripFormComponent,
+    TranslateModule,
   ],
   templateUrl: './blog.component.html',
   styleUrl: './blog.component.scss',
 })
 export class BlogComponent implements OnInit {
-  bannerTitle: string = 'blog';
+  bannerTitle: string = 'blog.bannerTitle';
 
   allBlogs: any[] = [];
 

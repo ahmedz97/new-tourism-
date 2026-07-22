@@ -8,7 +8,9 @@
     "contact": "Contact Us",
     "tours": "Travel Styles",
     "destinations": "Day Trips",
-    "dayTripsIn": "Day Trips In"
+    "dayTripsIn": "Day Trips In",
+    "cart": "Cart",
+    "toggleMenu": "Toggle menu"
   },
   "common": {
     "seeMore": "See More",
@@ -43,7 +45,44 @@
     "selectLanguage": "Select Language",
     "english": "English",
     "spanish": "Spanish",
-    "makeTrip": "Create your tour"
+    "makeTrip": "Create your tour",
+    "errors": {
+      "fillRequiredFields": "Please fill all required fields correctly",
+      "somethingWentWrong": "Something went wrong",
+      "emailRequired": "Email is required",
+      "emailInvalid": "Enter a valid email",
+      "phoneRequired": "Phone is required",
+      "phoneInvalid": "Phone must be digits only (1–28 numbers)",
+      "nameRequired": "Name is required",
+      "countryRequired": "Country is required"
+    },
+    "continue": "Continue",
+    "back": "Back",
+    "reset": "Reset",
+    "email": "Email",
+    "submit": "Submit",
+    "cancel": "Cancel",
+    "save": "Save",
+    "update": "Update",
+    "close": "Close",
+    "yes": "Yes",
+    "no": "No",
+    "required": "Required",
+    "optional": "Optional",
+    "months": {
+      "january": "January",
+      "february": "February",
+      "march": "March",
+      "april": "April",
+      "may": "May",
+      "june": "June",
+      "july": "July",
+      "august": "August",
+      "september": "September",
+      "october": "October",
+      "november": "November",
+      "december": "December"
+    }
   },
   "counter": {
     "travelPackCompletedInLast5Years": "Travel Pack Completed In Last 15 Years",
@@ -76,7 +115,11 @@
     "checkInDate": "Check In Date",
     "checkOutDate": "Check Out Date",
     "startDate": "Start Date",
-    "endDate": "End Date"
+    "endDate": "End Date",
+    "whenYouGo": "When do you go?",
+    "ourBlog": "Our Blog",
+    "latestBlogNews": "Our Latest Blog & News",
+    "videoBackgroundTitle": "Tourism Video Background"
   },
   "tour": {
     "tours": "Tours",
@@ -110,7 +153,9 @@
     "mostSeller": "Most Seller",
     "priceLowToHigh": "Price: Low to High",
     "priceHighToLow": "Price: High to Low",
-    "noDataMatched": "No data matched"
+    "noDataMatched": "No data matched",
+    "bannerTitle": "Tour Search",
+    "resultsOf": "of {{count}}"
   },
   "cart": {
     "shoppingCart": "Shopping Cart",
@@ -130,7 +175,8 @@
     "children": "Children",
     "infants": "Infants",
     "clearCart": "Clear Cart",
-    "noCartAvailable": "No cart available"
+    "noCartAvailable": "No cart available",
+    "bannerTitle": "Cart"
   },
   "checkout": {
     "checkout": "Checkout",
@@ -170,7 +216,24 @@
     "applyCoupon": "Apply",
     "discount": "Discount",
     "finalTotal": "Final Total",
-    "fillForm": "Fill Form"
+    "fillForm": "Fill Form",
+    "bannerTitle": "Checkout",
+    "reviews": "reviews",
+    "couponAppliedSuccess": "Coupon applied successfully!",
+    "errors": {
+      "firstNameRequired": "First name is required",
+      "firstNameMinLength": "First name must be at least 2 characters",
+      "lastNameRequired": "Last name is required",
+      "lastNameMinLength": "Last name must be at least 2 characters",
+      "countryRequired": "Country is required",
+      "phoneRequired": "Phone is required",
+      "phoneInvalid": "Phone must be digits only (1–28 numbers)",
+      "emailRequired": "Email is required",
+      "emailInvalid": "Enter a valid email",
+      "paymentMethodRequired": "Payment method is required",
+      "couponRequired": "Please enter a coupon code",
+      "invalidCoupon": "Invalid coupon code"
+    }
   },
   "about": {
     "aboutUs": "About Us",
@@ -185,7 +248,10 @@
     "bestPriceGuarantee": "Best Price Guarantee",
     "weProvideBestTourFacilities": "We Provide The Best Tour Facilities.",
     "description": "Travel Agency likely offers a range of tour activities depending on their location and specialties. Here are some common tour activities that travel agencies might",
-    "yearsOfExperience": "Years of Experience"
+    "yearsOfExperience": "Years of Experience",
+    "bannerTitle": "About Us",
+    "ourTeam": "Our Team",
+    "meetExpertsTeam": "Meet With Our Experts Team"
   },
   "blog": {
     "blogs": "Blogs",
@@ -195,7 +261,26 @@
     "author": "Author",
     "categories": "Categories",
     "tags": "Tags",
-    "relatedPosts": "Related Posts"
+    "relatedPosts": "Related Posts",
+    "bannerTitle": "Blog",
+    "ourBlog": "Our Blog",
+    "latestBlogNews": "Our Latest Blog & News",
+    "noDataMatched": "No data matched"
+  },
+  "blogDetails": {
+    "comments": "Comments ({{count}})",
+    "popularTags": "Popular Tags",
+    "share": "Share",
+    "followUs": "Follow Us",
+    "leaveComment": "Leave A Comment",
+    "commentDisclaimer": "Your email address will not be published. Required fields are marked *",
+    "namePlaceholder": "Name...",
+    "ratePlaceholder": "Rate...",
+    "messagePlaceholder": "Message...",
+    "sendComment": "Send Comment",
+    "categories": "Categories",
+    "recentNews": "Recent News",
+    "keywords": "Keywords"
   },
   "contact": {
     "contactUs": "Contact Us",
@@ -216,7 +301,20 @@
     "officeAddress": "Office Address",
     "callUs": "Call Us",
     "emailUs": "Email Us",
-    "description": " At Alfa Omega Tours, our dedicated team of Travel Consultants provides comprehensive accommodation, activity, and transportation booking services. We are happy to answer all your questions, from must-see highlights during your visit to up-to-date weather and seasonal conditions. Contact us by phone, email, or live chat, or schedule a call at your convenience. We look forward to helping you plan an unforgettable journey."
+    "description": " At Alfa Omega Tours, our dedicated team of Travel Consultants provides comprehensive accommodation, activity, and transportation booking services. We are happy to answer all your questions, from must-see highlights during your visit to up-to-date weather and seasonal conditions. Contact us by phone, email, or live chat, or schedule a call at your convenience. We look forward to helping you plan an unforgettable journey.",
+    "bannerTitle": "Contact",
+    "imageAlt": "contact us",
+    "errors": {
+      "nameRequired": "Name is required",
+      "emailRequired": "Email is required",
+      "emailInvalid": "Enter a valid email",
+      "phoneRequired": "Phone is required",
+      "phoneInvalid": "Phone must be digits only (1–28 numbers)",
+      "subjectRequired": "Subject is required",
+      "countryRequired": "Country is required",
+      "messageRequired": "Message is required",
+      "sendFailed": "Failed to send message"
+    }
   },
   "login": {
     "login": "Login",
@@ -230,7 +328,12 @@
     "emailRequired": "Email required",
     "passwordRequired": "Password required",
     "yourEmail": "Your Email",
-    "yourPassword": "Your Password"
+    "yourPassword": "Your Password",
+    "bannerTitle": "Login",
+    "errors": {
+      "loginFailed": "Login failed",
+      "loginError": "Login error"
+    }
   },
   "signup": {
     "signUp": "Sign Up",
@@ -251,11 +354,18 @@
     "birthDateRequired": "Birth date required",
     "nationalityRequired": "Nationality required",
     "alreadyHaveAccount": "Already have an account?",
-    "login": "Login"
+    "login": "Login",
+    "bannerTitle": "Sign Up",
+    "birthDatePlaceholder": "Birth date",
+    "errors": {
+      "phoneInvalid": "Phone must be digits only (1–28 numbers)",
+      "registrationFailed": "Registration failed"
+    }
   },
   "faq": {
     "faq": "FAQ",
-    "frequentlyAskedQuestions": "Frequently Asked Questions"
+    "frequentlyAskedQuestions": "Frequently Asked Questions",
+    "bannerTitle": "FAQ"
   },
   "notFound": {
     "pageNotFound": "Page Not Found",
@@ -356,7 +466,8 @@
     "acceptanceOfAgreementDescription": "By paying a deposit or final payment, the client confirms that:",
     "acceptanceOfAgreementDescription1": "They have read these terms and conditions.",
     "acceptanceOfAgreementDescription2": "They accept all booking policies.",
-    "acceptanceOfAgreementDescription3": "They agree to be bound by this agreement with Alfa Omega Tours."
+    "acceptanceOfAgreementDescription3": "They agree to be bound by this agreement with Alfa Omega Tours.",
+    "bannerTitle": "Terms & Conditions"
   },
   "footer": {
     "description1": "Alfaomega Tours is a duly licensed Egyptian tour operator holding a Class A tourism license, authorized to provide comprehensive inbound travel services throughout Egypt. The company specializes in the planning, coordination, and management of high-quality travel programs designed to meet the standards and expectations of international travelers seeking culturally authentic, professionally organized, and seamlessly executed experiences.",
@@ -381,7 +492,13 @@
     "allRightsReserved": "All Rights Reserved.",
     "description": "It is a long established fact thatder will be distracted by the readable content of a page when looking at its layoutpoint",
     "subscribeNewsletter": "Subscribe our newsletter for more update & news !!",
-    "termsAndConditions": "Terms & Conditions"
+    "termsAndConditions": "Terms & Conditions",
+    "gallery": "Gallery",
+    "enterYourEmail": "Enter Your Email",
+    "subscribe": "Subscribe",
+    "copyrightPrefix": "Copyright ©",
+    "galleryImageAlt": "Gallery image {{index}}",
+    "subscribeSuccess": "Thank you for subscribing!"
   },
   "aboutSection": {
     "planTripLifetime": "Plan The Trip Of A Lifetime With Ease",
@@ -425,7 +542,72 @@
     "startDate": "Start Date",
     "endDate": "End Date",
     "chooseMonth": "Choose Month",
-    "selectMonth": "Select Month"
+    "selectMonth": "Select Month",
+    "bannerTitle": "Make Your Trip",
+    "steps": {
+      "chooseDestinations": "Choose Your Destinations",
+      "pickupTravelDates": "Pickup Travel Dates",
+      "completeInformation": "Complete Your Information"
+    },
+    "step1": {
+      "title": "Where would you like to go?",
+      "subtitle": "Select your dream destination from our amazing collection"
+    },
+    "step2": {
+      "title": "When do you want to travel?",
+      "subtitle": "Choose your preferred travel dates"
+    },
+    "step3": {
+      "title": "Tell us about yourself",
+      "subtitle": "Fill in your details to complete your trip inquiry"
+    },
+    "viewDetails": "View Details",
+    "dateType": {
+      "title": "Select Date Type",
+      "exact": "I know the exact dates",
+      "approximate": "I have approximate dates"
+    },
+    "dateRange": {
+      "title": "Select Date Range",
+      "label": "Select a date range",
+      "startDate": "Start date",
+      "endDate": "End date"
+    },
+    "personalInfo": {
+      "title": "Personal Information",
+      "firstName": "First name",
+      "firstNamePlaceholder": "Ahmed",
+      "lastName": "Last name",
+      "lastNamePlaceholder": "Zenger",
+      "emailPlaceholder": "ahmed@gmail.com",
+      "nationality": "Nationality",
+      "phone": "Phone number",
+      "phonePlaceholder": "01069769249"
+    },
+    "budget": {
+      "title": "Budget & Preferences",
+      "min": "Min Budget",
+      "max": "Max Budget",
+      "flightOffer": "Add flight offer to my trip"
+    },
+    "travelers": {
+      "title": "Travelers",
+      "adults": "Adults ( +12 )",
+      "children": "Children ( 2 to 11 )",
+      "infants": "Infants ( 0 to 2 )"
+    },
+    "notes": {
+      "title": "Additional Notes",
+      "label": "Notes",
+      "placeholder": "Add any special requests or notes here..."
+    },
+    "submitInquiry": "Submit Inquiry",
+    "errors": {
+      "destinationRequired": "Please select at least one destination",
+      "firstNameRequired": "First name is required",
+      "lastNameRequired": "Last name is required",
+      "nationalityRequired": "Nationality is required"
+    }
   },
   "forgetPassword": {
     "loginByAccount": "Log in by your Alfa Omega Tours account",
@@ -436,7 +618,11 @@
     "otpRequired": "OTP required",
     "login": "Log In",
     "dontHaveAccount": "Don't have an account?",
-    "signUp": "Sign Up"
+    "signUp": "Sign Up",
+    "bannerTitle": "Forget Password",
+    "errors": {
+      "invalidOtp": "Enter the correct otp code"
+    }
   },
   "tourPackages": {
     "ourTourPackagesTitle": "Our Tour Packages tour",
@@ -445,5 +631,164 @@
   "nileCruises": {
     "ourNileCruisesTitle": "Our Nile Cruises Tours",
     "ourNileCruisesDescription": "Our Nile Cruises Tours are designed to give you the best travel experience. We offer a wide range of nile cruises tours to suit your needs and budget."
+  },
+  "tourDetails": {
+    "reviews": "reviews",
+    "duration": "Duration",
+    "time": "Time",
+    "availability": "Availability",
+    "tourType": "Tour Type",
+    "description": "Description",
+    "highlights": "Highlights",
+    "included": "Included",
+    "notIncluded": "Not Included",
+    "itinerary": "Itinerary",
+    "locationMap": "Location Map",
+    "faqs": "FAQ's",
+    "reviewsTitle": "Reviews",
+    "basedOnVerifiedReviews": "Based On Verified Reviews",
+    "clientReviews": "Clients Reviews",
+    "noReviews": "No reviews yet. Be the first to review this tour!",
+    "leaveReview": "Leave A Review",
+    "reviewNamePlaceholder": "Name...",
+    "reviewRatePlaceholder": "Rate of Star ...",
+    "saveForNextReview": "Save your name, rate for the next time review",
+    "reviewCommentPlaceholder": "Write a Comment....",
+    "bookThisTour": "Book This Tour",
+    "from": "From",
+    "chooseDate": "Choose a date",
+    "guests": "Guests",
+    "adults": "Adults (+12 years)",
+    "children": "Children (2-12 years)",
+    "infants": "Infants (0-2 years)",
+    "bookingNow": "Booking Now",
+    "bookNow": "Book Now",
+    "errors": {
+      "startDateRequired": "Start date is required",
+      "noData": "No data available.",
+      "chooseStartDate": "Please choose a start date",
+      "formInvalid": "Form is not valid, must choose start date",
+      "bookingFailed": "Booking failed",
+      "reviewSubmitFailed": "Error submitting review"
+    },
+    "reviewQuality": {
+      "newTour": "New Tour",
+      "excellent": "Excellent Quality",
+      "veryGood": "Very Good Quality",
+      "good": "Good Quality",
+      "average": "Average Quality",
+      "belowAverage": "Below Average Quality",
+      "noRating": "No Rating Available"
+    }
+  },
+  "aboutCategory": {
+    "convenientBooking": "Convenient Booking Platforms",
+    "multiDestination": "Multi-Destination Itineraries",
+    "customPackages": "Customized Travel Packages",
+    "destinationExpertise": "Destination Expertise",
+    "sustainableTravel": "Sustainable Travel Initiatives",
+    "exclusiveDeals": "Exclusive Deals and Discounts"
+  },
+  "booknow": {
+    "title": "First Booking Get 70% Discount!",
+    "description": "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.",
+    "button": "Book Now"
+  },
+  "destinationCart": {
+    "tourCount": "tour"
+  },
+  "testimonial": {
+    "ourClients": "Our Clients"
+  },
+  "pagination": {
+    "label": "Pagination",
+    "page": "page",
+    "currentPage": "You're on page"
+  },
+  "profile": {
+    "bannerTitle": "My Profile",
+    "changePhoto": "Change Photo",
+    "uploadImage": "Upload Your Image",
+    "nav": {
+      "dashboard": "Dashboard",
+      "myProfile": "My Profile",
+      "myBooking": "My Booking",
+      "myWishlist": "My Wishlist",
+      "settings": "Settings",
+      "logout": "Logout"
+    },
+    "dashboard": {
+      "title": "Dashboard Overview",
+      "subtitle": "Welcome back! Here's your activity summary",
+      "totalBookings": "Total Bookings",
+      "favoriteTours": "Favorite Tours"
+    },
+    "info": {
+      "title": "Profile Information",
+      "subtitle": "Your personal details and account information",
+      "fullName": "Full Name",
+      "email": "Email",
+      "phone": "Phone",
+      "address": "Address",
+      "joinDate": "Join Date"
+    },
+    "bookings": {
+      "title": "My Bookings",
+      "subtitle": "Manage and view your tour bookings",
+      "guests": "Guests:",
+      "adults": "Adults",
+      "children": "Children",
+      "infants": "Infants",
+      "totalPrice": "Total Price:",
+      "bookingDate": "Booking Date:",
+      "emptyTitle": "No Tours in Booking Cart",
+      "emptyMessage": "Start exploring and book your first tour!"
+    },
+    "wishlist": {
+      "title": "My Wishlist",
+      "subtitle": "Your saved favorite tours",
+      "emptyTitle": "No Tours in Wishlist",
+      "emptyMessage": "Add tours to your wishlist to save them for later!"
+    },
+    "settings": {
+      "title": "Account Settings",
+      "subtitle": "Update your profile information and preferences",
+      "fullNamePlaceholder": "Your Full Name",
+      "phonePlaceholder": "Your Phone",
+      "password": "Password",
+      "passwordPlaceholder": "Your Password",
+      "confirmPassword": "Confirm Password",
+      "confirmPasswordPlaceholder": "Confirm Your Password",
+      "nationality": "Nationality",
+      "selectNationality": "Select Your Nationality",
+      "updateButton": "Update Profile Info"
+    },
+    "imageUpdatedSuccess": "Profile image updated",
+    "updateSuccess": "Profile updated",
+    "errors": {
+      "loginRequired": "Please Login First",
+      "uploadFailed": "Upload failed",
+      "updateFailed": "Failed to update profile",
+      "fixFormErrors": "Please fix the form errors"
+    }
+  },
+  "destinationDetails": {
+    "description": "Description",
+    "information": "Information",
+    "share": "Share",
+    "noToursAvailable": "No tours available in this destination"
+  },
+  "paymentPaypal": {
+    "title": "Payment PayPal",
+    "processing": "Processing payment...",
+    "successFallback": "Payment request sent successfully.",
+    "failureMessage": "Payment failure, please try again later",
+    "backHome": "Back Home",
+    "processedSuccess": "Payment processed"
+  },
+  "destination": {
+    "bannerTitle": "Destinations",
+    "travelDeal": "Travel Deal",
+    "mostPopularTravelDeals": "Our Most Popular Travel Deals"
   }
 }

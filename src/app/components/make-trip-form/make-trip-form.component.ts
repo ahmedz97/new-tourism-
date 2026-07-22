@@ -21,6 +21,10 @@ import { MaketripService } from '../../core/services/maketrip.service';
 import { DataService } from '../../core/services/data.service';
 import { Subject, takeUntil, tap } from 'rxjs';
 import { TranslateModule } from '@ngx-translate/core';
+import {
+  formatLocalDateYmd,
+  startOfToday,
+} from '../../core/utils/form.utils';
 
 @Component({
   selector: 'app-make-trip-form',
@@ -53,20 +57,20 @@ export class MakeTripFormComponent implements OnInit {
   allDestinations: any[] = [];
   MarkTime: string = 'exact';
   monthList = [
-    'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-    'July',
-    'August',
-    'September',
-    'October',
-    'November',
-    'December',
+    'common.months.january',
+    'common.months.february',
+    'common.months.march',
+    'common.months.april',
+    'common.months.may',
+    'common.months.june',
+    'common.months.july',
+    'common.months.august',
+    'common.months.september',
+    'common.months.october',
+    'common.months.november',
+    'common.months.december',
   ];
-  today: Date = new Date();
+  today: Date = startOfToday();
 
   ngOnInit(): void {
     this.getDestination();
@@ -142,10 +146,6 @@ export class MakeTripFormComponent implements OnInit {
   }
 
   private formatDateForQuery(date: Date): string {
-    // Format date as YYYY-MM-DD without timezone conversion
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-    return `${year}-${month}-${day}`;
+    return formatLocalDateYmd(date) ?? '';
   }
 }

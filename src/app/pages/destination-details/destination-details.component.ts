@@ -11,6 +11,7 @@ import { BannerComponent } from '../../components/banner/banner.component';
 import { MakeTripFormComponent } from '../../components/make-trip-form/make-trip-form.component';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { SeoService } from '../../core/services/seo.service';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-destination-details',
@@ -25,6 +26,7 @@ import { SeoService } from '../../core/services/seo.service';
     PartnerSliderComponent,
     BannerComponent,
     MakeTripFormComponent,
+    TranslateModule,
   ],
   templateUrl: './destination-details.component.html',
   styleUrl: './destination-details.component.scss',
