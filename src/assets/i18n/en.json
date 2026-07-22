@@ -576,13 +576,13 @@
     "personalInfo": {
       "title": "Personal Information",
       "firstName": "First name",
-      "firstNamePlaceholder": "Ahmed",
+      "firstNamePlaceholder": "Enter your first name",
       "lastName": "Last name",
-      "lastNamePlaceholder": "Zenger",
-      "emailPlaceholder": "ahmed@gmail.com",
+      "lastNamePlaceholder": "Enter your last name",
+      "emailPlaceholder": "Enter your email",
       "nationality": "Nationality",
       "phone": "Phone number",
-      "phonePlaceholder": "01069769249"
+      "phonePlaceholder": "Enter your phone number"
     },
     "budget": {
       "title": "Budget & Preferences",

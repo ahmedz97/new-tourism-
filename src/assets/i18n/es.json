@@ -578,13 +578,13 @@
     "personalInfo": {
       "title": "Información Personal",
       "firstName": "Nombre",
-      "firstNamePlaceholder": "Ahmed",
+      "firstNamePlaceholder": "Ingrese su nombre",
       "lastName": "Apellido",
-      "lastNamePlaceholder": "Zenger",
-      "emailPlaceholder": "ahmed@gmail.com",
+      "lastNamePlaceholder": "Ingrese su apellido",
+      "emailPlaceholder": "Ingrese su email",
       "nationality": "Nacionalidad",
       "phone": "Número de teléfono",
-      "phonePlaceholder": "01069769249"
+      "phonePlaceholder": "Ingrese su número de teléfono"
     },
     "budget": {
       "title": "Presupuesto y Preferencias",
